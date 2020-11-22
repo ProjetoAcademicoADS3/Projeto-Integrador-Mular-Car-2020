@@ -356,7 +356,12 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCadCategoriasActionPerformed
 
     private void jMenuItemCadClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadClientesActionPerformed
-        // TODO add your handling code here:
+        try {
+            new ClienteApp(this, true).setVisible(true);
+            this.setVisible(true);
+
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_jMenuItemCadClientesActionPerformed
 
     private void jMenuItemCadVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadVeiculosActionPerformed
