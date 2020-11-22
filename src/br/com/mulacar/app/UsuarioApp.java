@@ -344,7 +344,7 @@ public class UsuarioApp extends javax.swing.JDialog {
                 usuBll.adicionarUsuario(usuario);
             } else {
                 int id = Integer.parseInt(jTextFieldCodigo.getText());
-                usuario = new Usuario(id, nome, cpf, email, senha,  status,perfil);
+                usuario = new Usuario(id, nome, cpf, email, senha, perfil, status, new Date());
                 usuBll.alterarUsuario(usuario);
 
             }
