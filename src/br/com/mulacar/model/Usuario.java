@@ -22,6 +22,7 @@ public class Usuario {
     private String      senha;
     private EnumPerfil  perfil;
     private EnumStatus  status;
+    private Date dataCadastro;
 
     public Usuario() {
     }
@@ -35,16 +36,16 @@ public class Usuario {
         this.status = status;
     }
 
-    public Usuario(int id, String nome, String cpf, String email, String senha, EnumStatus status, EnumPerfil perfil) {
-        this.id     = id;
-        this.nome   = nome;
-        this.cpf    = cpf;
-        this.email  = email;
-        this.senha  = senha;
+    public Usuario(int id, String nome, String cpf, String email, String senha, EnumPerfil perfil, EnumStatus status, Date dataCadastro) {
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.senha = senha;
         this.perfil = perfil;
         this.status = status;
+        this.dataCadastro = dataCadastro;
     }
-
 
     public int getId() {
         return id;
@@ -102,9 +103,17 @@ public class Usuario {
         this.status = status;
     }
 
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
 
     @Override
     public String toString() {
-        return "Usuario{" + "id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", email=" + email + ", senha=" + senha + ", perfil=" + perfil + ", status=" + status + '}';
+        return "Usuario{" + "id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", email=" + email + ", senha=" + senha + ", perfil=" + perfil + ", status=" + status + ", dataCadastro=" + dataCadastro + '}';
     }
+    
 }

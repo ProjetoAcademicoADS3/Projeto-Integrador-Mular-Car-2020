@@ -14,6 +14,7 @@ import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.model.Usuario;
 import br.com.mulacar.util.Conexao;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,8 +32,8 @@ public class UsuarioDal {
 
     public void addUsuario(Usuario usu) throws Exception {
 
-        String sql = "INSERT INTO tb_usuarios (usu_nome, usu_cpf, usu_email,"
-                + "usu_senha,usu_status,usu_perfil) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO usuario (usu_nome, usu_cpf, usu_email,"
+                + "usu_senha,usu_status,usu_perfil, usu_data_cadastro) VALUES (?,?,?,?,?,?,?)";
         try {
 
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
@@ -43,6 +44,8 @@ public class UsuarioDal {
             preparedStatement.setString(4, usu.getSenha());
             preparedStatement.setString(5, usu.getStatus().toString());
             preparedStatement.setString(6, usu.getPerfil().toString());
+            preparedStatement.setDate(7, new java.sql.Date(usu.getDataCadastro().getTime()));
+
 
             preparedStatement.executeUpdate();
 
@@ -52,7 +55,7 @@ public class UsuarioDal {
     }
 
     public void deleteUsuario(int id) throws Exception {
-        String sql = "DELETE FROM tb_usuarios WHERE usu_iden=?";
+        String sql = "DELETE FROM usuario WHERE usu_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -64,12 +67,12 @@ public class UsuarioDal {
     }
 
     public void updateUsuario(Usuario usu) throws Exception {
-        String sql = "UPDATE tb_usuarios SET usu_nome=?,"
+        String sql = "UPDATE usuario SET usu_nome=?,"
                 + "usu_cpf=?,"
                 + "usu_email=?,"
                 + "usu_senha=?,"
                 + "usu_status=?"
-                + "usu_perfil=? WHERE usu_iden=?";
+                + "usu_perfil=? WHERE usu_id=?";
         try {
             PreparedStatement preparedStatement
                     = conexao.prepareStatement(sql);
@@ -90,13 +93,13 @@ public class UsuarioDal {
 
     public List<Usuario> getAllUsuarios() throws Exception {
         List<Usuario> listaUsuarios = new ArrayList<Usuario>();
-        String sql = "SELECT * FROM tb_usuarios";
+        String sql = "SELECT * FROM usuario";
         try {
             Statement statement = conexao.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
                 Usuario usu = new Usuario();
-                usu.setId(rs.getInt("usu_iden"));
+                usu.setId(rs.getInt("usu_id"));
                 usu.setNome(rs.getString("usu_nome"));
                 usu.setCpf(rs.getString("usu_cpf"));
                 usu.setEmail(rs.getString("usu_email"));
@@ -119,14 +122,14 @@ public class UsuarioDal {
 
     public Usuario getUsuarioById(int id) throws Exception {
         Usuario usu = new Usuario();
-        String sql = "SELECT * FROM tb_usuarios WHERE usu_iden=?";
+        String sql = "SELECT * FROM usuario WHERE usu_id = ?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                usu.setId(rs.getInt("usu_iden"));
+                usu.setId(rs.getInt("usu_id"));
                 usu.setNome(rs.getString("usu_nome"));
                 usu.setCpf(rs.getString("usu_cpf"));
                 usu.setEmail(rs.getString("usu_email"));
@@ -174,7 +177,7 @@ public class UsuarioDal {
     public Usuario getUsuarioByEmail(String email) throws Exception {
         Usuario usu = null;
         
-        String sql = "SELECT * FROM tb_usuarios WHERE usu_email LIKE ?";
+        String sql = "SELECT * FROM usuario WHERE usu_email LIKE ?";
         
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
@@ -183,17 +186,24 @@ public class UsuarioDal {
 
             if (rs.next()) {
                 usu = new Usuario();
-                usu.setId(rs.getInt("usu_iden"));
+                usu.setId(rs.getInt("usu_id"));
                 usu.setNome(rs.getString("usu_nome"));
                 usu.setCpf(rs.getString("usu_cpf"));
                 usu.setEmail(rs.getString("usu_email"));
                 usu.setSenha(rs.getString("usu_senha"));
-                usu.setStatus(EnumStatus.ATIVO);
-                if (rs.getString("usu_perfil").equalsIgnoreCase("ADMINISTRADOR")) {
-                    usu.setPerfil(EnumPerfil.ADMINISTRADOR);
-                } else {
-                    usu.setPerfil(EnumPerfil.CLIENTE);
-                }
+                usu.setDataCadastro(rs.getDate("usu_data_cadastro"));
+                
+                EnumStatus status = EnumStatus.valueOf(rs.getString("usu_status"));
+                usu.setStatus(status);
+                
+                EnumPerfil perfil = EnumPerfil.valueOf(rs.getString("usu_perfil"));
+                usu.setPerfil(perfil);
+                
+//                if (rs.getString("usu_perfil").equalsIgnoreCase("ADMINISTRADOR")) {
+//                    usu.setPerfil(EnumPerfil.ADMINISTRADOR);
+//                } else {
+//                    usu.setPerfil(EnumPerfil.CLIENTE);
+//                }
             }
         } catch (Exception erro) {
             throw new Exception("Ocorreu um erro ao buscar este registro de Usuários\n"

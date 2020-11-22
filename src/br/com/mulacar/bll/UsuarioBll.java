@@ -78,7 +78,7 @@ public class UsuarioBll {
         List<Usuario> lista = usuDal.getAllUsuarios();
         for (int pos = 0; pos < lista.size(); pos++) {
             Usuario usu = lista.get(pos);
-            if (usuario.getCpf().equals(usu.getCpf())) {
+            if (usuario.getCpf().equals(usu.getCpf()) && !usuario.getEmail().equals("usuario.admin@gmail.com")) {
                 throw new Exception("Já existe um usuário com este CPF\nVerifique\n");
             }
             if (usuario.getEmail().equalsIgnoreCase(usu.getEmail())) {

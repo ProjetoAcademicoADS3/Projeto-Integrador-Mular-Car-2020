@@ -11,11 +11,10 @@ package br.com.mulacar.app;
 
 import br.com.mulacar.bll.UsuarioBll;
 import br.com.mulacar.enumeration.EnumPerfil;
+import br.com.mulacar.enumeration.EnumStatus;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import br.com.mulacar.model.Usuario;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -53,7 +52,7 @@ public class LoginApp extends javax.swing.JFrame {
         
         if (debug) {
           
-            this.jTextFieldEmail.setText("usuario_admin@gmail.com");
+            this.jTextFieldEmail.setText("usuario.admin@gmail.com");
             
             this.jPasswordFieldSenha.setText("123456");
             
@@ -68,22 +67,20 @@ public class LoginApp extends javax.swing.JFrame {
 
     private void criarUsuarioAdmin() {
         try {
-            Usuario usuarioBanco = usuBll.getUsuarioByEmail("usuario_admin@gmail.com");
+            Usuario usuarioBanco = usuBll.getUsuarioByEmail("usuario.admin@gmail.com");
 
             boolean existeUsuarioAdmin = usuarioBanco != null
                     && usuarioBanco.getEmail() != null
-                    && usuarioBanco.getEmail().equals("usuario_admin@gmail.com");
+                    && usuarioBanco.getEmail().equals("usuario.admin@gmail.com");
 
             if (!existeUsuarioAdmin) {
                 usuario.setNome("Super usuario");
                 usuario.setCpf("50794334008");
-                usuario.setEmail("usuario_admin@gmail.com");
+                usuario.setEmail("usuario.admin@gmail.com");
                 usuario.setSenha("123456");
-//                usuario.setPercCupom(0);
-
-//                Date dataCupom = new Date();
-//                usuario.setDataCupom(dataCupom);
+                usuario.setDataCadastro(new Date());
                 usuario.setPerfil(EnumPerfil.ADMINISTRADOR);
+                usuario.setStatus(EnumStatus.ATIVO);
                 usuBll.adicionarUsuario(usuario);
             }
 
