@@ -28,8 +28,8 @@ public class Conexao {
             try {
                 String driver = "org.postgresql.Driver";
                 String url = "jdbc:postgresql://192.168.0.13:5432/mulacar";
-                String usuario = "postgres";
-                String password = "1357";
+                String usuario = "????????";
+                String password = "????";
 
                 Class.forName(driver);
                 conexao = DriverManager.getConnection(url, usuario, password);
