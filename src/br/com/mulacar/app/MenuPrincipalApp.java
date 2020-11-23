@@ -9,6 +9,10 @@
 
 package br.com.mulacar.app;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class MenuPrincipalApp extends javax.swing.JFrame {
@@ -60,7 +64,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItemERSdocs = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -253,8 +257,13 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
         jMenu3.setText("Gestão de Projetos");
 
-        jMenuItem5.setText("ERS");
-        jMenu3.add(jMenuItem5);
+        jMenuItemERSdocs.setText("ERS");
+        jMenuItemERSdocs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemERSdocsActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItemERSdocs);
 
         jMenuItem6.setText("Planejamento");
         jMenu3.add(jMenuItem6);
@@ -439,6 +448,17 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItemLocarVeiculosActionPerformed
 
+    private void jMenuItemERSdocsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemERSdocsActionPerformed
+        try {
+            // TODO add your handling code here:
+            java.awt.Desktop.getDesktop().browse( new java.net.URI( "https://drive.google.com/file/d/1z4Q1Y5infFKUjAlnTfn-oNKOlGv11gtk/view?usp=sharing" ) );
+        } catch (IOException ex) {
+            Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItemERSdocsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -503,7 +523,6 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
@@ -515,6 +534,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemCadUsuarios;
     private javax.swing.JMenuItem jMenuItemCadVeiculos;
     private javax.swing.JMenuItem jMenuItemDevolverVeiculos;
+    private javax.swing.JMenuItem jMenuItemERSdocs;
     private javax.swing.JMenuItem jMenuItemLocarVeiculos;
     private javax.swing.JMenuItem jMenuItemRelCategorias;
     private javax.swing.JMenuItem jMenuItemRelClientes;
