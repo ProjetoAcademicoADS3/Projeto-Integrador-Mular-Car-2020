@@ -82,6 +82,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
+        jMenuItemLinksTutoriais = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Mula Car Rent a Car");
@@ -320,6 +321,14 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
         jMenuFerramentas.add(jMenu7);
 
+        jMenuItemLinksTutoriais.setText("Links Tutoriais");
+        jMenuItemLinksTutoriais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLinksTutoriaisActionPerformed(evt);
+            }
+        });
+        jMenuFerramentas.add(jMenuItemLinksTutoriais);
+
         jMenuBarTelaPrincipal.add(jMenuFerramentas);
 
         setJMenuBar(jMenuBarTelaPrincipal);
@@ -372,10 +381,6 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jMenuItemCadClientesActionPerformed
-
-    private void jMenuItemCadVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadVeiculosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItemCadVeiculosActionPerformed
 
     private void jMenuItemCadUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadUsuariosActionPerformed
         // TODO add your handling code here:
@@ -459,6 +464,23 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItemERSdocsActionPerformed
 
+    private void jMenuItemLinksTutoriaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLinksTutoriaisActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            java.awt.Desktop.getDesktop().browse( new java.net.URI( "https://drive.google.com/file/d/18z3mlxxTf-TkOiCIeKMOQTVanSbogfj0/view?usp=sharing" ) );
+        } catch (IOException ex) {
+            Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+              
+    }//GEN-LAST:event_jMenuItemLinksTutoriaisActionPerformed
+
+    private void jMenuItemCadVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadVeiculosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemCadVeiculosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -535,6 +557,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemCadVeiculos;
     private javax.swing.JMenuItem jMenuItemDevolverVeiculos;
     private javax.swing.JMenuItem jMenuItemERSdocs;
+    private javax.swing.JMenuItem jMenuItemLinksTutoriais;
     private javax.swing.JMenuItem jMenuItemLocarVeiculos;
     private javax.swing.JMenuItem jMenuItemRelCategorias;
     private javax.swing.JMenuItem jMenuItemRelClientes;
