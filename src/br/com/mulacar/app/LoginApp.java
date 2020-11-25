@@ -58,6 +58,8 @@ public class LoginApp extends javax.swing.JFrame {
             
             this.jPasswordFieldSenha.setText("123456");
             
+            System.out.println("Teste");
+            
 //            this.jButtonEntrar.doClick();
 //            
 //            this.dispose();
