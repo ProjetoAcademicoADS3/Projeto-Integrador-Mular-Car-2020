@@ -14,6 +14,8 @@ import br.com.mulacar.enumeration.EnumStatus;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import br.com.mulacar.model.Usuario;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -39,8 +41,9 @@ public class LoginApp extends javax.swing.JFrame {
         }
     }
 
-    public LoginApp() throws Exception {
 
+ public LoginApp() throws Exception {
+        
         initComponents();
 
         usuario = new Usuario();
@@ -55,6 +58,9 @@ public class LoginApp extends javax.swing.JFrame {
 
             this.jPasswordFieldSenha.setText("123456");
 
+            
+            System.out.println("Teste");
+            
 //            this.jButtonEntrar.doClick();
 //            
 //            this.dispose();
@@ -170,8 +176,7 @@ public class LoginApp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEntrarActionPerformed
-
-        try {
+ try {
             String email = jTextFieldEmail.getText();
             String senha = String.valueOf(jPasswordFieldSenha.getPassword());
 
@@ -234,7 +239,11 @@ public class LoginApp extends javax.swing.JFrame {
                 }
             }
         } catch (Exception erro) {
-            throw erro;
+            try {
+                throw erro;
+            } catch (Exception ex) {
+                Logger.getLogger(LoginApp.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jPasswordFieldSenhaKeyPressed
 
@@ -257,6 +266,7 @@ public class LoginApp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelFundo;
     private javax.swing.JPasswordField jPasswordFieldSenha;

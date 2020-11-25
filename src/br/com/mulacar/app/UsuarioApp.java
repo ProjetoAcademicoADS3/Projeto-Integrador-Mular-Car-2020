@@ -143,7 +143,9 @@ public class UsuarioApp extends javax.swing.JDialog {
         jPasswordFieldSenha.setText("jPasswordField1");
 
         jButtonFechar.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jButtonFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-window-close-icon-24px.png"))); // NOI18N
         jButtonFechar.setText("Fechar");
+        jButtonFechar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButtonFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonFecharActionPerformed(evt);
@@ -151,7 +153,9 @@ public class UsuarioApp extends javax.swing.JDialog {
         });
 
         jButtonSalvar.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jButtonSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-document-save-icon-24px.png"))); // NOI18N
         jButtonSalvar.setText("Salvar");
+        jButtonSalvar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSalvarActionPerformed(evt);
@@ -159,7 +163,10 @@ public class UsuarioApp extends javax.swing.JDialog {
         });
 
         jButtonListarUsuarios.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jButtonListarUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Data-List-icon-24px.png"))); // NOI18N
         jButtonListarUsuarios.setText("Listagem");
+        jButtonListarUsuarios.setAutoscrolls(true);
+        jButtonListarUsuarios.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButtonListarUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonListarUsuariosActionPerformed(evt);
@@ -167,7 +174,9 @@ public class UsuarioApp extends javax.swing.JDialog {
         });
 
         jButtonNovoCadastro.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jButtonNovoCadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Apps-File-New-icon-24px.png"))); // NOI18N
         jButtonNovoCadastro.setText("Novo Cadastro");
+        jButtonNovoCadastro.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButtonNovoCadastro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonNovoCadastroActionPerformed(evt);
@@ -175,7 +184,9 @@ public class UsuarioApp extends javax.swing.JDialog {
         });
 
         jButtonPesquisarUsuario.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jButtonPesquisarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/search-icon-24px.png"))); // NOI18N
         jButtonPesquisarUsuario.setText("Pesquisar");
+        jButtonPesquisarUsuario.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButtonPesquisarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonPesquisarUsuarioActionPerformed(evt);
