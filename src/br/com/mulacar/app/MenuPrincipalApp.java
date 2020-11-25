@@ -149,6 +149,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         });
         jMenuCadastros.add(jMenuItemCadModelos);
 
+        jMenuItemCadVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Rolls-Royce.png"))); // NOI18N
         jMenuItemCadVeiculos.setText("Veículos");
         jMenuItemCadVeiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -11,7 +11,7 @@ package br.com.mulacar.enumeration;
 
 public enum EnumStatus {
     
-    ATIVO, INATIVO, SUSPENSO;
+    ATIVO, INATIVO;
     
     
 }
