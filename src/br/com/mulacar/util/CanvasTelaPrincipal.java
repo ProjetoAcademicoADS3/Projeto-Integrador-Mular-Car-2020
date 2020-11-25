@@ -25,7 +25,7 @@ public class CanvasTelaPrincipal extends javax.swing.JPanel {
     public CanvasTelaPrincipal() throws IOException {
         initComponents();
     
-        this.imagemFundo = ImageIO.read(new File ("C:\\Git\\Academico\\Projeto-Integrador-Mular-Car-2020\\src\\br\\com\\mulacar\\imagens\\Travel-BMV-icon-256px.png"));
+        this.imagemFundo = ImageIO.read(new File ("C:\\Users\\roger\\Documents\\Projeto-Integrador-ADS3-2-Sem.-2020\\src\\br\\com\\mulacar\\imagens\\Travel-BMV-icon-256px.png"));
     }
 
     @Override
