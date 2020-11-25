@@ -6,7 +6,6 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.UsuarioBll;
@@ -15,6 +14,8 @@ import br.com.mulacar.enumeration.EnumStatus;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import br.com.mulacar.model.Usuario;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -25,9 +26,9 @@ import java.util.logging.Logger;
 public class LoginApp extends javax.swing.JFrame {
 
     private Usuario usuario;
-    
+
     private UsuarioBll usuBll = new UsuarioBll();
-    
+
     private boolean debug = true;
 
     public static String convertDate(Date dtConsulta) {
@@ -40,26 +41,31 @@ public class LoginApp extends javax.swing.JFrame {
         }
     }
 
-    public LoginApp() throws Exception {
+
+ public LoginApp() throws Exception {
         
         initComponents();
-        
+
         usuario = new Usuario();
-        
+
         Random rd = new Random();
 
         this.criarUsuarioAdmin();
-        
+
         if (debug) {
-          
+
             this.jTextFieldEmail.setText("usuario.admin@gmail.com");
-            
+
             this.jPasswordFieldSenha.setText("123456");
+
+            
+            System.out.println("Teste");
             
 //            this.jButtonEntrar.doClick();
 //            
 //            this.dispose();
-            
+            System.out.println("");
+
 //        this.executarScriptsConfiguracoes();
         }
 
@@ -170,23 +176,22 @@ public class LoginApp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEntrarActionPerformed
-
-        try {
+ try {
             String email = jTextFieldEmail.getText();
             String senha = String.valueOf(jPasswordFieldSenha.getPassword());
 
             Usuario usuarioBanco = usuBll.getUsuarioByEmail(email);
 
             boolean ehUsuarioValido = usuarioBanco != null
-                                    && usuarioBanco.getEmail() != null
-                                    && !usuarioBanco.getEmail().equals("")
-                                    && usuarioBanco.getSenha() != null
-                                    && !usuarioBanco.getSenha().equals("");
+                    && usuarioBanco.getEmail() != null
+                    && !usuarioBanco.getEmail().equals("")
+                    && usuarioBanco.getSenha() != null
+                    && !usuarioBanco.getSenha().equals("");
 
             if (ehUsuarioValido) {
-                
-                boolean ehAutorizado = email.equals(usuarioBanco.getEmail()) 
-                                       && senha.equals(usuarioBanco.getSenha());
+
+                boolean ehAutorizado = email.equals(usuarioBanco.getEmail())
+                        && senha.equals(usuarioBanco.getSenha());
 
                 if (ehAutorizado && usuarioBanco.getPerfil().equals(EnumPerfil.ADMINISTRADOR)) {
 
@@ -195,11 +200,11 @@ public class LoginApp extends javax.swing.JFrame {
                     dispose();                                  //Fechar a tela de login e abrir apenas a tela principal
 
                 } else if (ehAutorizado && usuarioBanco.getPerfil().equals(EnumPerfil.CLIENTE)) {
-                    
+
 //                    VisualizarFilmesApp1 tela = new VisualizarFilmesApp1(usuarioBanco);
 //                    tela.setVisible(true);
                     dispose();
-                    
+
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Acesso Negado!");
                 }
@@ -234,7 +239,11 @@ public class LoginApp extends javax.swing.JFrame {
                 }
             }
         } catch (Exception erro) {
-            throw erro;
+            try {
+                throw erro;
+            } catch (Exception ex) {
+                Logger.getLogger(LoginApp.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jPasswordFieldSenhaKeyPressed
 
@@ -257,6 +266,7 @@ public class LoginApp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelFundo;
     private javax.swing.JPasswordField jPasswordFieldSenha;

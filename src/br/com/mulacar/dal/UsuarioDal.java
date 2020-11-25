@@ -14,7 +14,6 @@ import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.model.Usuario;
 import br.com.mulacar.util.Conexao;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,7 +54,7 @@ public class UsuarioDal {
     }
 
     public void deleteUsuario(int id) throws Exception {
-        String sql = "DELETE FROM usuario WHERE usu_id=?";
+     String sql = "DELETE FROM usuario WHERE usu_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -67,7 +66,7 @@ public class UsuarioDal {
     }
 
     public void updateUsuario(Usuario usu) throws Exception {
-        String sql = "UPDATE usuario SET usu_nome=?,"
+       String sql = "UPDATE usuario SET usu_nome=?,"
                 + "usu_cpf=?,"
                 + "usu_email=?,"
                 + "usu_senha=?,"
@@ -151,7 +150,7 @@ public class UsuarioDal {
 
     public ArrayList sourceUsuario(String dados) throws Exception {
         
-        String textoDigitado = dados;
+         String textoDigitado = dados;
         
         ArrayList<Usuario> resultadoDaPesquisa = new ArrayList<>();
        
@@ -211,5 +210,4 @@ public class UsuarioDal {
         }
         return usu;
     }    
-
 }

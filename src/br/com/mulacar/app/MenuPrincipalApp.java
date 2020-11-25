@@ -9,21 +9,33 @@
 
 package br.com.mulacar.app;
 
+import br.com.mulacar.util.CanvasTelaPrincipal;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 public class MenuPrincipalApp extends javax.swing.JFrame {
 
     /**
      * Creates new form TelaPrincipal
      */
-    public MenuPrincipalApp() {
+    public MenuPrincipalApp() throws IOException {
         setExtendedState(MAXIMIZED_BOTH);
-        initComponents();
 
+        initComponents();
+        
+        CanvasTelaPrincipal canvas = new CanvasTelaPrincipal();
+        this.jDesktopPaneMulaCar.add(canvas);
     }
 
     /**
@@ -35,7 +47,18 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDesktopPaneTorrentz = new javax.swing.JDesktopPane();
+        jDesktopPaneMulaCar = new javax.swing.JDesktopPane();
+        jPanel1 = new javax.swing.JPanel();
+        jLabelHora = new javax.swing.JLabel();
+        jLabelData = new javax.swing.JLabel();
+        jToolBar1 = new javax.swing.JToolBar();
+        jSeparator4 = new javax.swing.JToolBar.Separator();
+        jButtonSair = new javax.swing.JButton();
+        jButtonUsuario = new javax.swing.JButton();
+        jButtonCadVeiculos = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jSeparator5 = new javax.swing.JSeparator();
         jMenuBarTelaPrincipal = new javax.swing.JMenuBar();
         jMenuOperacoes = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -64,7 +87,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItemERSdocs = new javax.swing.JMenuItem();
+        jMenuItemERS = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -82,25 +105,113 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
-        jMenuItemLinksTutoriais = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Mula Car Rent a Car");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jDesktopPaneTorrentzLayout = new javax.swing.GroupLayout(jDesktopPaneTorrentz);
-        jDesktopPaneTorrentz.setLayout(jDesktopPaneTorrentzLayout);
-        jDesktopPaneTorrentzLayout.setHorizontalGroup(
-            jDesktopPaneTorrentzLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 691, Short.MAX_VALUE)
+        jDesktopPaneMulaCar.setBackground(new java.awt.Color(255, 255, 255));
+        jDesktopPaneMulaCar.setLayout(new java.awt.BorderLayout());
+
+        jLabelHora.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabelHora.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+
+        jLabelData.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabelData.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 556, Short.MAX_VALUE)
+                .addComponent(jLabelData, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelHora, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        jDesktopPaneTorrentzLayout.setVerticalGroup(
-            jDesktopPaneTorrentzLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 624, Short.MAX_VALUE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelData, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelHora, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
+
+        jToolBar1.setFloatable(false);
+        jToolBar1.setRollover(true);
+        jToolBar1.setMaximumSize(new java.awt.Dimension(55, 30));
+        jToolBar1.setMinimumSize(new java.awt.Dimension(55, 30));
+        jToolBar1.add(jSeparator4);
+
+        jButtonSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Log-Out - icon - Porta - 24 x 24px.png"))); // NOI18N
+        jButtonSair.setFocusable(false);
+        jButtonSair.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonSair.setMaximumSize(new java.awt.Dimension(35, 35));
+        jButtonSair.setMinimumSize(new java.awt.Dimension(35, 35));
+        jButtonSair.setPreferredSize(new java.awt.Dimension(35, 35));
+        jButtonSair.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSairActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButtonSair);
+
+        jButtonUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Person-Male-Light-icon-24px.png"))); // NOI18N
+        jButtonUsuario.setFocusable(false);
+        jButtonUsuario.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonUsuario.setMaximumSize(new java.awt.Dimension(35, 35));
+        jButtonUsuario.setMinimumSize(new java.awt.Dimension(35, 35));
+        jButtonUsuario.setPreferredSize(new java.awt.Dimension(35, 35));
+        jButtonUsuario.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonUsuarioActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButtonUsuario);
+
+        jButtonCadVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-add-icon-24px.png"))); // NOI18N
+        jButtonCadVeiculos.setFocusable(false);
+        jButtonCadVeiculos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonCadVeiculos.setMaximumSize(new java.awt.Dimension(35, 35));
+        jButtonCadVeiculos.setMinimumSize(new java.awt.Dimension(35, 35));
+        jButtonCadVeiculos.setPreferredSize(new java.awt.Dimension(35, 35));
+        jButtonCadVeiculos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonCadVeiculos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCadVeiculosActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButtonCadVeiculos);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-delete-icon-24px.png"))); // NOI18N
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setMaximumSize(new java.awt.Dimension(35, 35));
+        jButton2.setMinimumSize(new java.awt.Dimension(35, 35));
+        jButton2.setPreferredSize(new java.awt.Dimension(35, 35));
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton2);
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-document-save-icon-24px.png"))); // NOI18N
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setMaximumSize(new java.awt.Dimension(35, 35));
+        jButton3.setMinimumSize(new java.awt.Dimension(35, 35));
+        jButton3.setPreferredSize(new java.awt.Dimension(35, 35));
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton3);
 
         jMenuOperacoes.setText("Operação");
         jMenuOperacoes.add(jSeparator1);
 
+        jMenuItemLocarVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-add-icon-24px.png"))); // NOI18N
         jMenuItemLocarVeiculos.setText("Locação de Veículos");
         jMenuItemLocarVeiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,10 +220,12 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         });
         jMenuOperacoes.add(jMenuItemLocarVeiculos);
 
+        jMenuItemDevolverVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-delete-icon-24px.png"))); // NOI18N
         jMenuItemDevolverVeiculos.setText("Devolução de Veículos");
         jMenuOperacoes.add(jMenuItemDevolverVeiculos);
         jMenuOperacoes.add(jSeparator2);
 
+        jMenuItemSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Log-Out - icon - Porta - 24 x 24px.png"))); // NOI18N
         jMenuItemSair.setText("Sair");
         jMenuItemSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -149,6 +262,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         });
         jMenuCadastros.add(jMenuItemCadModelos);
 
+        jMenuItemCadVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Rolls-Royce.png"))); // NOI18N
         jMenuItemCadVeiculos.setText("Veículos");
         jMenuItemCadVeiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,6 +279,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         });
         jMenuCadastros.add(jMenuItemCadClientes);
 
+        jMenuItemCadUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Person-Male-Light-icon-24px.png"))); // NOI18N
         jMenuItemCadUsuarios.setText("Usuários");
         jMenuItemCadUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,13 +373,13 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
         jMenu3.setText("Gestão de Projetos");
 
-        jMenuItemERSdocs.setText("ERS");
-        jMenuItemERSdocs.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemERS.setText("ERS");
+        jMenuItemERS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemERSdocsActionPerformed(evt);
+                jMenuItemERSActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItemERSdocs);
+        jMenu3.add(jMenuItemERS);
 
         jMenuItem6.setText("Planejamento");
         jMenu3.add(jMenuItem6);
@@ -321,14 +436,6 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
         jMenuFerramentas.add(jMenu7);
 
-        jMenuItemLinksTutoriais.setText("Links Tutoriais");
-        jMenuItemLinksTutoriais.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemLinksTutoriaisActionPerformed(evt);
-            }
-        });
-        jMenuFerramentas.add(jMenuItemLinksTutoriais);
-
         jMenuBarTelaPrincipal.add(jMenuFerramentas);
 
         setJMenuBar(jMenuBarTelaPrincipal);
@@ -339,18 +446,26 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jDesktopPaneTorrentz)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator5)
+                    .addComponent(jDesktopPaneMulaCar)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jDesktopPaneTorrentz)
-                .addContainerGap())
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jDesktopPaneMulaCar, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        setSize(new java.awt.Dimension(719, 698));
+        setSize(new java.awt.Dimension(719, 795));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -374,13 +489,14 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCadCategoriasActionPerformed
 
     private void jMenuItemCadClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadClientesActionPerformed
-        try {
-            new ClienteApp(this, true).setVisible(true);
-            this.setVisible(true);
-
-        } catch (Exception e) {
-        }
+        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItemCadClientesActionPerformed
+
+    private void jMenuItemCadVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadVeiculosActionPerformed
+        // TODO add your handling code here:
+        new VeiculoApp(this, true).setVisible(true);
+        this.setVisible(true);
+    }//GEN-LAST:event_jMenuItemCadVeiculosActionPerformed
 
     private void jMenuItemCadUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadUsuariosActionPerformed
         // TODO add your handling code here:
@@ -453,33 +569,54 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItemLocarVeiculosActionPerformed
 
-    private void jMenuItemERSdocsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemERSdocsActionPerformed
-        try {
-            // TODO add your handling code here:
-            java.awt.Desktop.getDesktop().browse( new java.net.URI( "https://drive.google.com/file/d/1z4Q1Y5infFKUjAlnTfn-oNKOlGv11gtk/view?usp=sharing" ) );
-        } catch (IOException ex) {
-            Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (URISyntaxException ex) {
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        //DATA RODAPÉ
+        Date dataSistema = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        jLabelData.setText(formato.format(dataSistema));
+        
+        //HORA RODAPÉ
+        Timer timer = new Timer(1000, new hora());
+        timer.start();        
+        
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jMenuItemERSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemERSActionPerformed
+            try {
+                java.awt.Desktop.getDesktop().browse(new java.net.URI
+                                ("https://drive.google.com/file/d/1z4Q1Y5infFKUjAlnTfn-oNKOlGv11gtk/view?usp=sharing"));
+            } catch (IOException ex) {
+                Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (URISyntaxException ex) {
             Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jMenuItemERSdocsActionPerformed
+    }//GEN-LAST:event_jMenuItemERSActionPerformed
 
-    private void jMenuItemLinksTutoriaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLinksTutoriaisActionPerformed
+    private void jButtonSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSairActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_jButtonSairActionPerformed
+
+    private void jButtonUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUsuarioActionPerformed
         // TODO add your handling code here:
         try {
-            // TODO add your handling code here:
-            java.awt.Desktop.getDesktop().browse( new java.net.URI( "https://drive.google.com/file/d/18z3mlxxTf-TkOiCIeKMOQTVanSbogfj0/view?usp=sharing" ) );
-        } catch (IOException ex) {
-            Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
+            new UsuarioApp(this, true).setVisible(true);
+            this.setVisible(true);
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
         }
-              
-    }//GEN-LAST:event_jMenuItemLinksTutoriaisActionPerformed
+    }//GEN-LAST:event_jButtonUsuarioActionPerformed
 
-    private void jMenuItemCadVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadVeiculosActionPerformed
+    private void jButtonCadVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadVeiculosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItemCadVeiculosActionPerformed
+        try {
+            new VeiculoApp(this, true).setVisible(true);
+            this.setVisible(true);
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonCadVeiculosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -514,17 +651,44 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuPrincipalApp().setVisible(true);
+                try {
+                    new MenuPrincipalApp().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
+    
+    class hora implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            Calendar now = Calendar.getInstance();
+            jLabelHora.setText(String.format("%1$tH:%1$tM:%1$tS", now));
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDesktopPane jDesktopPaneTorrentz;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonCadVeiculos;
+    private javax.swing.JButton jButtonSair;
+    private javax.swing.JButton jButtonUsuario;
+    private javax.swing.JDesktopPane jDesktopPaneMulaCar;
+    private javax.swing.JLabel jLabelData;
+    private javax.swing.JLabel jLabelHora;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -556,8 +720,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemCadUsuarios;
     private javax.swing.JMenuItem jMenuItemCadVeiculos;
     private javax.swing.JMenuItem jMenuItemDevolverVeiculos;
-    private javax.swing.JMenuItem jMenuItemERSdocs;
-    private javax.swing.JMenuItem jMenuItemLinksTutoriais;
+    private javax.swing.JMenuItem jMenuItemERS;
     private javax.swing.JMenuItem jMenuItemLocarVeiculos;
     private javax.swing.JMenuItem jMenuItemRelCategorias;
     private javax.swing.JMenuItem jMenuItemRelClientes;
@@ -569,8 +732,13 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemSair;
     private javax.swing.JMenu jMenuOperacoes;
     private javax.swing.JMenu jMenuRelatorios;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JToolBar.Separator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }
+
