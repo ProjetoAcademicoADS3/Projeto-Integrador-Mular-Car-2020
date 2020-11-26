@@ -22,12 +22,10 @@ CREATE TABLE categoria (
 CREATE TABLE veiculo (
     vei_id serial PRIMARY KEY,
     vei_placa varchar(7) not null constraint placa_unica unique,
-    vei_ano_fabricacao integer not null constraint ano_fabricacao_valido check (vei_ano_fabricacao > 1886
-                                                                               and vei_ano_fabricacao <= current_date),
-    vei_ano_modelo integer not null constraint ano_modelo_valido check (vei_ano_modelo > 1886 and 
-                                                                        vei_ano_modelo <= current_date + 1),
+    vei_ano_fabricacao integer not null constraint ano_fabricacao_valido check (vei_ano_fabricacao > 1886),             
+    vei_ano_modelo integer not null constraint ano_modelo_valido check (vei_ano_modelo > 1886),
     vei_tipo_combustivel varchar(20) not null,
-    vei_renavan char(11) not null constraint renavan_unico unique check(vei_renavan > 0),
+    vei_renavan char(11) not null constraint renavan_unico unique,
     vei_preco_compra NUMERIC(7,2)NOT NULL CONSTRAINT valor_compra_valido CHECK (vei_preco_compra > 0),
     vei_preco_venda NUMERIC(7,2)NOT NULL CONSTRAINT valor_venda_valido CHECK (vei_preco_venda > 0),
     vei_tipo varchar (20) not null, --Tipo - somente os tipos: hatch, sedan, SUV e pickup
@@ -36,6 +34,7 @@ CREATE TABLE veiculo (
     vei_km BIGINT not null constraint km_valido check(vei_km > 0),
     vei_categoria_id INTEGER not null,
     vei_modelo_id INTEGER not null,
+    vei_situacao varchar(20) not null,
     foreign key (vei_categoria_id) references categoria (cat_id),
     foreign key (vei_modelo_id) references modelo (mod_id)
 );

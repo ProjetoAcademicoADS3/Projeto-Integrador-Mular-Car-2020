@@ -166,12 +166,12 @@ public class VeiculoDal {
         return listaVeiculos;
     }
 
-    public Veiculo getVeiculoById(int id) throws Exception {
+    public Veiculo getVeiculoByPlaca(String placa) throws Exception {
         Veiculo veic = new Veiculo();
-        String sql = "SELECT * FROM veiculo WHERE vei_id=?";
+        String sql = "SELECT * FROM veiculo WHERE vei_placa=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, placa);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {

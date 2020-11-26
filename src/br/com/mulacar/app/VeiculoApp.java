@@ -8,10 +8,13 @@
  */
 package br.com.mulacar.app;
 
+import br.com.mulacar.bll.VeiculoBll;
 import br.com.mulacar.enumeration.EnumSituacaoVeiculo;
 import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.enumeration.EnumTipoCombustivel;
 import br.com.mulacar.enumeration.EnumTipoVeiculo;
+import br.com.mulacar.model.Categoria;
+import br.com.mulacar.model.Veiculo;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
 
@@ -20,8 +23,10 @@ import javax.swing.JOptionPane;
  * @author roger
  */
 public class VeiculoApp extends javax.swing.JDialog {
-    
+
     Calendar cal = Calendar.getInstance();
+    Veiculo veic;
+    VeiculoBll veicBll;
 
     /**
      * Creates new form VeiculooApp
@@ -30,12 +35,15 @@ public class VeiculoApp extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
+        veicBll = new VeiculoBll();
+        veic = new Veiculo();
+
         jComboBoxCategorias.removeAllItems();
         jComboBoxCategorias.addItem("< Selecione a Categoria do Veículo >");
-        
+
         jComboBoxModelos.removeAllItems();
         jComboBoxModelos.addItem("< Selecione o Modelo do Veículo >");
-        
+
         jComboBoxTipoDeCombustivel.removeAllItems();
         jComboBoxTipoDeCombustivel.addItem("< Tipo de Combustível >");
         for (EnumTipoCombustivel combustivel : EnumTipoCombustivel.values()) {
@@ -51,20 +59,22 @@ public class VeiculoApp extends javax.swing.JDialog {
         for (EnumStatus statusDoVeiculo : EnumStatus.values()) {
             jComboBoxStatus.addItem(statusDoVeiculo.toString());
         }
+        
         jComboBoxNumPassageiros.removeAllItems();
-        String[] numPassageiros = {"0", "2", "4", "5", "6", "7", "8" ,"9" ,"10"};
+        String[] numPassageiros = {"0", "2", "4", "5", "6", "7", "8", "9", "10"};
         for (int i = 0; i < numPassageiros.length; i++) {
             jComboBoxNumPassageiros.addItem(numPassageiros[i]);
         }
         jComboBoxSituacao.removeAllItems();
         jComboBoxSituacao.addItem("< Situação do Veículo >");
-        for (EnumSituacaoVeiculo situacaoVeiculo : EnumSituacaoVeiculo.values() ) {
+        for (EnumSituacaoVeiculo situacaoVeiculo : EnumSituacaoVeiculo.values()) {
             jComboBoxSituacao.addItem(situacaoVeiculo.toString());
         }
         jComboBoxAnoFabricacao.removeAllItems();
-        jComboBoxAnoFabricacao.addItem("1886");
-        jComboBoxAnoModelo.addItem("1886");
-        int anoInicio = 1886;
+        jComboBoxAnoFabricacao.addItem("0");
+        jComboBoxAnoModelo.removeAllItems();
+        jComboBoxAnoModelo.addItem("0");
+        int anoInicio = 1885;
         int anoFinal = cal.get(Calendar.YEAR);
         for (int i = anoInicio; i < anoFinal; i++) {
             anoInicio++;
@@ -72,8 +82,58 @@ public class VeiculoApp extends javax.swing.JDialog {
             jComboBoxAnoModelo.addItem(anoInicio + "");
         }
         jComboBoxAnoModelo.addItem(anoFinal + 1 + "");
-        
-        
+    }
+
+    private void preencherCampos(String placa) {
+        try {
+            veic = veicBll.getConsultarVeiculoByPlaca(placa);
+            if (veic.getId() > 0) {
+                jTextField_Id.setText(veic.getId() + "");
+                jComboBoxCategorias.setSelectedItem(veic.getCategoria().getDescricao().toUpperCase());
+                jComboBoxModelos.setSelectedItem(veic.getModelo().getDescricao().toUpperCase());
+                jTextFieldMarca.setText(veic.getModelo().getMarca().getDescricao().toUpperCase());
+                jComboBoxAnoFabricacao.setSelectedItem(veic.getAnoFabricacao());
+                jComboBoxAnoModelo.setSelectedItem(veic.getAnoModelo());
+                jComboBoxTipoDeCombustivel.setSelectedItem(veic.getTipoCombustivel().toString());
+                jComboBoxTipoDoVeiculo.setSelectedItem(veic.getTipo().toString());
+                jTextFieldRenavan.setText(veic.getRenavan());
+                jTextFieldPrecoCompra.setText(String.format("%.2f", veic.getPrecoCompra()));
+                jTextFieldPrecoVenda.setText(String.format("%.2f", veic.getPrecoVenda()));
+                jTextFieldPlaca.setText(veic.getPlaca());
+                jComboBoxStatus.setSelectedItem(veic.getStatus().toString());
+                jComboBoxNumPassageiros.setSelectedItem(veic.getNumPassageiros());
+                jTextFieldKm.setText(veic.getKm() + "");
+                jComboBoxSituacao.setSelectedItem(veic.getSituacao().toString());
+                jButtonSalvarVeiculo.setLabel("Editar");
+
+            }
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
+
+    }
+
+    private void limpaCampos() {
+        jTextField_Id.setText("");
+        jTextFieldPesquisarVeiculo.setText("");
+        jComboBoxCategorias.setSelectedIndex(0);
+        jComboBoxModelos.setSelectedIndex(0);
+        jTextFieldMarca.setText("");
+        jComboBoxAnoFabricacao.setSelectedIndex(0);
+        jComboBoxAnoModelo.setSelectedIndex(0);
+        jComboBoxTipoDeCombustivel.setSelectedIndex(0);
+        jComboBoxTipoDoVeiculo.setSelectedIndex(0);
+        jTextFieldRenavan.setText("");
+        jTextFieldPrecoCompra.setText("");
+        jTextFieldPrecoVenda.setText("");
+        jTextFieldPlaca.setText("");
+        jComboBoxStatus.setSelectedIndex(0);
+        jComboBoxNumPassageiros.setSelectedIndex(0);
+        jTextFieldKm.setText("");
+        jComboBoxSituacao.setSelectedIndex(0);
+        jButtonSalvarVeiculo.setLabel("Salvar");
+
     }
 
     /**
@@ -86,12 +146,12 @@ public class VeiculoApp extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanelCadVeiculos3 = new javax.swing.JPanel();
-        jButtonPesquisarUsuario3 = new javax.swing.JButton();
-        jTextField31 = new javax.swing.JTextField();
-        jButtonNovoCadastro3 = new javax.swing.JButton();
-        jButtonListarUsuarios3 = new javax.swing.JButton();
-        jButtonSalvar3 = new javax.swing.JButton();
-        jButtonFechar3 = new javax.swing.JButton();
+        jButtonPesquisarVeiculo = new javax.swing.JButton();
+        jTextFieldPesquisarVeiculo = new javax.swing.JTextField();
+        jButtonNovoCadVeiculo = new javax.swing.JButton();
+        jButtonListarVeiculos = new javax.swing.JButton();
+        jButtonSalvarVeiculo = new javax.swing.JButton();
+        jButtonFechar = new javax.swing.JButton();
         jLabel52 = new javax.swing.JLabel();
         jComboBoxCategorias = new javax.swing.JComboBox<>();
         jLabel53 = new javax.swing.JLabel();
@@ -101,29 +161,29 @@ public class VeiculoApp extends javax.swing.JDialog {
         jComboBoxTipoDeCombustivel = new javax.swing.JComboBox<>();
         jLabel57 = new javax.swing.JLabel();
         jLabel58 = new javax.swing.JLabel();
-        jTextField33 = new javax.swing.JTextField();
+        jTextFieldPrecoCompra = new javax.swing.JTextField();
         jLabel59 = new javax.swing.JLabel();
         jLabel60 = new javax.swing.JLabel();
-        jTextField34 = new javax.swing.JTextField();
-        jTextField35 = new javax.swing.JTextField();
+        jTextFieldRenavan = new javax.swing.JTextField();
+        jTextFieldPrecoVenda = new javax.swing.JTextField();
         jLabel61 = new javax.swing.JLabel();
         jComboBoxStatus = new javax.swing.JComboBox<>();
         jComboBoxModelos = new javax.swing.JComboBox<>();
         jLabel62 = new javax.swing.JLabel();
         jComboBoxTipoDoVeiculo = new javax.swing.JComboBox<>();
         jLabel63 = new javax.swing.JLabel();
-        jTextField37 = new javax.swing.JTextField();
+        jTextFieldPlaca = new javax.swing.JTextField();
         jLabel64 = new javax.swing.JLabel();
         jComboBoxNumPassageiros = new javax.swing.JComboBox<>();
         jLabel65 = new javax.swing.JLabel();
-        jTextField38 = new javax.swing.JTextField();
+        jTextFieldKm = new javax.swing.JTextField();
         jLabel66 = new javax.swing.JLabel();
-        jTextField39 = new javax.swing.JTextField();
+        jTextField_Id = new javax.swing.JTextField();
         jLabel67 = new javax.swing.JLabel();
         jComboBoxSituacao = new javax.swing.JComboBox<>();
         jLabel68 = new javax.swing.JLabel();
-        jTextField40 = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
+        jTextFieldQuantRegistros = new javax.swing.JTextField();
+        jTextFieldMarca = new javax.swing.JTextField();
         jComboBoxAnoFabricacao = new javax.swing.JComboBox<>();
         jComboBoxAnoModelo = new javax.swing.JComboBox<>();
 
@@ -133,54 +193,54 @@ public class VeiculoApp extends javax.swing.JDialog {
 
         jPanelCadVeiculos3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jButtonPesquisarUsuario3.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
-        jButtonPesquisarUsuario3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/search-icon-24px.png"))); // NOI18N
-        jButtonPesquisarUsuario3.setText("Pesquisar");
-        jButtonPesquisarUsuario3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButtonPesquisarUsuario3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonPesquisarVeiculo.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jButtonPesquisarVeiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/search-icon-24px.png"))); // NOI18N
+        jButtonPesquisarVeiculo.setText("Pesquisar");
+        jButtonPesquisarVeiculo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButtonPesquisarVeiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonPesquisarUsuario3jButtonPesquisarUsuarioActionPerformed(evt);
+                jButtonPesquisarVeiculojButtonPesquisarUsuarioActionPerformed(evt);
             }
         });
 
-        jButtonNovoCadastro3.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
-        jButtonNovoCadastro3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Apps-File-New-icon-24px.png"))); // NOI18N
-        jButtonNovoCadastro3.setText("Novo Cadastro");
-        jButtonNovoCadastro3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButtonNovoCadastro3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonNovoCadVeiculo.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jButtonNovoCadVeiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Apps-File-New-icon-24px.png"))); // NOI18N
+        jButtonNovoCadVeiculo.setText("Novo Cadastro");
+        jButtonNovoCadVeiculo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButtonNovoCadVeiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonNovoCadastro3jButtonNovoCadastroActionPerformed(evt);
+                jButtonNovoCadVeiculojButtonNovoCadastroActionPerformed(evt);
             }
         });
 
-        jButtonListarUsuarios3.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
-        jButtonListarUsuarios3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Data-List-icon-24px.png"))); // NOI18N
-        jButtonListarUsuarios3.setText("Listagem");
-        jButtonListarUsuarios3.setAutoscrolls(true);
-        jButtonListarUsuarios3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButtonListarUsuarios3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonListarVeiculos.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jButtonListarVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Data-List-icon-24px.png"))); // NOI18N
+        jButtonListarVeiculos.setText("Listagem");
+        jButtonListarVeiculos.setAutoscrolls(true);
+        jButtonListarVeiculos.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButtonListarVeiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonListarUsuarios3jButtonListarUsuariosActionPerformed(evt);
+                jButtonListarVeiculosjButtonListarUsuariosActionPerformed(evt);
             }
         });
 
-        jButtonSalvar3.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
-        jButtonSalvar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-document-save-icon-24px.png"))); // NOI18N
-        jButtonSalvar3.setText("Salvar");
-        jButtonSalvar3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButtonSalvar3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSalvarVeiculo.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jButtonSalvarVeiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-document-save-icon-24px.png"))); // NOI18N
+        jButtonSalvarVeiculo.setText("Salvar");
+        jButtonSalvarVeiculo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButtonSalvarVeiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSalvar3jButtonSalvarActionPerformed(evt);
+                jButtonSalvarVeiculojButtonSalvarActionPerformed(evt);
             }
         });
 
-        jButtonFechar3.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
-        jButtonFechar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-window-close-icon-24px.png"))); // NOI18N
-        jButtonFechar3.setText("Fechar");
-        jButtonFechar3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButtonFechar3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonFechar.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jButtonFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-window-close-icon-24px.png"))); // NOI18N
+        jButtonFechar.setText("Fechar");
+        jButtonFechar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButtonFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonFechar3jButtonFecharActionPerformed(evt);
+                jButtonFecharjButtonFecharActionPerformed(evt);
             }
         });
 
@@ -226,11 +286,17 @@ public class VeiculoApp extends javax.swing.JDialog {
 
         jLabel66.setText("Id:");
 
+        jTextField_Id.setEditable(false);
+
         jLabel67.setText("Situação:");
 
         jComboBoxSituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel68.setText("Quant.Registros:");
+
+        jTextFieldQuantRegistros.setEditable(false);
+
+        jTextFieldMarca.setEditable(false);
 
         jComboBoxAnoFabricacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -250,11 +316,11 @@ public class VeiculoApp extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelCadVeiculos3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelCadVeiculos3Layout.createSequentialGroup()
-                        .addComponent(jTextField39, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                        .addComponent(jTextField_Id, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField31, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldPesquisarVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonPesquisarUsuario3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButtonPesquisarVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelCadVeiculos3Layout.createSequentialGroup()
                         .addGroup(jPanelCadVeiculos3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelCadVeiculos3Layout.createSequentialGroup()
@@ -271,7 +337,7 @@ public class VeiculoApp extends javax.swing.JDialog {
                                     .addComponent(jLabel56)
                                     .addComponent(jLabel53)))
                             .addGroup(jPanelCadVeiculos3Layout.createSequentialGroup()
-                                .addComponent(jTextField34)
+                                .addComponent(jTextFieldRenavan)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel59)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -288,16 +354,16 @@ public class VeiculoApp extends javax.swing.JDialog {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(jPanelCadVeiculos3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jComboBoxTipoDoVeiculo, 0, 217, Short.MAX_VALUE)
-                                        .addComponent(jTextField1)))
+                                        .addComponent(jTextFieldMarca)))
                                 .addGroup(jPanelCadVeiculos3Layout.createSequentialGroup()
-                                    .addComponent(jTextField33, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextFieldPrecoCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jLabel60)))
-                            .addComponent(jTextField35, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jTextFieldPrecoVenda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanelCadVeiculos3Layout.createSequentialGroup()
                         .addGroup(jPanelCadVeiculos3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanelCadVeiculos3Layout.createSequentialGroup()
-                                .addComponent(jTextField37, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                                .addComponent(jTextFieldPlaca, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel61))
                             .addComponent(jComboBoxSituacao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -312,22 +378,22 @@ public class VeiculoApp extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel65)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField38))
+                                .addComponent(jTextFieldKm))
                             .addGroup(jPanelCadVeiculos3Layout.createSequentialGroup()
                                 .addGap(36, 36, 36)
                                 .addComponent(jLabel68)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanelCadVeiculos3Layout.createSequentialGroup()
                         .addGap(98, 98, 98)
-                        .addComponent(jButtonNovoCadastro3, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonNovoCadVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonListarUsuarios3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonListarVeiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonSalvar3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonSalvarVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonFechar3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -336,10 +402,10 @@ public class VeiculoApp extends javax.swing.JDialog {
             .addGroup(jPanelCadVeiculos3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelCadVeiculos3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonPesquisarUsuario3)
-                    .addComponent(jTextField31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonPesquisarVeiculo)
+                    .addComponent(jTextFieldPesquisarVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel66)
-                    .addComponent(jTextField39, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField_Id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelCadVeiculos3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -347,7 +413,7 @@ public class VeiculoApp extends javax.swing.JDialog {
                     .addComponent(jLabel53)
                     .addComponent(jComboBoxModelos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel62)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelCadVeiculos3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel54)
@@ -361,33 +427,33 @@ public class VeiculoApp extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanelCadVeiculos3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel58)
-                    .addComponent(jTextField33, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldPrecoCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel59)
                     .addComponent(jLabel60)
-                    .addComponent(jTextField34, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField35, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldRenavan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldPrecoVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelCadVeiculos3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel61)
                     .addComponent(jLabel63)
-                    .addComponent(jTextField37, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel64)
                     .addComponent(jComboBoxNumPassageiros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel65)
-                    .addComponent(jTextField38, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldKm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelCadVeiculos3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel67)
                     .addComponent(jComboBoxSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel68)
-                    .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addGroup(jPanelCadVeiculos3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonNovoCadastro3)
-                    .addComponent(jButtonListarUsuarios3)
-                    .addComponent(jButtonSalvar3)
-                    .addComponent(jButtonFechar3))
+                    .addComponent(jButtonNovoCadVeiculo)
+                    .addComponent(jButtonListarVeiculos)
+                    .addComponent(jButtonSalvarVeiculo)
+                    .addComponent(jButtonFechar))
                 .addContainerGap(43, Short.MAX_VALUE))
         );
 
@@ -412,50 +478,101 @@ public class VeiculoApp extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonPesquisarUsuario3jButtonPesquisarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarUsuario3jButtonPesquisarUsuarioActionPerformed
+    private void jButtonPesquisarVeiculojButtonPesquisarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarVeiculojButtonPesquisarUsuarioActionPerformed
+        // TODO add your handling code here:
+        try {
+            preencherCampos(jTextFieldPlaca.getText());
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, "Atenção!\n" + erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonPesquisarVeiculojButtonPesquisarUsuarioActionPerformed
+
+    private void jButtonNovoCadVeiculojButtonNovoCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovoCadVeiculojButtonNovoCadastroActionPerformed
+        // TODO add your handling code here:
+        try {
+            limpaCampos();
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, "Atenção!\n" + erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonNovoCadVeiculojButtonNovoCadastroActionPerformed
+
+    private void jButtonListarVeiculosjButtonListarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarVeiculosjButtonListarUsuariosActionPerformed
         // TODO add your handling code here:
         try {
 
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Atenção!\n" + erro.getMessage());
         }
-    }//GEN-LAST:event_jButtonPesquisarUsuario3jButtonPesquisarUsuarioActionPerformed
+    }//GEN-LAST:event_jButtonListarVeiculosjButtonListarUsuariosActionPerformed
 
-    private void jButtonNovoCadastro3jButtonNovoCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovoCadastro3jButtonNovoCadastroActionPerformed
+    private void jButtonSalvarVeiculojButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarVeiculojButtonSalvarActionPerformed
         // TODO add your handling code here:
-        try {
-
-        } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null, "Atenção!\n" + erro.getMessage());
+        if (jComboBoxCategorias.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Selecione a categoria do veículo!\n");
         }
-    }//GEN-LAST:event_jButtonNovoCadastro3jButtonNovoCadastroActionPerformed
-
-    private void jButtonListarUsuarios3jButtonListarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarUsuarios3jButtonListarUsuariosActionPerformed
-        // TODO add your handling code here:
-        try {
-
-        } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null, "Atenção!\n" + erro.getMessage());
+        if (jComboBoxModelos.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Selecione o modelo do veículo!\n");
         }
-    }//GEN-LAST:event_jButtonListarUsuarios3jButtonListarUsuariosActionPerformed
-
-    private void jButtonSalvar3jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvar3jButtonSalvarActionPerformed
-        // TODO add your handling code here:
-        try {
-
-        } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null, "Atenção!\n" + erro.getMessage());
+        if (jComboBoxAnoFabricacao.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Selecione o ano de fabricação do veículo!\n");
         }
-    }//GEN-LAST:event_jButtonSalvar3jButtonSalvarActionPerformed
+        if (jComboBoxTipoDeCombustivel.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Selecione o tipo de combustível do veículo!\n");
+        }
+        if (jComboBoxTipoDoVeiculo.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Selecione o tipo do veículo!\n");
+        }
+        if (jTextFieldRenavan.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Informe o número do renavan!\n");
+        }
+        if (jTextFieldPrecoCompra.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Informe o valor de compra do veículo!\n");
+        }
+        if (jTextFieldPrecoVenda.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Informe o valor de venda do veículo!\n");
+        }
+        if (jTextFieldPlaca.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Informe a placa do veículo!\n");
+        }
+        if (jComboBoxStatus.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Informe o status do veículo!\n");
+        }
+        if (jComboBoxNumPassageiros.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Informe o número de passageiros!\n");
+        }
+        if (jTextFieldKm.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Informe a quilometragem atual do veículo!\n");
+        }
+        if (jComboBoxSituacao.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Informe a situação do veículo!\n");
+        } else {
 
-    private void jButtonFechar3jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFechar3jButtonFecharActionPerformed
+            try {
+                Categoria categoria = new Categoria();
+                categoria.splitCategoria(jComboBoxCategorias.getSelectedItem().toString());
+                
+                
+                
+                
+                
+                
+                
+                
+
+            } catch (Exception erro) {
+                JOptionPane.showMessageDialog(null, "Atenção!\n" + erro.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jButtonSalvarVeiculojButtonSalvarActionPerformed
+
+    private void jButtonFecharjButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharjButtonFecharActionPerformed
         // TODO add your handling code here:
         try {
             this.dispose();
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Atenção!\n" + erro.getMessage());
         }
-    }//GEN-LAST:event_jButtonFechar3jButtonFecharActionPerformed
+    }//GEN-LAST:event_jButtonFecharjButtonFecharActionPerformed
 
     /**
      * @param args the command line arguments
@@ -501,11 +618,11 @@ public class VeiculoApp extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonFechar3;
-    private javax.swing.JButton jButtonListarUsuarios3;
-    private javax.swing.JButton jButtonNovoCadastro3;
-    private javax.swing.JButton jButtonPesquisarUsuario3;
-    private javax.swing.JButton jButtonSalvar3;
+    private javax.swing.JButton jButtonFechar;
+    private javax.swing.JButton jButtonListarVeiculos;
+    private javax.swing.JButton jButtonNovoCadVeiculo;
+    private javax.swing.JButton jButtonPesquisarVeiculo;
+    private javax.swing.JButton jButtonSalvarVeiculo;
     private javax.swing.JComboBox<String> jComboBoxAnoFabricacao;
     private javax.swing.JComboBox<String> jComboBoxAnoModelo;
     private javax.swing.JComboBox<String> jComboBoxCategorias;
@@ -533,14 +650,14 @@ public class VeiculoApp extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel67;
     private javax.swing.JLabel jLabel68;
     private javax.swing.JPanel jPanelCadVeiculos3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField31;
-    private javax.swing.JTextField jTextField33;
-    private javax.swing.JTextField jTextField34;
-    private javax.swing.JTextField jTextField35;
-    private javax.swing.JTextField jTextField37;
-    private javax.swing.JTextField jTextField38;
-    private javax.swing.JTextField jTextField39;
-    private javax.swing.JTextField jTextField40;
+    private javax.swing.JTextField jTextFieldKm;
+    private javax.swing.JTextField jTextFieldMarca;
+    private javax.swing.JTextField jTextFieldPesquisarVeiculo;
+    private javax.swing.JTextField jTextFieldPlaca;
+    private javax.swing.JTextField jTextFieldPrecoCompra;
+    private javax.swing.JTextField jTextFieldPrecoVenda;
+    private javax.swing.JTextField jTextFieldQuantRegistros;
+    private javax.swing.JTextField jTextFieldRenavan;
+    private javax.swing.JTextField jTextField_Id;
     // End of variables declaration//GEN-END:variables
 }

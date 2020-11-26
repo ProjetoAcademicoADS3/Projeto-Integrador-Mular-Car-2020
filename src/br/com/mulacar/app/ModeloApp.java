@@ -270,7 +270,7 @@ public class ModeloApp extends javax.swing.JDialog {
         } else {
             try {
                 String descricao = jTextFieldDescModelo.getText();
-                modelo = new Modelo(descricao);
+               // modelo = new Modelo(descricao);
                 
                 if (jButtonSalvar.getLabel().equals("Salvar")) {
                     modBll.adicionarModelo(modelo);

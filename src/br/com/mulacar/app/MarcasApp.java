@@ -270,7 +270,7 @@ public class MarcasApp extends javax.swing.JDialog {
         } else {
             try {
                 String descricao = jTextFieldDescMarca.getText();
-                marca = new Marca(descricao);
+                //marca = new Marca(descricao);
                 
                 if (jButtonSalvar.getLabel().equals("Salvar")) {
                     marBll.adicionarMarca(marca);

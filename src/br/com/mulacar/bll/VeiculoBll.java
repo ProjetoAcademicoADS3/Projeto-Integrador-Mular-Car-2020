@@ -45,8 +45,8 @@ public class VeiculoBll {
         return veicDal.getAllVeiculo();
     }
 
-    public Veiculo getConsultarVeiculoById(int id) throws Exception {
-        return veicDal.getVeiculoById(id);
+    public Veiculo getConsultarVeiculoByPlaca(String placa) throws Exception {
+        return veicDal.getVeiculoByPlaca(placa);
     }
 
     public ArrayList sourceVeiculo(String dados) throws Exception {
@@ -107,7 +107,7 @@ public class VeiculoBll {
         if (objeto.getNumPassageiros() < 1) {
             throw new Exception("O número de passageiros não pode ser menor que um!\n");
         }
-        if (objeto.getKm() <= 0) {
+        if (objeto.getKm() <= 0 || objeto.getKm() > 999999) {
             throw new Exception("A quilometragem do veículo inválida\n"
                     + "Verifique!");
         }
