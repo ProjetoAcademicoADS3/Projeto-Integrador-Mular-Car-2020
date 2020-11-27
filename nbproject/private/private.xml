@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Git/Academico/Projeto-Integrador-Mular-Car-2020/src/br/com/mulacar/model/Categoria.java</file>
+            <file>file:/C:/Git/Academico/Projeto-Integrador-Mular-Car-2020/src/br/com/mulacar/app/LocacaoDadosDoClienteApp.java</file>
+            <file>file:/C:/Git/Academico/Projeto-Integrador-Mular-Car-2020/src/br/com/mulacar/app/LocacaoDadosDoMotoristaApp.java</file>
+            <file>file:/C:/Git/Academico/Projeto-Integrador-Mular-Car-2020/src/br/com/mulacar/app/MenuPrincipalApp.java</file>
+            <file>file:/C:/Git/Academico/Projeto-Integrador-Mular-Car-2020/src/br/com/mulacar/app/LoginApp.java</file>
+            <file>file:/C:/Git/Academico/Projeto-Integrador-Mular-Car-2020/src/br/com/mulacar/app/LocacaoEscolhaVeiculosApp.java</file>
+            <file>file:/C:/Git/Academico/Projeto-Integrador-Mular-Car-2020/src/br/com/mulacar/app/CategoriaApp.java</file>
+        </group>
     </open-files>
 </project-private>

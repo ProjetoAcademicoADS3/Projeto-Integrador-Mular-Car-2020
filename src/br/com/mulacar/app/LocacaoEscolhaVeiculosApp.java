@@ -9,6 +9,11 @@
 
 package br.com.mulacar.app;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 
 public class LocacaoEscolhaVeiculosApp extends javax.swing.JDialog {
 
@@ -30,30 +35,32 @@ public class LocacaoEscolhaVeiculosApp extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jPanelContratoDeLocacao1 = new javax.swing.JPanel();
+        jPanelLocacaoVeiculo = new javax.swing.JPanel();
         jLabel52 = new javax.swing.JLabel();
         jLabel69 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
+        jButtonSelecaoVeiculo = new javax.swing.JButton();
+        jButtonDadosComplementares = new javax.swing.JButton();
+        jButtonDadosDoCliente = new javax.swing.JButton();
+        jButtonDadosDoMotorista = new javax.swing.JButton();
         jLabel70 = new javax.swing.JLabel();
         jLabel83 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jComboBox2 = new javax.swing.JComboBox();
-        jComboBox3 = new javax.swing.JComboBox();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jComboBoxSelecaoCategoria = new javax.swing.JComboBox();
+        jComboBoxSelecaoMarca = new javax.swing.JComboBox();
+        jComboBoxSelecaoModelo = new javax.swing.JComboBox();
+        jComboBoxSelecaoTipo = new javax.swing.JComboBox();
+        jScrollPaneListaDeVeiculo = new javax.swing.JScrollPane();
+        jTableListaDeVeiculos = new javax.swing.JTable();
         jLabel84 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox();
+        jButtonConfirmarSelecaoVeiculo = new javax.swing.JButton();
+        jButtonFecharSelecaoVeiculo = new javax.swing.JButton();
+        jButtonBuscarVeiculos = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Locação de Veículos");
 
-        jPanelContratoDeLocacao1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanelLocacaoVeiculo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel52.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel52.setText("Locação de Veículos");
@@ -63,36 +70,37 @@ public class LocacaoEscolhaVeiculosApp extends javax.swing.JDialog {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Travel-BMV-icon-128px-MulaCar.png"))); // NOI18N
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/arrow-next-icon-64px.png"))); // NOI18N
-        jButton6.setText("Dados do Veículo");
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton6.setMaximumSize(new java.awt.Dimension(110, 90));
-        jButton6.setMinimumSize(new java.awt.Dimension(110, 90));
-        jButton6.setPreferredSize(new java.awt.Dimension(110, 90));
-        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonSelecaoVeiculo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonSelecaoVeiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Arrow-previous-icon64px in.png"))); // NOI18N
+        jButtonSelecaoVeiculo.setText("Seleção do Veiculo");
+        jButtonSelecaoVeiculo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonSelecaoVeiculo.setMaximumSize(new java.awt.Dimension(110, 90));
+        jButtonSelecaoVeiculo.setMinimumSize(new java.awt.Dimension(110, 90));
+        jButtonSelecaoVeiculo.setPreferredSize(new java.awt.Dimension(110, 90));
+        jButtonSelecaoVeiculo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Arrow-previous-icon64px in.png"))); // NOI18N
-        jButton7.setText("Seleção do Veiculo");
-        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton7.setMaximumSize(new java.awt.Dimension(110, 90));
-        jButton7.setMinimumSize(new java.awt.Dimension(110, 90));
-        jButton7.setPreferredSize(new java.awt.Dimension(110, 90));
-        jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonDadosComplementares.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonDadosComplementares.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Arrow-next-icon-64pxfim.png"))); // NOI18N
+        jButtonDadosComplementares.setText("Dados complementares");
+        jButtonDadosComplementares.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonDadosComplementares.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Arrow-next-icon-64pxfim.png"))); // NOI18N
-        jButton1.setText("Dados complementares");
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonDadosDoCliente.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonDadosDoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/arrow-next-icon-64px.png"))); // NOI18N
+        jButtonDadosDoCliente.setText("Dados do Cliente");
+        jButtonDadosDoCliente.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonDadosDoCliente.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonDadosDoCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDadosDoClienteActionPerformed(evt);
+            }
+        });
 
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/arrow-next-icon-64px.png"))); // NOI18N
-        jButton8.setText("Dados do Cliente");
-        jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/arrow-next-icon-64px.png"))); // NOI18N
-        jButton9.setText("Dados do Motorista");
-        jButton9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton9.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonDadosDoMotorista.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonDadosDoMotorista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/arrow-next-icon-64px.png"))); // NOI18N
+        jButtonDadosDoMotorista.setText("Dados do Motorista");
+        jButtonDadosDoMotorista.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonDadosDoMotorista.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
         jLabel70.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel70.setText("Selecione a Marca");
@@ -100,130 +108,207 @@ public class LocacaoEscolhaVeiculosApp extends javax.swing.JDialog {
         jLabel83.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel83.setText("Selecione o  Modelo");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableListaDeVeiculos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Id", "Modelo", "Title 3", "Title 4"
+                "Id", "Marca", "Modelo", "Tipo", "Nr.Passag.", "Ano Fab.", "Ano Mod.", "Km", "Placa", "Renavam", "Valor Diária", ""
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPaneListaDeVeiculo.setViewportView(jTableListaDeVeiculos);
+        if (jTableListaDeVeiculos.getColumnModel().getColumnCount() > 0) {
+            jTableListaDeVeiculos.getColumnModel().getColumn(0).setMinWidth(50);
+            jTableListaDeVeiculos.getColumnModel().getColumn(0).setPreferredWidth(50);
+            jTableListaDeVeiculos.getColumnModel().getColumn(0).setMaxWidth(50);
+            jTableListaDeVeiculos.getColumnModel().getColumn(4).setMinWidth(70);
+            jTableListaDeVeiculos.getColumnModel().getColumn(4).setPreferredWidth(70);
+            jTableListaDeVeiculos.getColumnModel().getColumn(4).setMaxWidth(70);
+            jTableListaDeVeiculos.getColumnModel().getColumn(5).setMinWidth(60);
+            jTableListaDeVeiculos.getColumnModel().getColumn(5).setPreferredWidth(60);
+            jTableListaDeVeiculos.getColumnModel().getColumn(5).setMaxWidth(60);
+            jTableListaDeVeiculos.getColumnModel().getColumn(6).setMinWidth(60);
+            jTableListaDeVeiculos.getColumnModel().getColumn(6).setPreferredWidth(60);
+            jTableListaDeVeiculos.getColumnModel().getColumn(6).setMaxWidth(60);
+            jTableListaDeVeiculos.getColumnModel().getColumn(7).setMinWidth(50);
+            jTableListaDeVeiculos.getColumnModel().getColumn(7).setPreferredWidth(50);
+            jTableListaDeVeiculos.getColumnModel().getColumn(7).setMaxWidth(50);
+            jTableListaDeVeiculos.getColumnModel().getColumn(8).setMinWidth(90);
+            jTableListaDeVeiculos.getColumnModel().getColumn(8).setPreferredWidth(90);
+            jTableListaDeVeiculos.getColumnModel().getColumn(8).setMaxWidth(90);
+            jTableListaDeVeiculos.getColumnModel().getColumn(9).setMinWidth(110);
+            jTableListaDeVeiculos.getColumnModel().getColumn(9).setPreferredWidth(110);
+            jTableListaDeVeiculos.getColumnModel().getColumn(9).setMaxWidth(110);
+            jTableListaDeVeiculos.getColumnModel().getColumn(10).setMinWidth(80);
+            jTableListaDeVeiculos.getColumnModel().getColumn(10).setPreferredWidth(80);
+            jTableListaDeVeiculos.getColumnModel().getColumn(10).setMaxWidth(80);
+            jTableListaDeVeiculos.getColumnModel().getColumn(11).setMinWidth(30);
+            jTableListaDeVeiculos.getColumnModel().getColumn(11).setPreferredWidth(30);
+            jTableListaDeVeiculos.getColumnModel().getColumn(11).setMaxWidth(30);
+        }
 
         jLabel84.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel84.setText("Selecione o  Tipo");
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jButtonConfirmarSelecaoVeiculo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButtonConfirmarSelecaoVeiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Ok-icon-24px.png"))); // NOI18N
+        jButtonConfirmarSelecaoVeiculo.setText("Confirmar");
+        jButtonConfirmarSelecaoVeiculo.setMaximumSize(new java.awt.Dimension(115, 30));
+        jButtonConfirmarSelecaoVeiculo.setMinimumSize(new java.awt.Dimension(115, 30));
 
-        javax.swing.GroupLayout jPanelContratoDeLocacao1Layout = new javax.swing.GroupLayout(jPanelContratoDeLocacao1);
-        jPanelContratoDeLocacao1.setLayout(jPanelContratoDeLocacao1Layout);
-        jPanelContratoDeLocacao1Layout.setHorizontalGroup(
-            jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelContratoDeLocacao1Layout.createSequentialGroup()
+        jButtonFecharSelecaoVeiculo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButtonFecharSelecaoVeiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-window-close-icon-24px.png"))); // NOI18N
+        jButtonFecharSelecaoVeiculo.setText("Fechar");
+        jButtonFecharSelecaoVeiculo.setToolTipText("");
+        jButtonFecharSelecaoVeiculo.setMaximumSize(new java.awt.Dimension(91, 20));
+        jButtonFecharSelecaoVeiculo.setMinimumSize(new java.awt.Dimension(91, 20));
+        jButtonFecharSelecaoVeiculo.setName(""); // NOI18N
+        jButtonFecharSelecaoVeiculo.setPreferredSize(new java.awt.Dimension(91, 20));
+        jButtonFecharSelecaoVeiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFecharSelecaoVeiculoActionPerformed(evt);
+            }
+        });
+
+        jButtonBuscarVeiculos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonBuscarVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/search-icon-16px.png"))); // NOI18N
+        jButtonBuscarVeiculos.setText("Buscar");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("Escolha do Veículo");
+
+        javax.swing.GroupLayout jPanelLocacaoVeiculoLayout = new javax.swing.GroupLayout(jPanelLocacaoVeiculo);
+        jPanelLocacaoVeiculo.setLayout(jPanelLocacaoVeiculoLayout);
+        jPanelLocacaoVeiculoLayout.setHorizontalGroup(
+            jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLocacaoVeiculoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGroup(jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelContratoDeLocacao1Layout.createSequentialGroup()
-                        .addGap(151, 151, 151)
-                        .addComponent(jLabel52))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelContratoDeLocacao1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel83, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelContratoDeLocacao1Layout.createSequentialGroup()
-                                .addComponent(jButton8)
-                                .addGap(7, 7, 7)
-                                .addComponent(jButton9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)))
-                        .addContainerGap())))
-            .addGroup(jPanelContratoDeLocacao1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelContratoDeLocacao1Layout.createSequentialGroup()
-                        .addGroup(jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel69, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel70, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLocacaoVeiculoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonConfirmarSelecaoVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(jButtonFecharSelecaoVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelLocacaoVeiculoLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(488, 488, 488)
+                        .addComponent(jButtonDadosDoMotorista)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel84, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1))
+                        .addComponent(jButtonDadosComplementares, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLocacaoVeiculoLayout.createSequentialGroup()
+                        .addGroup(jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxSelecaoCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel69))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelLocacaoVeiculoLayout.createSequentialGroup()
+                                .addComponent(jButtonSelecaoVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(46, 46, 46)
+                                .addComponent(jButtonDadosDoCliente))
+                            .addComponent(jLabel52)
+                            .addGroup(jPanelLocacaoVeiculoLayout.createSequentialGroup()
+                                .addGroup(jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jComboBoxSelecaoMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel70))
+                                .addGap(59, 59, 59)
+                                .addGroup(jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel83)
+                                    .addComponent(jComboBoxSelecaoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(35, 35, 35)
+                                .addGroup(jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel84, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jComboBoxSelecaoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonBuscarVeiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(jPanelLocacaoVeiculoLayout.createSequentialGroup()
+                .addGroup(jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelLocacaoVeiculoLayout.createSequentialGroup()
+                        .addGap(408, 408, 408)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanelLocacaoVeiculoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPaneListaDeVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 940, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 11, Short.MAX_VALUE))
         );
-        jPanelContratoDeLocacao1Layout.setVerticalGroup(
-            jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelContratoDeLocacao1Layout.createSequentialGroup()
-                .addGroup(jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelContratoDeLocacao1Layout.createSequentialGroup()
+        jPanelLocacaoVeiculoLayout.setVerticalGroup(
+            jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLocacaoVeiculoLayout.createSequentialGroup()
+                .addGroup(jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelLocacaoVeiculoLayout.createSequentialGroup()
                         .addComponent(jLabel52)
                         .addGap(19, 19, 19)
-                        .addGroup(jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton8, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton9, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanelContratoDeLocacao1Layout.createSequentialGroup()
+                        .addGroup(jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButtonDadosDoMotorista, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonDadosComplementares, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonDadosDoCliente, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonSelecaoVeiculo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanelLocacaoVeiculoLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1)))
-                .addGap(37, 37, 37)
-                .addGroup(jPanelContratoDeLocacao1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelContratoDeLocacao1Layout.createSequentialGroup()
-                        .addComponent(jLabel69)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelContratoDeLocacao1Layout.createSequentialGroup()
-                        .addComponent(jLabel84)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelContratoDeLocacao1Layout.createSequentialGroup()
-                        .addComponent(jLabel83)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelContratoDeLocacao1Layout.createSequentialGroup()
-                        .addComponent(jLabel70)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addGap(19, 19, 19)
+                .addGroup(jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel84)
+                    .addComponent(jLabel83)
+                    .addComponent(jLabel70)
+                    .addComponent(jLabel69))
+                .addGap(1, 1, 1)
+                .addGroup(jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxSelecaoCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxSelecaoMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxSelecaoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxSelecaoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBuscarVeiculos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneListaDeVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelLocacaoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonFecharSelecaoVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonConfirmarSelecaoVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
+
+        jPanelLocacaoVeiculoLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButtonConfirmarSelecaoVeiculo, jButtonFecharSelecaoVeiculo});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelContratoDeLocacao1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelLocacaoVeiculo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelContratoDeLocacao1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelLocacaoVeiculo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(981, 677));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonFecharSelecaoVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharSelecaoVeiculoActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButtonFecharSelecaoVeiculoActionPerformed
+
+    private void jButtonDadosDoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDadosDoClienteActionPerformed
+        // TODO add your handling code here:
+             try {
+            new LocacaoDadosDoClienteApp(null, true).setVisible(true);
+            this.setVisible(true);
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonDadosDoClienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,24 +356,26 @@ public class LocacaoEscolhaVeiculosApp extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
+    private javax.swing.JButton jButtonBuscarVeiculos;
+    private javax.swing.JButton jButtonConfirmarSelecaoVeiculo;
+    private javax.swing.JButton jButtonDadosComplementares;
+    private javax.swing.JButton jButtonDadosDoCliente;
+    private javax.swing.JButton jButtonDadosDoMotorista;
+    private javax.swing.JButton jButtonFecharSelecaoVeiculo;
+    private javax.swing.JButton jButtonSelecaoVeiculo;
+    private javax.swing.JComboBox jComboBoxSelecaoCategoria;
+    private javax.swing.JComboBox jComboBoxSelecaoMarca;
+    private javax.swing.JComboBox jComboBoxSelecaoModelo;
+    private javax.swing.JComboBox jComboBoxSelecaoTipo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel69;
     private javax.swing.JLabel jLabel70;
     private javax.swing.JLabel jLabel83;
     private javax.swing.JLabel jLabel84;
-    private javax.swing.JPanel jPanelContratoDeLocacao1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JPanel jPanelLocacaoVeiculo;
+    private javax.swing.JScrollPane jScrollPaneListaDeVeiculo;
+    private javax.swing.JTable jTableListaDeVeiculos;
     // End of variables declaration//GEN-END:variables
 }

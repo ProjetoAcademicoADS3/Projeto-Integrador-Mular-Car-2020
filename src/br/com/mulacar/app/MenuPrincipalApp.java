@@ -55,9 +55,8 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JToolBar.Separator();
         jButtonSair = new javax.swing.JButton();
         jButtonUsuario = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jButtonLocarVeiculos = new javax.swing.JButton();
+        jButtonDevolverVeiculos = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JSeparator();
         jMenuBarTelaPrincipal = new javax.swing.JMenuBar();
         jMenuOperacoes = new javax.swing.JMenu();
@@ -106,7 +105,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mula Car Rent a Car");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -149,6 +148,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jToolBar1.add(jSeparator4);
 
         jButtonSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Log-Out - icon - Porta - 24 x 24px.png"))); // NOI18N
+        jButtonSair.setMnemonic('S');
         jButtonSair.setFocusable(false);
         jButtonSair.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonSair.setMaximumSize(new java.awt.Dimension(35, 35));
@@ -176,37 +176,28 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         });
         jToolBar1.add(jButtonUsuario);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-add-icon-24px.png"))); // NOI18N
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setMaximumSize(new java.awt.Dimension(35, 35));
-        jButton1.setMinimumSize(new java.awt.Dimension(35, 35));
-        jButton1.setPreferredSize(new java.awt.Dimension(35, 35));
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonLocarVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-add-icon-24px.png"))); // NOI18N
+        jButtonLocarVeiculos.setFocusable(false);
+        jButtonLocarVeiculos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonLocarVeiculos.setMaximumSize(new java.awt.Dimension(35, 35));
+        jButtonLocarVeiculos.setMinimumSize(new java.awt.Dimension(35, 35));
+        jButtonLocarVeiculos.setPreferredSize(new java.awt.Dimension(35, 35));
+        jButtonLocarVeiculos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonLocarVeiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonLocarVeiculosActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        jToolBar1.add(jButtonLocarVeiculos);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-delete-icon-24px.png"))); // NOI18N
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setMaximumSize(new java.awt.Dimension(35, 35));
-        jButton2.setMinimumSize(new java.awt.Dimension(35, 35));
-        jButton2.setPreferredSize(new java.awt.Dimension(35, 35));
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton2);
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-document-save-icon-24px.png"))); // NOI18N
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setMaximumSize(new java.awt.Dimension(35, 35));
-        jButton3.setMinimumSize(new java.awt.Dimension(35, 35));
-        jButton3.setPreferredSize(new java.awt.Dimension(35, 35));
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton3);
+        jButtonDevolverVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-delete-icon-24px.png"))); // NOI18N
+        jButtonDevolverVeiculos.setFocusable(false);
+        jButtonDevolverVeiculos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonDevolverVeiculos.setMaximumSize(new java.awt.Dimension(35, 35));
+        jButtonDevolverVeiculos.setMinimumSize(new java.awt.Dimension(35, 35));
+        jButtonDevolverVeiculos.setPreferredSize(new java.awt.Dimension(35, 35));
+        jButtonDevolverVeiculos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButtonDevolverVeiculos);
 
         jMenuOperacoes.setText("Operação");
         jMenuOperacoes.add(jSeparator1);
@@ -443,14 +434,14 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addComponent(jDesktopPaneMulaCar)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator5)
-                    .addComponent(jDesktopPaneMulaCar)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -561,9 +552,12 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
     private void jMenuItemLocarVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLocarVeiculosActionPerformed
         // TODO add your handling code here:
-        
-        
-        
+        try {
+            new LocacaoEscolhaVeiculosApp(this, true).setVisible(true);
+            this.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }//GEN-LAST:event_jMenuItemLocarVeiculosActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -605,9 +599,15 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonUsuarioActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonLocarVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLocarVeiculosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        try {
+            new LocacaoEscolhaVeiculosApp(this, true).setVisible(true);
+            this.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_jButtonLocarVeiculosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -672,9 +672,8 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonDevolverVeiculos;
+    private javax.swing.JButton jButtonLocarVeiculos;
     private javax.swing.JButton jButtonSair;
     private javax.swing.JButton jButtonUsuario;
     private javax.swing.JDesktopPane jDesktopPaneMulaCar;

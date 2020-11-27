@@ -58,7 +58,6 @@ public class LoginApp extends javax.swing.JFrame {
             
             this.jPasswordFieldSenha.setText("123456");
             
-            System.out.println("Teste");
             
 //            this.jButtonEntrar.doClick();
 //            
@@ -105,10 +104,9 @@ public class LoginApp extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jTextFieldEmail = new javax.swing.JTextField();
         jPasswordFieldSenha = new javax.swing.JPasswordField();
-        jButtonEntrar = new javax.swing.JButton();
+        jButtonConfirmaEntrada = new javax.swing.JButton();
         jButtonSair = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabelFundo = new javax.swing.JLabel();
 
@@ -117,15 +115,16 @@ public class LoginApp extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(null);
 
-        jLabel1.setText("E-mail");
+        jLabel1.setText("E-mail:");
+        jLabel1.setToolTipText("");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(220, 90, 40, 25);
+        jLabel1.setBounds(190, 70, 40, 25);
 
         jLabel2.setText("Senha:");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(220, 130, 50, 25);
+        jLabel2.setBounds(190, 110, 50, 25);
         getContentPane().add(jTextFieldEmail);
-        jTextFieldEmail.setBounds(270, 90, 210, 25);
+        jTextFieldEmail.setBounds(240, 70, 240, 25);
 
         jPasswordFieldSenha.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -133,17 +132,21 @@ public class LoginApp extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jPasswordFieldSenha);
-        jPasswordFieldSenha.setBounds(270, 130, 210, 25);
+        jPasswordFieldSenha.setBounds(240, 110, 240, 25);
 
-        jButtonEntrar.setText("Entrar");
-        jButtonEntrar.addActionListener(new java.awt.event.ActionListener() {
+        jButtonConfirmaEntrada.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButtonConfirmaEntrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Ok-icon-24px.png"))); // NOI18N
+        jButtonConfirmaEntrada.setText("Confirmar");
+        jButtonConfirmaEntrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEntrarActionPerformed(evt);
+                jButtonConfirmaEntradaActionPerformed(evt);
             }
         });
-        getContentPane().add(jButtonEntrar);
-        jButtonEntrar.setBounds(290, 220, 70, 30);
+        getContentPane().add(jButtonConfirmaEntrada);
+        jButtonConfirmaEntrada.setBounds(240, 180, 140, 30);
 
+        jButtonSair.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButtonSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Log-Out - icon - Porta - 24 x 24px.png"))); // NOI18N
         jButtonSair.setText("Sair");
         jButtonSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,29 +154,24 @@ public class LoginApp extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButtonSair);
-        jButtonSair.setBounds(380, 220, 70, 30);
+        jButtonSair.setBounds(390, 180, 90, 30);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/util/Bmw.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Travel-BMV-icon-128px-MulaCar.png"))); // NOI18N
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(40, 60, 170, 170);
-
-        jLabel4.setFont(new java.awt.Font("Edwardian Script ITC", 0, 36)); // NOI18N
-        jLabel4.setText("MulaCar  Rent a Car");
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(120, 30, 280, 40);
+        jLabel3.setBounds(20, 70, 130, 130);
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel5.setText("Autenticação de Usuário");
         getContentPane().add(jLabel5);
         jLabel5.setBounds(120, 0, 290, 30);
         getContentPane().add(jLabelFundo);
-        jLabelFundo.setBounds(0, 0, 510, 270);
+        jLabelFundo.setBounds(0, 0, 510, 240);
 
-        setSize(new java.awt.Dimension(528, 306));
+        setSize(new java.awt.Dimension(500, 260));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEntrarActionPerformed
+    private void jButtonConfirmaEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmaEntradaActionPerformed
  try {
             String email = jTextFieldEmail.getText();
             String senha = String.valueOf(jPasswordFieldSenha.getPassword());
@@ -217,7 +215,7 @@ public class LoginApp extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(null, "Erro ao efetuar o login.\nEntre em contato com suporte.");
         }
-    }//GEN-LAST:event_jButtonEntrarActionPerformed
+    }//GEN-LAST:event_jButtonConfirmaEntradaActionPerformed
 
     private void jButtonSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSairActionPerformed
 
@@ -258,13 +256,11 @@ public class LoginApp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonEntrar;
+    private javax.swing.JButton jButtonConfirmaEntrada;
     private javax.swing.JButton jButtonSair;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelFundo;
     private javax.swing.JPasswordField jPasswordFieldSenha;
