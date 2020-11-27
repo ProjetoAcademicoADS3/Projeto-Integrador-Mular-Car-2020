@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import org.postgresql.jdbc2.EscapedFunctions;
+//import org.postgresql.jdbc2.EscapedFunctions;
 
 
 public class LocacaoDadosDoClienteApp extends javax.swing.JDialog {
