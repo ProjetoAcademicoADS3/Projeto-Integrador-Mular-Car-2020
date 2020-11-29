@@ -12,6 +12,7 @@ package br.com.mulacar.app;
 import br.com.mulacar.bll.CategoriaBll;
 import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.model.Categoria;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -28,60 +29,65 @@ public class CategoriaApp extends javax.swing.JDialog {
     public CategoriaApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        catBll = new CategoriaBll();
         jButtonExcluir.setEnabled(false);
         jTextFieldDescCategoria.requestFocus();
         
         jComboBoxStatus.removeAllItems();
-        jComboBoxStatus.addItem(" Selecione ");
+        jComboBoxStatus.addItem(" ");
         for(EnumStatus status : EnumStatus.values()){
             jComboBoxStatus.addItem(status.toString());
         }
     }
 
-    private void imprimirDadosCategoria(List<Categoria> listaDeCategorias) throws Exception {
+        private void imprimirDadosCategoria(List<Categoria> listaDeCategorias) throws Exception {
         DefaultTableModel model = (DefaultTableModel) jTableCategoria.getModel();
         model.setNumRows(0);
         catBll.ordenaListaCategorias(listaDeCategorias);
         for (int pos = 0; pos < listaDeCategorias.size(); pos++) {
-            String[] linha = new String[2];
+            String[] linha = new String[4];
             Categoria cat = listaDeCategorias.get(pos);
             linha[0] = "" + cat.getId();
             linha[1] = cat.getDescricao().toUpperCase();
-            linha[2] = String.format("%.2f", categoria.getValor());
+            linha[2] = String.format("%.2f", cat.getValor());
+            linha[3] = cat.getStatus().toString();
             model.addRow(linha);
         }
         jTextFieldQuantRegistros.setText(listaDeCategorias.size() + "");
     }
 
-    public void limpaCampos() {
+
+     public void limpaCampos() {
         jTextFieldCodigo.setText("");
         jTextFieldDescCategoria.setText("");
+        jTextFieldValor.setText("");
+        jComboBoxStatus.setSelectedIndex(0);
         jTextFieldQuantRegistros.setText("");
         jButtonExcluir.setEnabled(false);
         jButtonSalvar.setLabel("Salvar");
         jTextFieldDescCategoria.requestFocus();
-        
+
     }
     
-    public void preencherCampos(int id){
+    public void preencherCampos(int id) {
         try {
-            if(id > 0){
+            if (id > 0) {
                 categoria = catBll.getCategoriaPorId(id);
                 jTextFieldCodigo.setText(id + "");
                 jTextFieldDescCategoria.setText(categoria.getDescricao());
                 jTextFieldValor.setText(String.format("%.2f", categoria.getValor()));
-//                jTextFieldStatus.setText(categoria.getStatus().toString());
+                jComboBoxStatus.setSelectedItem(categoria.getStatus().toString());
                 jButtonSalvar.setLabel("Editar");
                 jButtonExcluir.setEnabled(true);
                 jTextFieldDescCategoria.requestFocus();
-            }else{
+            } else {
                 jButtonSalvar.setLabel("Salvar");
             }
         } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null, "Atenção mouseClicked!\n" 
+            JOptionPane.showMessageDialog(null, "Atenção mouseClicked!\n"
                     + erro.getMessage());
         }
-        
+
     }
 
     /**
@@ -297,13 +303,16 @@ public class CategoriaApp extends javax.swing.JDialog {
         } else {
             try {
                 String descricao = jTextFieldDescCategoria.getText();
-                categoria = new Categoria(descricao);
-                
+                BigDecimal valor = new BigDecimal(jTextFieldValor.getText());
+                EnumStatus status = EnumStatus.valueOf(jComboBoxStatus.getSelectedItem().toString());
+
+                categoria = new Categoria(descricao, status, valor);
+
                 if (jButtonSalvar.getLabel().equals("Salvar")) {
                     catBll.adicionarCategoria(categoria);
-                }else {
+                } else {
                     int id = Integer.parseInt(jTextFieldCodigo.getText());
-                    categoria.setId(id);
+                    categoria = new Categoria(id, descricao, status, valor);
                     catBll.alterarCategoria(categoria);
                 }
                 limpaCampos();
@@ -329,6 +338,7 @@ public class CategoriaApp extends javax.swing.JDialog {
     private void jButtonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarActionPerformed
         // TODO add your handling code here:
         try {
+//            imprimirDadosCategoria(catBll.getConsultaCategorias());
             imprimirDadosCategoria(catBll.pesquisarCategoria(jTextFieldDescCategoria.getText()));
             
         } catch (Exception erro) {

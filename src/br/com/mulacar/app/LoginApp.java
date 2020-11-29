@@ -110,7 +110,6 @@ public class LoginApp extends javax.swing.JFrame {
         jButtonEntrar = new javax.swing.JButton();
         jButtonSair = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabelFundo = new javax.swing.JLabel();
 
@@ -155,14 +154,9 @@ public class LoginApp extends javax.swing.JFrame {
         getContentPane().add(jButtonSair);
         jButtonSair.setBounds(380, 220, 70, 30);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/util/Bmw.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Travel-BMV-icon-256px.png"))); // NOI18N
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(40, 60, 170, 170);
-
-        jLabel4.setFont(new java.awt.Font("Edwardian Script ITC", 0, 36)); // NOI18N
-        jLabel4.setText("MulaCar  Rent a Car");
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(120, 30, 280, 40);
+        jLabel3.setBounds(60, 80, 130, 130);
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel5.setText("Autenticação de Usuário");
@@ -265,8 +259,6 @@ public class LoginApp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelFundo;
     private javax.swing.JPasswordField jPasswordFieldSenha;

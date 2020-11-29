@@ -6,9 +6,9 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.dal;
 
+import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.model.Marca;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import br.com.mulacar.util.Conexao;
 
-
 public class MarcaDal {
 
     private Connection conexao;
@@ -28,11 +27,12 @@ public class MarcaDal {
         conexao = Conexao.getConexao();
     }
 
-    public void addMarca(Marca marcas) throws Exception {
-        String sql = "INSERT INTO tb_marcas (mar_descricao) VALUES (?)";
+    public void addMarca(Marca marca) throws Exception {
+        String sql = "INSERT INTO marca (mar_nome, mar_status) VALUES (?,?)";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-            preparedStatement.setString(1, marcas.getDescricao());
+            preparedStatement.setString(1, marca.getDescricao());
+            preparedStatement.setString(2, marca.getStatus().toString());
             preparedStatement.executeUpdate();
 
         } catch (SQLException erro) {
@@ -41,7 +41,7 @@ public class MarcaDal {
     }
 
     public void deleteMarca(int id) throws Exception {
-        String sql = "DELETE FROM tb_marcas WHERE mar_iden=?";
+        String sql = "DELETE FROM marca WHERE mar_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -51,12 +51,14 @@ public class MarcaDal {
         }
     }
 
-    public void updateMarca(Marca marcas) throws Exception {
-        String sql = "UPDATE tb_marcas SET mar_descricao=? WHERE mar_iden=?";
+    public void updateMarca(Marca marca) throws Exception {
+        String sql = "UPDATE marca SET mar_nome=?"
+                + "mar_status=? WHERE mar_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-            preparedStatement.setString(1, marcas.getDescricao());
-            preparedStatement.setInt(2, marcas.getId());
+            preparedStatement.setString(1, marca.getDescricao());
+            preparedStatement.setString(2, marca.getStatus().toString());
+            preparedStatement.setInt(3, marca.getId());
             preparedStatement.executeUpdate();
 
         } catch (SQLException erro) {
@@ -66,14 +68,15 @@ public class MarcaDal {
 
     public List<Marca> getAllMarcas() throws Exception {
         List<Marca> listaMarcas = new ArrayList<>();
-        String sql = "SELECT * FROM tb_marcas";
+        String sql = "SELECT * FROM marca";
         try {
             Statement statement = conexao.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
                 Marca mar = new Marca();
-                mar.setId(rs.getInt("mar_iden"));
-                mar.setDescricao(rs.getString("mar_descricao"));
+                mar.setId(rs.getInt("mar_id"));
+                mar.setDescricao(rs.getString("mar_nome"));
+                mar.setStatus(EnumStatus.valueOf(rs.getString("mar_status")));
 
                 listaMarcas.add(mar);
             }
@@ -85,15 +88,16 @@ public class MarcaDal {
 
     public Marca getMarcaById(int id) throws Exception {
         Marca mar = new Marca();
-        String sql = "SELECT * FROM tb_marcas WHERE mar_iden=?";
+        String sql = "SELECT * FROM marca WHERE mar_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                mar.setId(rs.getInt("mar_iden"));
-                mar.setDescricao(rs.getString("mar_descricao"));
+                mar.setId(rs.getInt("mar_id"));
+                mar.setDescricao(rs.getString("mar_nome"));
+                mar.setStatus(EnumStatus.valueOf(rs.getString("mar_status")));
             }
         } catch (Exception erro) {
             throw erro;
@@ -120,7 +124,7 @@ public class MarcaDal {
     public ResultSet sourceInteligente(String nome) {
         ResultSet rs = null;
 
-        String sql = "SELECT * FROM tb_marcas where mar_descricao like ?";
+        String sql = "SELECT * FROM marca where mar_nome like ?";
         PreparedStatement pst;
 
         try {

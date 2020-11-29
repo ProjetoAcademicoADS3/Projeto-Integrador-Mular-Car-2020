@@ -46,11 +46,11 @@ public class VeiculoDal {
                 + "vei_preco_venda,"
                 + "vei_tipo,"
                 + "vei_status,"
-                + "vei_num_passageiros,"
+                + "vei_num_passageiro,"
                 + "vei_km,"
                 + "vei_categoria_id,"
-                + "vei_modelo_id"
-                + "vei_situacao) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                + "vei_modelo_id,"
+                + "vei_situacao) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
 
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
@@ -100,7 +100,7 @@ public class VeiculoDal {
                 + "vei_preco_venda=?,"
                 + "vei_tipo=?,"
                 + "vei_status=?,"
-                + "vei_num_passageiros=?,"
+                + "vei_num_passageiro=?,"
                 + "vei_km=?,"
                 + "vei_categoria_id=?,"
                 + "vei_modelo_id=?,"
