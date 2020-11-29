@@ -40,7 +40,7 @@ public class Veiculo {
     }
 
     public Veiculo(int id, String placa, int anoFabricacao, int anoModelo,
-            EnumTipoCombustivel tipoCombustivel, String renavan, 
+            EnumTipoCombustivel tipoCombustivel, String renavan,
             BigDecimal precoCompra, BigDecimal precoVenda,
             EnumTipoVeiculo tipo, EnumStatus status, int numPassageiros,
             long km, Categoria categoria, Modelo modelo,
@@ -202,15 +202,23 @@ public class Veiculo {
     public void setSituacao(EnumSituacaoVeiculo situacao) {
         this.situacao = situacao;
     }
-    
 
     @Override
     public String toString() {
-        return id + placa + anoFabricacao + anoModelo
-                + tipoCombustivel + renavan + precoCompra
-                + precoVenda + tipo + status
-                + numPassageiros + km
-                + categoria + modelo
+        return id + "\n"
+                + placa + "\n"
+                + anoFabricacao + "\n"
+                + anoModelo + "\n"
+                + tipoCombustivel + "\n"
+                + renavan + "\n"
+                + precoCompra + "\n"
+                + precoVenda + "\n"
+                + tipo + "\n"
+                + status + "\n"
+                + numPassageiros + "\n"
+                + km + "\n"
+                + categoria + "\n"
+                + modelo + "\n"
                 + situacao;
     }
 

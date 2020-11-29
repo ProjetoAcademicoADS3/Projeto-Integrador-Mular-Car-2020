@@ -9,6 +9,8 @@
 
 package br.com.mulacar.dal;
 
+import br.com.mulacar.bll.MarcaBll;
+import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.model.Modelo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,11 +30,14 @@ public class ModeloDal {
         conexao = Conexao.getConexao();
     }
 
-    public void addModelo(Modelo modelos) throws Exception {
-        String sql = "INSERT INTO tb_modelos (mod_descricao) VALUES (?)";
+    public void addModelo(Modelo modelo) throws Exception {
+        String sql = "INSERT INTO modelo (mod_nome, mod_status, mod_marca_id) VALUES (?,?,?)";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-            preparedStatement.setString(1, modelos.getDescricao());
+            preparedStatement.setString(1, modelo.getDescricao());
+            preparedStatement.setString(2, modelo.getStatus().toString());
+            preparedStatement.setInt(3, modelo.getMarca().getId());
+            
             preparedStatement.executeUpdate();
 
         } catch (SQLException erro) {
@@ -41,7 +46,7 @@ public class ModeloDal {
     }
 
     public void deleteModelo(int id) throws Exception {
-        String sql = "DELETE FROM tb_modelos WHERE mod_iden=?";
+        String sql = "DELETE FROM modelo WHERE mod_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -51,12 +56,17 @@ public class ModeloDal {
         }
     }
 
-    public void updateModelo(Modelo modelos) throws Exception {
-        String sql = "UPDATE tb_modelos SET mod_descricao=? WHERE mod_iden=?";
+    public void updateModelo(Modelo modelo) throws Exception {
+        String sql = "UPDATE modelo SET mod_nome=?,"
+                + "mod_status=?,"
+                + "mod_marca_id=? WHERE mod_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-            preparedStatement.setString(1, modelos.getDescricao());
-            preparedStatement.setInt(2, modelos.getId());
+            preparedStatement.setString(1, modelo.getDescricao());
+            preparedStatement.setString(2, modelo.getStatus().toString());
+            preparedStatement.setInt(3, modelo.getMarca().getId());
+            preparedStatement.setInt(4, modelo.getId());
+            
             preparedStatement.executeUpdate();
 
         } catch (SQLException erro) {
@@ -66,15 +76,18 @@ public class ModeloDal {
 
     public List<Modelo> getAllModelos() throws Exception {
         List<Modelo> listaModelos = new ArrayList<>();
-        String sql = "SELECT * FROM tb_modelos";
+        String sql = "SELECT * FROM modelo";
         try {
             Statement statement = conexao.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
                 Modelo mod = new Modelo();
-                mod.setId(rs.getInt("mod_iden"));
-                mod.setDescricao(rs.getString("mod_descricao"));
-
+                mod.setId(rs.getInt("mod_id"));
+                mod.setDescricao(rs.getString("mod_nome"));
+                mod.setStatus(EnumStatus.valueOf(rs.getString("mod_status")));
+                MarcaBll marBll = new MarcaBll();
+                mod.setMarca(marBll.getMarcaPorId(rs.getInt("mod_marca_id")));
+                
                 listaModelos.add(mod);
             }
         } catch (Exception erro) {
@@ -85,15 +98,18 @@ public class ModeloDal {
 
     public Modelo getModeloById(int id) throws Exception {
         Modelo mod = new Modelo();
-        String sql = "SELECT * FROM tb_modelos WHERE mod_iden=?";
+        String sql = "SELECT * FROM modelo WHERE mod_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                mod.setId(rs.getInt("mod_iden"));
-                mod.setDescricao(rs.getString("mod_descricao"));
+                mod.setId(rs.getInt("mod_id"));
+                mod.setDescricao(rs.getString("mod_nome"));
+                mod.setStatus(EnumStatus.valueOf(rs.getString("mod_status")));
+                MarcaBll marBll = new MarcaBll();
+                mod.setMarca(marBll.getMarcaPorId(rs.getInt("mod_marca_id")));
             }
         } catch (Exception erro) {
             throw erro;
@@ -120,7 +136,7 @@ public class ModeloDal {
     public ResultSet sourceInteligente(String nome) {
         ResultSet rs = null;
 
-        String sql = "SELECT * FROM tb_modelos where mod_descricao like ?";
+        String sql = "SELECT * FROM modelo where mod_nome like ?";
         PreparedStatement pst;
 
         try {

@@ -10,6 +10,7 @@
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.MarcaBll;
+import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.model.Marca;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -29,6 +30,12 @@ public class MarcasApp extends javax.swing.JDialog {
         initComponents();
         jButtonExcluir.setEnabled(false);
         jTextFieldDescMarca.requestFocus();
+        
+        jComboBoxStatus.removeAllItems();
+        jComboBoxStatus.addItem(" Selecione ");
+        for (EnumStatus status : EnumStatus.values()) {
+            jComboBoxStatus.addItem(status.toString());
+        }
     }
 
     private void imprimirDadosMarca(List<Marca> listaDeMarcas) throws Exception {
@@ -36,10 +43,11 @@ public class MarcasApp extends javax.swing.JDialog {
         model.setNumRows(0);
         marBll.ordenaListaMarcas(listaDeMarcas);
         for (int pos = 0; pos < listaDeMarcas.size(); pos++) {
-            String[] linha = new String[2];
+            String[] linha = new String[3];
             Marca mar = listaDeMarcas.get(pos);
             linha[0] = "" + mar.getId();
             linha[1] = mar.getDescricao().toUpperCase();
+            linha[2] = mar.getStatus().toString();
             model.addRow(linha);
         }
         jTextFieldQuantRegistros.setText(listaDeMarcas.size() + "");
@@ -48,6 +56,7 @@ public class MarcasApp extends javax.swing.JDialog {
     public void limpaCampos() {
         jTextFieldCodigo.setText("");
         jTextFieldDescMarca.setText("");
+        jComboBoxStatus.setSelectedIndex(0);
         jTextFieldQuantRegistros.setText("");
         jButtonExcluir.setEnabled(false);
         jButtonSalvar.setLabel("Salvar");
@@ -61,6 +70,7 @@ public class MarcasApp extends javax.swing.JDialog {
                 marca = marBll.getMarcaPorId(id);
                 jTextFieldCodigo.setText(id + "");
                 jTextFieldDescMarca.setText(marca.getDescricao());
+                jComboBoxStatus.setSelectedItem(marca.getStatus().toString());
                 jButtonSalvar.setLabel("Editar");
                 jButtonExcluir.setEnabled(true);
                 jTextFieldDescMarca.requestFocus();
@@ -99,7 +109,7 @@ public class MarcasApp extends javax.swing.JDialog {
         jTextFieldQuantRegistros = new javax.swing.JTextField();
         jButtonFechar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jComboBoxStatus = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Manutenção de cadastro de Marcas");
@@ -176,6 +186,8 @@ public class MarcasApp extends javax.swing.JDialog {
 
         jLabel5.setText("Status");
 
+        jComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanelMarcaLayout = new javax.swing.GroupLayout(jPanelMarca);
         jPanelMarca.setLayout(jPanelMarcaLayout);
         jPanelMarcaLayout.setHorizontalGroup(
@@ -208,10 +220,14 @@ public class MarcasApp extends javax.swing.JDialog {
                                 .addComponent(jLabel2)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jTextFieldDescMarca))
-                        .addGap(26, 26, 26)
                         .addGroup(jPanelMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanelMarcaLayout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(jLabel5)
+                                .addGap(43, 43, 43))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMarcaLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanelMarcaLayout.setVerticalGroup(
@@ -222,14 +238,14 @@ public class MarcasApp extends javax.swing.JDialog {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(jLabel5))
-                .addGap(4, 4, 4)
+                .addGap(3, 3, 3)
                 .addGroup(jPanelMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldDescMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(jPanelMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -270,13 +286,15 @@ public class MarcasApp extends javax.swing.JDialog {
         } else {
             try {
                 String descricao = jTextFieldDescMarca.getText();
-                //marca = new Marca(descricao);
+                EnumStatus status = EnumStatus.valueOf(jComboBoxStatus.getSelectedItem().toString());
+                
+                marca = new Marca(descricao, status);
                 
                 if (jButtonSalvar.getLabel().equals("Salvar")) {
                     marBll.adicionarMarca(marca);
                 }else {
                     int id = Integer.parseInt(jTextFieldCodigo.getText());
-                    marca.setId(id);
+                    marca = new Marca(id, descricao, status);
                     marBll.alterarMarca(marca);
                 }
                 limpaCampos();
@@ -396,6 +414,7 @@ public class MarcasApp extends javax.swing.JDialog {
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonNovo;
     private javax.swing.JButton jButtonSalvar;
+    private javax.swing.JComboBox<String> jComboBoxStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -403,7 +422,6 @@ public class MarcasApp extends javax.swing.JDialog {
     private javax.swing.JPanel jPanelMarca;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableMarca;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextFieldCodigo;
     private javax.swing.JTextField jTextFieldDescMarca;
     private javax.swing.JTextField jTextFieldQuantRegistros;

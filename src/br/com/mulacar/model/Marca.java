@@ -30,6 +30,12 @@ public class Marca {
         this.status = status;
     }
 
+    public void setSplit(String combo) throws Exception {
+        String[] vetor = combo.split(" - ");
+        id = Integer.parseInt(vetor[0]);
+        descricao = vetor[1];
+    }
+
     public int getId() {
         return id;
     }
