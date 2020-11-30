@@ -97,6 +97,7 @@ libraries-2/*.db
 nbproject/*
 nbproject/private/
 nbproject/private/private.properties
+nbproject/private/private.xml
 build/
 nbbuild/
 dist/
