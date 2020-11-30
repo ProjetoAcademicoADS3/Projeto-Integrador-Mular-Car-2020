@@ -1,10 +1,14 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Novembro/Dezembro 2020.
+ * Senai Fatesg Faculdade de Tecnologia
+ * ADS - Análise e Desenvolvimento de Sistemas
+ * Projeto Integrador - ADS3
+ * Projeto Mula Car - aluguel de Veículos
+ * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
 package br.com.mulacar.model;
 
+import br.com.mulacar.enumeration.EnumSituacaoVeiculo;
 import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.enumeration.EnumTipoCombustivel;
 import br.com.mulacar.enumeration.EnumTipoVeiculo;
@@ -30,11 +34,17 @@ public class Veiculo {
     private long km;
     private Categoria categoria;
     private Modelo modelo;
+    private EnumSituacaoVeiculo situacao;
 
     public Veiculo() {
     }
 
-    public Veiculo(int id, String placa, int anoFabricacao, int anoModelo, EnumTipoCombustivel tipoCombustivel, String renavan, BigDecimal precoCompra, BigDecimal precoVenda, EnumTipoVeiculo tipo, EnumStatus status, int numPassageiros, long km, Categoria categoria, Modelo modelo) {
+    public Veiculo(int id, String placa, int anoFabricacao, int anoModelo,
+            EnumTipoCombustivel tipoCombustivel, String renavan,
+            BigDecimal precoCompra, BigDecimal precoVenda,
+            EnumTipoVeiculo tipo, EnumStatus status, int numPassageiros,
+            long km, Categoria categoria, Modelo modelo,
+            EnumSituacaoVeiculo situacao) {
         this.id = id;
         this.placa = placa;
         this.anoFabricacao = anoFabricacao;
@@ -49,9 +59,14 @@ public class Veiculo {
         this.km = km;
         this.categoria = categoria;
         this.modelo = modelo;
+        this.situacao = situacao;
     }
 
-    public Veiculo(String placa, int anoFabricacao, int anoModelo, EnumTipoCombustivel tipoCombustivel, String renavan, BigDecimal precoCompra, BigDecimal precoVenda, EnumTipoVeiculo tipo, EnumStatus status, int numPassageiros, long km, Categoria categoria, Modelo modelo) {
+    public Veiculo(String placa, int anoFabricacao, int anoModelo,
+            EnumTipoCombustivel tipoCombustivel, String renavan,
+            BigDecimal precoCompra, BigDecimal precoVenda, EnumTipoVeiculo tipo,
+            EnumStatus status, int numPassageiros, long km, Categoria categoria,
+            Modelo modelo, EnumSituacaoVeiculo situacao) {
         this.placa = placa;
         this.anoFabricacao = anoFabricacao;
         this.anoModelo = anoModelo;
@@ -65,6 +80,7 @@ public class Veiculo {
         this.km = km;
         this.categoria = categoria;
         this.modelo = modelo;
+        this.situacao = situacao;
     }
 
     public int getId() {
@@ -179,13 +195,31 @@ public class Veiculo {
         this.modelo = modelo;
     }
 
+    public EnumSituacaoVeiculo getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(EnumSituacaoVeiculo situacao) {
+        this.situacao = situacao;
+    }
+
     @Override
     public String toString() {
-        return id + placa + anoFabricacao + anoModelo
-                + tipoCombustivel + renavan + precoCompra
-                + precoVenda + tipo + status
-                + numPassageiros + km
-                + categoria + modelo;
+        return id + "\n"
+                + placa + "\n"
+                + anoFabricacao + "\n"
+                + anoModelo + "\n"
+                + tipoCombustivel + "\n"
+                + renavan + "\n"
+                + precoCompra + "\n"
+                + precoVenda + "\n"
+                + tipo + "\n"
+                + status + "\n"
+                + numPassageiros + "\n"
+                + km + "\n"
+                + categoria + "\n"
+                + modelo + "\n"
+                + situacao;
     }
 
 }

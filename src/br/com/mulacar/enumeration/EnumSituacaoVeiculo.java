@@ -12,8 +12,8 @@ package br.com.mulacar.enumeration;
  *
  * @author roger
  */
-public enum EnumTipoCombustivel {
+public enum EnumSituacaoVeiculo {
     
-    DIESEL, ETANOL, FLEX, GASOLINA, GNV;
+    DISPONIVEL, INDISPONIVEL, VENDIDO, BAIXADO;
     
 }

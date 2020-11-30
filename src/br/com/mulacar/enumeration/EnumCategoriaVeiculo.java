@@ -9,8 +9,8 @@ package br.com.mulacar.enumeration;
  *
  * @author roger
  */
-public enum EnumSituacao {
-    
-    DISPONIVEL, INDISPONIVEL, VENDIDO, BAIXADO;
-    
+public enum EnumCategoriaVeiculo {
+
+    ECONOMICO, EXECUTIVO, INTERMEDIARIO, SUV, UTILITARIO;
+
 }

@@ -14,7 +14,6 @@ import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.model.Usuario;
 import br.com.mulacar.util.Conexao;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

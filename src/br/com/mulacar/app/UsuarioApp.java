@@ -108,7 +108,7 @@ public class UsuarioApp extends javax.swing.JDialog {
         jButtonListarUsuarios = new javax.swing.JButton();
         jButtonNovoCadastro = new javax.swing.JButton();
         jButtonPesquisarUsuario = new javax.swing.JButton();
-        jComboBoxPerfilDoUsuario = new javax.swing.JComboBox<String>();
+        jComboBoxPerfilDoUsuario = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jTextFieldDataAtual = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -193,7 +193,7 @@ public class UsuarioApp extends javax.swing.JDialog {
             }
         });
 
-        jComboBoxPerfilDoUsuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxPerfilDoUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel8.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
         jLabel8.setText("Perfil:");

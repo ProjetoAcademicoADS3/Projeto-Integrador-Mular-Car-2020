@@ -27,13 +27,13 @@ public class Conexao {
         if (conexao == null) {
             try {
                 String driver = "org.postgresql.Driver";
-                String url = "jdbc:postgresql://192.168.0.37:5432/mulacar";
-                String usuario = "aires";
-                String password = "aires";
+                String url = "jdbc:postgresql://192.168.0.13:5432/mulacar";
+                String usuario = "postgres";
+                String password = "1357";
 
                 Class.forName(driver);
                 conexao = DriverManager.getConnection(url, usuario, password);
-//                JOptionPane.showMessageDialog(null, "Conectado com Sucesso !");
+                JOptionPane.showMessageDialog(null, "Conectado !");
 
             } catch (ClassNotFoundException erro) {
                 erro.printStackTrace();

@@ -6,7 +6,6 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.dal;
 
 import br.com.mulacar.enumeration.EnumStatus;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import br.com.mulacar.util.Conexao;
 
-
 public class CategoriaDal {
 
     private Connection conexao;
@@ -30,7 +28,7 @@ public class CategoriaDal {
     }
 
     public void addCategoria(Categoria categoria) throws Exception {
-        String sql = "INSERT INTO tb_categorias (cat_descricao, cat_valor, cat_status) VALUES (?,?,?)";
+        String sql = "INSERT INTO categoria (cat_nome, cat_valor, cat_status) VALUES (?,?,?)";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setString(1, categoria.getDescricao().trim());
@@ -44,7 +42,7 @@ public class CategoriaDal {
     }
 
     public void deleteCategoria(int id) throws Exception {
-        String sql = "DELETE FROM tb_categorias WHERE cat_iden=?";
+        String sql = "DELETE FROM categoria WHERE cat_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -55,13 +53,16 @@ public class CategoriaDal {
     }
 
     public void updateCategoria(Categoria categoria) throws Exception {
-        String sql = "UPDATE tb_categorias SET cat_descricao=?, cat_valor=?, cat_status=? WHERE cat_iden=?";
+        String sql = "UPDATE categoria SET cat_nome=?,"
+                + "cat_valor=?,"
+                + "cat_status=? WHERE cat_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setString(1, categoria.getDescricao().trim());
-            preparedStatement.setInt(2, categoria.getId());
-            preparedStatement.setBigDecimal(3, categoria.getValor());
-            preparedStatement.setString(4, categoria.getStatus().toString());
+            preparedStatement.setBigDecimal(2, categoria.getValor());
+            preparedStatement.setString(3, categoria.getStatus().toString());
+            preparedStatement.setInt(4, categoria.getId());
+            
             preparedStatement.executeUpdate();
 
         } catch (SQLException erro) {
@@ -71,38 +72,38 @@ public class CategoriaDal {
 
     public List<Categoria> getAllCategorias() throws Exception {
         List<Categoria> listaCategorias = new ArrayList<>();
-        String sql = "SELECT * FROM tb_categorias";
+        String sql = "SELECT * FROM categoria";
         try {
             Statement statement = conexao.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
                 Categoria cat = new Categoria();
-                cat.setId(rs.getInt("cat_iden"));
-                cat.setDescricao(rs.getString("cat_descricao"));
+                cat.setId(rs.getInt("cat_id"));
+                cat.setDescricao(rs.getString("cat_nome"));
                 cat.setValor(rs.getBigDecimal("cat_valor"));
-                cat.setStatus(EnumStatus.ATIVO);
+                cat.setStatus(EnumStatus.valueOf(rs.getString("cat_status")));
 
                 listaCategorias.add(cat);
             }
         } catch (Exception erro) {
-            throw erro;
+            throw new Exception("Erro ao buscar categoria" + erro.getMessage());
         }
         return listaCategorias;
     }
 
     public Categoria getCategoriaById(int id) throws Exception {
         Categoria cat = new Categoria();
-        String sql = "SELECT * FROM tb_categorias WHERE cat_iden=?";
+        String sql = "SELECT * FROM categoria WHERE cat_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                cat.setId(rs.getInt("cat_iden"));
-                cat.setDescricao(rs.getString("cat_descricao"));
+                cat.setId(rs.getInt("cat_id"));
+                cat.setDescricao(rs.getString("cat_nome"));
                 cat.setValor(rs.getBigDecimal("cat_valor"));
-                cat.setStatus(EnumStatus.ATIVO);
+                cat.setStatus(EnumStatus.valueOf(rs.getString("cat_status")));
             }
         } catch (Exception erro) {
             throw erro;
@@ -129,7 +130,7 @@ public class CategoriaDal {
     public ResultSet sourceInteligente(String nome) {
         ResultSet rs = null;
 
-        String sql = "SELECT * FROM tb_categorias where cat_descricao like ?";
+        String sql = "SELECT * FROM categoria where cat_descricao like ?";
         PreparedStatement pst;
 
         try {
@@ -141,5 +142,4 @@ public class CategoriaDal {
         }
         return rs;
     }
-
 }

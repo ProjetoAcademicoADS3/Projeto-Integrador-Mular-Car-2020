@@ -6,31 +6,34 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.model;
 
+import br.com.mulacar.enumeration.EnumStatus;
 
 public class Marca {
 
     private int id;
     private String descricao;
+    private EnumStatus status;
 
     public Marca() {
     }
 
-    public Marca(String descricao) {
-        this.descricao = descricao;
-    }
-    
-    public Marca(int id,String descricao) {
+    public Marca(int id, String descricao, EnumStatus status) {
         this.id = id;
         this.descricao = descricao;
+        this.status = status;
     }
-    
-    public void splitMarca(String combo)throws Exception{
-        String[] str = combo.split(" - ");
-        this.id = Integer.parseInt(str[0]);
-        this.descricao = str[1];
+
+    public Marca(String descricao, EnumStatus status) {
+        this.descricao = descricao;
+        this.status = status;
+    }
+
+    public void setSplit(String combo) throws Exception {
+        String[] vetor = combo.split(" - ");
+        id = Integer.parseInt(vetor[0]);
+        descricao = vetor[1];
     }
 
     public int getId() {
@@ -49,9 +52,17 @@ public class Marca {
         this.descricao = descricao;
     }
 
+    public EnumStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EnumStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
-        return id + descricao;
+        return id + descricao + status;
     }
 
 }

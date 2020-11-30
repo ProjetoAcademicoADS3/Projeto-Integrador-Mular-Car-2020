@@ -55,7 +55,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JToolBar.Separator();
         jButtonSair = new javax.swing.JButton();
         jButtonUsuario = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jButtonCadVeiculos = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JSeparator();
@@ -176,19 +176,19 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         });
         jToolBar1.add(jButtonUsuario);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-add-icon-24px.png"))); // NOI18N
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setMaximumSize(new java.awt.Dimension(35, 35));
-        jButton1.setMinimumSize(new java.awt.Dimension(35, 35));
-        jButton1.setPreferredSize(new java.awt.Dimension(35, 35));
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonCadVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-add-icon-24px.png"))); // NOI18N
+        jButtonCadVeiculos.setFocusable(false);
+        jButtonCadVeiculos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonCadVeiculos.setMaximumSize(new java.awt.Dimension(35, 35));
+        jButtonCadVeiculos.setMinimumSize(new java.awt.Dimension(35, 35));
+        jButtonCadVeiculos.setPreferredSize(new java.awt.Dimension(35, 35));
+        jButtonCadVeiculos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonCadVeiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonCadVeiculosActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        jToolBar1.add(jButtonCadVeiculos);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-delete-icon-24px.png"))); // NOI18N
         jButton2.setFocusable(false);
@@ -306,6 +306,11 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenuRelatorios.add(jMenuItemRelCategorias);
 
         jMenuItemRelMarcas.setText("Marcas");
+        jMenuItemRelMarcas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemRelMarcasActionPerformed(evt);
+            }
+        });
         jMenuRelatorios.add(jMenuItemRelMarcas);
 
         jMenuItemRelModelos.setText("Modelos");
@@ -494,6 +499,8 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
     private void jMenuItemCadVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadVeiculosActionPerformed
         // TODO add your handling code here:
+        new VeiculoApp(this, true).setVisible(true);
+        this.setVisible(true);
     }//GEN-LAST:event_jMenuItemCadVeiculosActionPerformed
 
     private void jMenuItemCadUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadUsuariosActionPerformed
@@ -517,6 +524,12 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
     private void jMenuItemRelModelosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRelModelosActionPerformed
         // TODO add your handling code here:
+        try {
+            new RelatorioDeModeloApp(this, true).setVisible(true);
+            this.setVisible(true);
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
     }//GEN-LAST:event_jMenuItemRelModelosActionPerformed
 
     private void jMenuItemRelCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRelCategoriasActionPerformed
@@ -606,9 +619,26 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonUsuarioActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonCadVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadVeiculosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        try {
+            new VeiculoApp(this, true).setVisible(true);
+            this.setVisible(true);
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonCadVeiculosActionPerformed
+
+    private void jMenuItemRelMarcasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRelMarcasActionPerformed
+        // TODO add your handling code here:
+        try {
+            new RelatorioDeMarcaApp(this, true).setVisible(true);
+            this.setVisible(true);
+            
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItemRelMarcasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -673,9 +703,9 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonCadVeiculos;
     private javax.swing.JButton jButtonSair;
     private javax.swing.JButton jButtonUsuario;
     private javax.swing.JDesktopPane jDesktopPaneMulaCar;
