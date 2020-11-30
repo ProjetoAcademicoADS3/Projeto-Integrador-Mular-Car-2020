@@ -14,8 +14,6 @@ import br.com.mulacar.enumeration.EnumStatus;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import br.com.mulacar.model.Usuario;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -136,6 +134,7 @@ public class LoginApp extends javax.swing.JFrame {
         getContentPane().add(jPasswordFieldSenha);
         jPasswordFieldSenha.setBounds(270, 130, 210, 25);
 
+        jButtonEntrar.setMnemonic('e');
         jButtonEntrar.setText("Entrar");
         jButtonEntrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,6 +144,7 @@ public class LoginApp extends javax.swing.JFrame {
         getContentPane().add(jButtonEntrar);
         jButtonEntrar.setBounds(290, 220, 70, 30);
 
+        jButtonSair.setMnemonic('s');
         jButtonSair.setText("Sair");
         jButtonSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,7 +170,7 @@ public class LoginApp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEntrarActionPerformed
- try {
+        try {
             String email = jTextFieldEmail.getText();
             String senha = String.valueOf(jPasswordFieldSenha.getPassword());
 
