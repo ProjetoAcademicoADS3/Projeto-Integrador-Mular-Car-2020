@@ -14,6 +14,6 @@ package br.com.mulacar.enumeration;
  */
 public enum EnumTipoCombustivel {
     
-    DIESEL, ETANOL, GASOLINA, GNV;
+    DIESEL, ETANOL, FLEX, GASOLINA, GNV;
     
 }

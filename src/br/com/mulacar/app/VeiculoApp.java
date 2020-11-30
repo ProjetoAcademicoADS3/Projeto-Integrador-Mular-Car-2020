@@ -73,19 +73,19 @@ public class VeiculoApp extends javax.swing.JDialog {
             }
 
             jComboBoxTipoDeCombustivel.removeAllItems();
-            jComboBoxTipoDeCombustivel.addItem("< Tipo de Combustível >");
+            jComboBoxTipoDeCombustivel.addItem(" ");
             for (EnumTipoCombustivel combustivel : EnumTipoCombustivel.values()) {
                 jComboBoxTipoDeCombustivel.addItem(combustivel.toString());
             }
 
             jComboBoxTipoDoVeiculo.removeAllItems();
-            jComboBoxTipoDoVeiculo.addItem("< Tipo do Veículo > ");
+            jComboBoxTipoDoVeiculo.addItem(" ");
             for (EnumTipoVeiculo tipoDoVeiculo : EnumTipoVeiculo.values()) {
                 jComboBoxTipoDoVeiculo.addItem(tipoDoVeiculo.toString());
             }
 
             jComboBoxStatus.removeAllItems();
-            jComboBoxStatus.addItem("< Status do Veículo >");
+            jComboBoxStatus.addItem(" ");
             for (EnumStatus statusDoVeiculo : EnumStatus.values()) {
                 jComboBoxStatus.addItem(statusDoVeiculo.toString());
             }
@@ -96,7 +96,7 @@ public class VeiculoApp extends javax.swing.JDialog {
             }
 
             jComboBoxSituacao.removeAllItems();
-            jComboBoxSituacao.addItem("< Situação do Veículo >");
+            jComboBoxSituacao.addItem(" ");
             for (EnumSituacaoVeiculo situacaoVeiculo : EnumSituacaoVeiculo.values()) {
                 jComboBoxSituacao.addItem(situacaoVeiculo.toString());
             }
@@ -597,11 +597,9 @@ public class VeiculoApp extends javax.swing.JDialog {
 
                 Categoria categoria = new Categoria();
                 categoria.splitCategoria(jComboBoxCategorias.getSelectedItem().toString());
-                System.out.println(categoria);
                 
                 Modelo modelo = new Modelo();
                 modelo.splitModelo(jComboBoxModelos.getSelectedItem().toString());
-                System.out.println(modelo);
 
                 int anoFabric = Integer.parseInt(jComboBoxAnoFabricacao.getSelectedItem().toString());
                 int anoModelo = Integer.parseInt(jComboBoxAnoModelo.getSelectedItem().toString());

@@ -63,7 +63,7 @@
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jTextFieldQuantRegistros" min="-2" pref="47" max="-2" attributes="0"/>
-                          <EmptySpace pref="28" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="jButtonNovo" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jButtonConsultar" min="-2" max="-2" attributes="0"/>
@@ -156,6 +156,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButtonSalvar">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/com/mulacar/imagens/Actions-document-save-icon-24px.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Salvar"/>
           </Properties>
           <Events>
@@ -164,6 +167,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButtonExcluir">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/com/mulacar/imagens/Action-remove-icon-24px.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Excluir"/>
           </Properties>
           <Events>
@@ -172,6 +178,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButtonConsultar">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/com/mulacar/imagens/search-icon-24px.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Consultar"/>
           </Properties>
           <Events>
@@ -180,6 +189,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButtonNovo">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/com/mulacar/imagens/Apps-File-New-icon-24px.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Novo"/>
           </Properties>
           <Events>
@@ -245,6 +257,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButtonFechar">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/com/mulacar/imagens/Actions-window-close-icon-24px.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Fechar"/>
           </Properties>
           <Events>

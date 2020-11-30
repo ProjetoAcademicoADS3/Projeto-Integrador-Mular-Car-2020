@@ -199,12 +199,15 @@ INSERT INTO motorista (
 mot_nome, mot_cpf, mot_rg, mot_rg_orgao_emissor, mot_cnh_numero, mot_cnh_data_validade, mot_cnh_imagem,
 mot_cnh_categoria)
 VALUES
-('Rogerio Tadeu dos Reis','64066522076','21244108','ssp_sp','12345678901','28/11/2024',
+('Rogerio','64066522076','21244108','ssp_sp','12345678901','28/11/2024',
  'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC'),
  ('Gabriel','82916982019','11222333','ssp_rs','12345678902','28/11/2024',
  'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC'),
- ('Aires','10464305055','11222333','ssp_rs','12345678902','28/11/2024',
+ ('Aires','10464305055','11333444','ssp_rs','12345678903','28/11/2024',
  'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC'),
+('Lucas','20860026027','11444555','ssp_rs','12345678904','28/11/2024',
+ 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC');
+
 
 -- insert contatos
 
@@ -223,15 +226,19 @@ INSERT INTO contato
 ( con_tipo, con_telefone, con_email, con_cliente_id, con_motorista_id)
 VALUES 
 ('RESIDENCIAL','62985915530', 'rogerio@gmail.com',51, null),
-('COMERCIAL','62985915531', 'gabriel@gmail.com',51, null),
-('RESIDENCIAL','62985915532', 'aires@gmail.com',51, null),
-('COMERCIAL','62985915533', 'lucas@gmail.com',51, null),
-('RESIDENCIAL','62985915534', 'joseluiz@gmail.com',51, null),
-('COMERCIAL','62985915535', 'halley@gmail.com',51, null),
-('RESIDENCIAL','62985915536', 'hauber@gmail.com',51, null),
-('COMERCIAL','62985915537', 'eugenio@gmail.com',51, null),
-('RESIDENCIAL','62985915538', 'katia@gmail.com',51, null),
-('COMERCIAL','62985915539', 'bete@gmail.com',51, null);
+('COMERCIAL','62985915531', 'gabriel@gmail.com',52, null),
+('RESIDENCIAL','62985915532', 'aires@gmail.com',53, null),
+('COMERCIAL','62985915533', 'lucas@gmail.com',54, null),
+('RESIDENCIAL','62985915534', 'joseluiz@gmail.com',55, null),
+('COMERCIAL','62985915535', 'halley@gmail.com',56, null),
+('RESIDENCIAL','62985915536', 'hauber@gmail.com',58, null),
+('COMERCIAL','62985915537', 'eugenio@gmail.com',57, null),
+('RESIDENCIAL','62985915538', 'katia@gmail.com',59, null),
+('COMERCIAL','62985915539', 'bete@gmail.com',60, null),
+('RESIDENCIAL','62985915530', 'rogerio.mot@gmail.com',null, 5),
+('COMERCIAL','62985915531', 'gabriel.mot@gmail.com',null, 6),
+('RESIDENCIAL','62985915532', 'aires.mot@gmail.com',null, 7),
+('COMERCIAL','62985915533', 'lucas.mot@gmail.com',null, 8);
 
 
 
