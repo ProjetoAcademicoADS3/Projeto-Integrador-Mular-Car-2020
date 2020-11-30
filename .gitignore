@@ -1,6 +1,7 @@
 */bin/*
 bin/
 
+# Class Files #
 *.class
 
 # Package Files #
@@ -93,6 +94,7 @@ libraries-2/*.db
 .sdkmanrc
 
 # NetBeans specific
+nbproject/*
 nbproject/private/
 build/
 nbbuild/
@@ -100,3 +102,8 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
+!nbproject/project.properties
+!nbproject/project.xml
+
+# TEMPORARIO - REMOVER
+src/br/com/mulacar/util/Conexao.java
