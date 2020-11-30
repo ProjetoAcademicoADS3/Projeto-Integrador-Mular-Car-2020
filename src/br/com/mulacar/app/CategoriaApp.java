@@ -6,7 +6,6 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.CategoriaBll;
@@ -17,9 +16,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
 public class CategoriaApp extends javax.swing.JDialog {
 
+    DefaultTableModel model;
     CategoriaBll catBll = new CategoriaBll();
     Categoria categoria;
 
@@ -29,19 +28,21 @@ public class CategoriaApp extends javax.swing.JDialog {
     public CategoriaApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
         catBll = new CategoriaBll();
+
         jButtonExcluir.setEnabled(false);
         jTextFieldDescCategoria.requestFocus();
-        
+
         jComboBoxStatus.removeAllItems();
         jComboBoxStatus.addItem(" ");
-        for(EnumStatus status : EnumStatus.values()){
+        for (EnumStatus status : EnumStatus.values()) {
             jComboBoxStatus.addItem(status.toString());
         }
     }
 
-        private void imprimirDadosCategoria(List<Categoria> listaDeCategorias) throws Exception {
-        DefaultTableModel model = (DefaultTableModel) jTableCategoria.getModel();
+    private void imprimirDadosCategoria(List<Categoria> listaDeCategorias) throws Exception {
+        model = (DefaultTableModel) jTableCategoria.getModel();
         model.setNumRows(0);
         catBll.ordenaListaCategorias(listaDeCategorias);
         for (int pos = 0; pos < listaDeCategorias.size(); pos++) {
@@ -56,8 +57,7 @@ public class CategoriaApp extends javax.swing.JDialog {
         jTextFieldQuantRegistros.setText(listaDeCategorias.size() + "");
     }
 
-
-     public void limpaCampos() {
+    public void limpaCampos() {
         jTextFieldCodigo.setText("");
         jTextFieldDescCategoria.setText("");
         jTextFieldValor.setText("");
@@ -66,9 +66,10 @@ public class CategoriaApp extends javax.swing.JDialog {
         jButtonExcluir.setEnabled(false);
         jButtonSalvar.setLabel("Salvar");
         jTextFieldDescCategoria.requestFocus();
+        model.setNumRows(0);
 
     }
-    
+
     public void preencherCampos(int id) {
         try {
             if (id > 0) {
@@ -130,6 +131,7 @@ public class CategoriaApp extends javax.swing.JDialog {
 
         jLabel2.setText("Descrição:");
 
+        jButtonSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-document-save-icon-24px.png"))); // NOI18N
         jButtonSalvar.setText("Salvar");
         jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,6 +139,7 @@ public class CategoriaApp extends javax.swing.JDialog {
             }
         });
 
+        jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Action-remove-icon-24px.png"))); // NOI18N
         jButtonExcluir.setText("Excluir");
         jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,6 +147,7 @@ public class CategoriaApp extends javax.swing.JDialog {
             }
         });
 
+        jButtonConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/search-icon-24px.png"))); // NOI18N
         jButtonConsultar.setText("Consultar");
         jButtonConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,6 +155,7 @@ public class CategoriaApp extends javax.swing.JDialog {
             }
         });
 
+        jButtonNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Apps-File-New-icon-24px.png"))); // NOI18N
         jButtonNovo.setText("Novo");
         jButtonNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,6 +192,7 @@ public class CategoriaApp extends javax.swing.JDialog {
 
         jLabel3.setText("Quant. de Registros:");
 
+        jButtonFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-window-close-icon-24px.png"))); // NOI18N
         jButtonFechar.setText("Fechar");
         jButtonFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -228,9 +234,11 @@ public class CategoriaApp extends javax.swing.JDialog {
                             .addComponent(jTextFieldCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanelCategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextFieldDescCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanelCategoriaLayout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jTextFieldDescCategoria))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelCategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
@@ -326,10 +334,10 @@ public class CategoriaApp extends javax.swing.JDialog {
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
         try {
-           catBll.excluirCategoria(catBll.getCategoriaPorId(categoria.getId()));
+            catBll.excluirCategoria(catBll.getCategoriaPorId(categoria.getId()));
             imprimirDadosCategoria(catBll.getConsultaCategorias());
-           limpaCampos();
-            
+            limpaCampos();
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
@@ -340,11 +348,11 @@ public class CategoriaApp extends javax.swing.JDialog {
         try {
 //            imprimirDadosCategoria(catBll.getConsultaCategorias());
             imprimirDadosCategoria(catBll.pesquisarCategoria(jTextFieldDescCategoria.getText()));
-            
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
-        
+
     }//GEN-LAST:event_jButtonConsultarActionPerformed
 
     private void jButtonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovoActionPerformed
@@ -353,7 +361,7 @@ public class CategoriaApp extends javax.swing.JDialog {
             limpaCampos();
             DefaultTableModel model = (DefaultTableModel) jTableCategoria.getModel();
             model.setNumRows(0);
-            
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
@@ -362,9 +370,8 @@ public class CategoriaApp extends javax.swing.JDialog {
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
         // TODO add your handling code here:
         try {
-        this.dispose();
-            
-            
+            this.dispose();
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
@@ -376,7 +383,7 @@ public class CategoriaApp extends javax.swing.JDialog {
             int linha = jTableCategoria.getSelectedRow();
             Integer codigo = Integer.parseInt(jTableCategoria.getValueAt(linha, 0).toString());
             preencherCampos(codigo);
-            
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }

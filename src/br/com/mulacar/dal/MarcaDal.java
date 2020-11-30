@@ -52,7 +52,7 @@ public class MarcaDal {
     }
 
     public void updateMarca(Marca marca) throws Exception {
-        String sql = "UPDATE marca SET mar_nome=?"
+        String sql = "UPDATE marca SET mar_nome=?,"
                 + "mar_status=? WHERE mar_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);

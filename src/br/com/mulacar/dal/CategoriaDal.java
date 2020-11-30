@@ -53,13 +53,16 @@ public class CategoriaDal {
     }
 
     public void updateCategoria(Categoria categoria) throws Exception {
-        String sql = "UPDATE categoria SET cat_nome=?, cat_valor=?, cat_status=? WHERE cat_id=?";
+        String sql = "UPDATE categoria SET cat_nome=?,"
+                + "cat_valor=?,"
+                + "cat_status=? WHERE cat_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setString(1, categoria.getDescricao().trim());
-            preparedStatement.setInt(2, categoria.getId());
-            preparedStatement.setBigDecimal(3, categoria.getValor());
-            preparedStatement.setString(4, categoria.getStatus().toString());
+            preparedStatement.setBigDecimal(2, categoria.getValor());
+            preparedStatement.setString(3, categoria.getStatus().toString());
+            preparedStatement.setInt(4, categoria.getId());
+            
             preparedStatement.executeUpdate();
 
         } catch (SQLException erro) {

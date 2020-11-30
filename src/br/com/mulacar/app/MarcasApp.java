@@ -6,7 +6,6 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.MarcaBll;
@@ -16,9 +15,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
 public class MarcasApp extends javax.swing.JDialog {
 
+    DefaultTableModel model;
     MarcaBll marBll = new MarcaBll();
     Marca marca;
 
@@ -30,7 +29,7 @@ public class MarcasApp extends javax.swing.JDialog {
         initComponents();
         jButtonExcluir.setEnabled(false);
         jTextFieldDescMarca.requestFocus();
-        
+
         jComboBoxStatus.removeAllItems();
         jComboBoxStatus.addItem(" Selecione ");
         for (EnumStatus status : EnumStatus.values()) {
@@ -39,7 +38,7 @@ public class MarcasApp extends javax.swing.JDialog {
     }
 
     private void imprimirDadosMarca(List<Marca> listaDeMarcas) throws Exception {
-        DefaultTableModel model = (DefaultTableModel) jTableMarca.getModel();
+        model = (DefaultTableModel) jTableMarca.getModel();
         model.setNumRows(0);
         marBll.ordenaListaMarcas(listaDeMarcas);
         for (int pos = 0; pos < listaDeMarcas.size(); pos++) {
@@ -61,12 +60,13 @@ public class MarcasApp extends javax.swing.JDialog {
         jButtonExcluir.setEnabled(false);
         jButtonSalvar.setLabel("Salvar");
         jTextFieldDescMarca.requestFocus();
-        
+        model.setNumRows(0);
+
     }
-    
-    public void preencherCampos(int id){
+
+    public void preencherCampos(int id) {
         try {
-            if(id > 0){
+            if (id > 0) {
                 marca = marBll.getMarcaPorId(id);
                 jTextFieldCodigo.setText(id + "");
                 jTextFieldDescMarca.setText(marca.getDescricao());
@@ -74,15 +74,15 @@ public class MarcasApp extends javax.swing.JDialog {
                 jButtonSalvar.setLabel("Editar");
                 jButtonExcluir.setEnabled(true);
                 jTextFieldDescMarca.requestFocus();
-            }else{
+            } else {
                 jButtonSalvar.setLabel("Salvar");
             }
-            
+
         } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null, "Atenção mouseClicked!\n" 
+            JOptionPane.showMessageDialog(null, "Atenção mouseClicked!\n"
                     + erro.getMessage());
         }
-        
+
     }
 
     /**
@@ -123,6 +123,7 @@ public class MarcasApp extends javax.swing.JDialog {
 
         jLabel2.setText("Descrição:");
 
+        jButtonSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-document-save-icon-24px.png"))); // NOI18N
         jButtonSalvar.setText("Salvar");
         jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,6 +131,7 @@ public class MarcasApp extends javax.swing.JDialog {
             }
         });
 
+        jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Action-remove-icon-24px.png"))); // NOI18N
         jButtonExcluir.setText("Excluir");
         jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,6 +139,7 @@ public class MarcasApp extends javax.swing.JDialog {
             }
         });
 
+        jButtonConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/search-icon-24px.png"))); // NOI18N
         jButtonConsultar.setText("Consultar");
         jButtonConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,6 +147,7 @@ public class MarcasApp extends javax.swing.JDialog {
             }
         });
 
+        jButtonNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Apps-File-New-icon-24px.png"))); // NOI18N
         jButtonNovo.setText("Novo");
         jButtonNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -177,6 +181,7 @@ public class MarcasApp extends javax.swing.JDialog {
 
         jLabel3.setText("Quant. de Registros:");
 
+        jButtonFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-window-close-icon-24px.png"))); // NOI18N
         jButtonFechar.setText("Fechar");
         jButtonFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -200,7 +205,7 @@ public class MarcasApp extends javax.swing.JDialog {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonConsultar)
@@ -287,12 +292,12 @@ public class MarcasApp extends javax.swing.JDialog {
             try {
                 String descricao = jTextFieldDescMarca.getText();
                 EnumStatus status = EnumStatus.valueOf(jComboBoxStatus.getSelectedItem().toString());
-                
+
                 marca = new Marca(descricao, status);
-                
+
                 if (jButtonSalvar.getLabel().equals("Salvar")) {
                     marBll.adicionarMarca(marca);
-                }else {
+                } else {
                     int id = Integer.parseInt(jTextFieldCodigo.getText());
                     marca = new Marca(id, descricao, status);
                     marBll.alterarMarca(marca);
@@ -308,10 +313,10 @@ public class MarcasApp extends javax.swing.JDialog {
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
         try {
-           marBll.excluirMarca(marBll.getMarcaPorId(marca.getId()));
+            marBll.excluirMarca(marBll.getMarcaPorId(marca.getId()));
             imprimirDadosMarca(marBll.getConsultaMarcas());
-           limpaCampos();
-            
+            limpaCampos();
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
@@ -321,11 +326,11 @@ public class MarcasApp extends javax.swing.JDialog {
         // TODO add your handling code here:
         try {
             imprimirDadosMarca(marBll.pesquisarMarca(jTextFieldDescMarca.getText()));
-            
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
-        
+
     }//GEN-LAST:event_jButtonConsultarActionPerformed
 
     private void jButtonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovoActionPerformed
@@ -334,7 +339,7 @@ public class MarcasApp extends javax.swing.JDialog {
             limpaCampos();
             DefaultTableModel model = (DefaultTableModel) jTableMarca.getModel();
             model.setNumRows(0);
-            
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
@@ -343,9 +348,8 @@ public class MarcasApp extends javax.swing.JDialog {
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
         // TODO add your handling code here:
         try {
-        this.dispose();
-            
-            
+            this.dispose();
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
@@ -357,7 +361,7 @@ public class MarcasApp extends javax.swing.JDialog {
             int linha = jTableMarca.getSelectedRow();
             Integer codigo = Integer.parseInt(jTableMarca.getValueAt(linha, 0).toString());
             preencherCampos(codigo);
-            
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }

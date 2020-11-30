@@ -306,6 +306,11 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenuRelatorios.add(jMenuItemRelCategorias);
 
         jMenuItemRelMarcas.setText("Marcas");
+        jMenuItemRelMarcas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemRelMarcasActionPerformed(evt);
+            }
+        });
         jMenuRelatorios.add(jMenuItemRelMarcas);
 
         jMenuItemRelModelos.setText("Modelos");
@@ -519,6 +524,12 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
     private void jMenuItemRelModelosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRelModelosActionPerformed
         // TODO add your handling code here:
+        try {
+            new RelatorioDeModeloApp(this, true).setVisible(true);
+            this.setVisible(true);
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
     }//GEN-LAST:event_jMenuItemRelModelosActionPerformed
 
     private void jMenuItemRelCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRelCategoriasActionPerformed
@@ -617,6 +628,17 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
     }//GEN-LAST:event_jButtonCadVeiculosActionPerformed
+
+    private void jMenuItemRelMarcasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRelMarcasActionPerformed
+        // TODO add your handling code here:
+        try {
+            new RelatorioDeMarcaApp(this, true).setVisible(true);
+            this.setVisible(true);
+            
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItemRelMarcasActionPerformed
 
     /**
      * @param args the command line arguments
