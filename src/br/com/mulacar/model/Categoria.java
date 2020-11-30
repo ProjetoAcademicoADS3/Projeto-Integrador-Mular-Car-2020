@@ -46,7 +46,7 @@ public class Categoria {
 
     @Override
     public String toString() {
-        return "Categoria{" + "id=" + id + ", descricao=" + descricao + ", status=" + status + ", valor=" + valor + '}';
+        return id + descricao + status +  valor ;
     }
 
     public int getId() {
