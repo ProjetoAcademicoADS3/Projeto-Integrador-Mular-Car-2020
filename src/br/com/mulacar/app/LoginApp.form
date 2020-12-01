@@ -67,6 +67,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButtonEntrar">
       <Properties>
+        <Property name="mnemonic" type="int" value="101"/>
         <Property name="text" type="java.lang.String" value="Entrar"/>
       </Properties>
       <Events>
@@ -80,6 +81,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButtonSair">
       <Properties>
+        <Property name="mnemonic" type="int" value="115"/>
         <Property name="text" type="java.lang.String" value="Sair"/>
       </Properties>
       <Events>

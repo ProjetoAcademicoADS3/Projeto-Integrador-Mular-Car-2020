@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class ModeloApp extends javax.swing.JDialog {
 
+    DefaultTableModel model;
     ModeloBll modeloBll;
     Modelo modelo;
     MarcaBll marcaBll;
@@ -31,7 +32,7 @@ public class ModeloApp extends javax.swing.JDialog {
         super(parent, modal);
         try {
             initComponents();
-            
+
             modeloBll = new ModeloBll();
 
             jComboBoxStatus.removeAllItems();
@@ -39,27 +40,26 @@ public class ModeloApp extends javax.swing.JDialog {
             for (EnumStatus status : EnumStatus.values()) {
                 jComboBoxStatus.addItem(status.toString());
             }
-            
+
             marcaBll = new MarcaBll();
-            List<Marca> listaMarcas  = marcaBll.getConsultaMarcas();
+            List<Marca> listaMarcas = marcaBll.getConsultaMarcas();
             marcaBll.ordenaListaMarcas(listaMarcas);
             jComboBoxMarcas.removeAllItems();
             jComboBoxMarcas.addItem(" ");
             for (int pos = 0; pos < listaMarcas.size(); pos++) {
                 marca = listaMarcas.get(pos);
-                jComboBoxMarcas.addItem(marca.getId() + " - "
-                + marca.getDescricao().toUpperCase());
+                jComboBoxMarcas.addItem(marca.getDescricao().toUpperCase());
             }
 
             jButtonExcluir.setEnabled(false);
-            jTextFieldDescModelo.requestFocus();
+            jTextFieldNomeDoModelo.requestFocus();
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
     }
 
     private void imprimirDadosModelo(List<Modelo> listaDeModelos) throws Exception {
-        DefaultTableModel model = (DefaultTableModel) jTableModelo.getModel();
+        model = (DefaultTableModel) jTableModelo.getModel();
         model.setNumRows(0);
         modeloBll.ordenaListaModelos(listaDeModelos);
         for (int pos = 0; pos < listaDeModelos.size(); pos++) {
@@ -76,13 +76,14 @@ public class ModeloApp extends javax.swing.JDialog {
 
     public void limpaCampos() {
         jTextFieldCodigo.setText("");
-        jTextFieldDescModelo.setText("");
+        jTextFieldNomeDoModelo.setText("");
         jComboBoxMarcas.setSelectedIndex(0);
         jComboBoxStatus.setSelectedIndex(0);
         jTextFieldQuantRegistros.setText("");
         jButtonExcluir.setEnabled(false);
         jButtonSalvar.setLabel("Salvar");
-        jTextFieldDescModelo.requestFocus();
+        jTextFieldNomeDoModelo.requestFocus();
+        model.setNumRows(0);
 
     }
 
@@ -91,13 +92,12 @@ public class ModeloApp extends javax.swing.JDialog {
             if (id > 0) {
                 modelo = modeloBll.getModeloPorId(id);
                 jTextFieldCodigo.setText(id + "");
-                jTextFieldDescModelo.setText(modelo.getDescricao());
-                jComboBoxMarcas.setSelectedItem(modelo.getMarca().getId() + " - "
-                        + modelo.getMarca().getDescricao().toUpperCase());
+                jTextFieldNomeDoModelo.setText(modelo.getDescricao());
+                jComboBoxMarcas.setSelectedItem(modelo.getMarca().getDescricao().toUpperCase());
                 jComboBoxStatus.setSelectedItem(modelo.getStatus().toString());
                 jButtonSalvar.setLabel("Editar");
                 jButtonExcluir.setEnabled(true);
-                jTextFieldDescModelo.requestFocus();
+                jTextFieldNomeDoModelo.requestFocus();
             } else {
                 jButtonSalvar.setLabel("Salvar");
             }
@@ -122,7 +122,7 @@ public class ModeloApp extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jTextFieldCodigo = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextFieldDescModelo = new javax.swing.JTextField();
+        jTextFieldNomeDoModelo = new javax.swing.JTextField();
         jButtonSalvar = new javax.swing.JButton();
         jButtonExcluir = new javax.swing.JButton();
         jButtonConsultar = new javax.swing.JButton();
@@ -149,7 +149,7 @@ public class ModeloApp extends javax.swing.JDialog {
         jTextFieldCodigo.setEditable(false);
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
-        jLabel2.setText("Descrição:");
+        jLabel2.setText("Modelo do Veículo");
 
         jButtonSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-document-save-icon-24px.png"))); // NOI18N
         jButtonSalvar.setText("Salvar");
@@ -189,9 +189,17 @@ public class ModeloApp extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Código", "Descrição", "Marca", "Status"
+                "Código", "Modelo do Veículo", "Marca", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTableModelo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jTableModeloMouseReleased(evt);
@@ -259,7 +267,7 @@ public class ModeloApp extends javax.swing.JDialog {
                                 .addComponent(jLabel2)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanelModeloLayout.createSequentialGroup()
-                                .addComponent(jTextFieldDescModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextFieldNomeDoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(jPanelModeloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBoxMarcas, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -283,7 +291,7 @@ public class ModeloApp extends javax.swing.JDialog {
                     .addComponent(jLabel4))
                 .addGap(3, 3, 3)
                 .addGroup(jPanelModeloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldDescModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldNomeDoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxMarcas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -324,17 +332,17 @@ public class ModeloApp extends javax.swing.JDialog {
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         // TODO add your handling code here:
-        if (jTextFieldDescModelo.getText().isEmpty()) {
+        if (jTextFieldNomeDoModelo.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "O campo descrição é obrigatório"
                     + " o preenchimento!\n");
         } else if (jComboBoxStatus.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "Selecione o status do modelo");
         } else {
             try {
-                String descricao = jTextFieldDescModelo.getText();
+                String descricao = jTextFieldNomeDoModelo.getText();
                 EnumStatus status = EnumStatus.valueOf(jComboBoxStatus.getSelectedItem().toString());
-                Marca marca = new Marca();
-                marca.setSplit(jComboBoxMarcas.getSelectedItem().toString());
+                String nome = jComboBoxMarcas.getSelectedItem().toString();
+                marca = marcaBll.getMarcaPorNome(nome);
 
                 modelo = new Modelo(descricao, status, marca);
 
@@ -368,7 +376,7 @@ public class ModeloApp extends javax.swing.JDialog {
     private void jButtonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarActionPerformed
         // TODO add your handling code here:
         try {
-            imprimirDadosModelo(modeloBll.pesquisarModelo(jTextFieldDescModelo.getText()));
+            imprimirDadosModelo(modeloBll.pesquisarModelo(jTextFieldNomeDoModelo.getText()));
 
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
@@ -476,7 +484,7 @@ public class ModeloApp extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableModelo;
     private javax.swing.JTextField jTextFieldCodigo;
-    private javax.swing.JTextField jTextFieldDescModelo;
+    private javax.swing.JTextField jTextFieldNomeDoModelo;
     private javax.swing.JTextField jTextFieldQuantRegistros;
     // End of variables declaration//GEN-END:variables
 }

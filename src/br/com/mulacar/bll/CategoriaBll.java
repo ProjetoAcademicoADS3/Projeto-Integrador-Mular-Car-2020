@@ -11,9 +11,11 @@ package br.com.mulacar.bll;
 
 import br.com.mulacar.dal.CategoriaDal;
 import br.com.mulacar.model.Categoria;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 
 public class CategoriaBll {
@@ -37,7 +39,7 @@ public class CategoriaBll {
         } catch (Exception erro) {
             String mensagem = erro.getMessage();
             if (mensagem.toLowerCase().contains("violates foreign")) {
-                throw new Exception(" Este registro não pode ser excluído"
+                throw new Exception("Este registro não pode ser excluído"
                         + " porque existe outros registros vinculados a ele\n");
             }
         }
@@ -62,6 +64,10 @@ public class CategoriaBll {
     public Categoria getCategoriaPorId(int id) throws Exception {
         return catDal.getCategoriaById(id);
     }
+    
+    public Categoria getCategoriaPorNome(String nome) throws Exception {
+        return catDal.getCategoriaByName(nome);
+    }
 
     public ArrayList pesquisarCategoria(String dados) throws Exception {
         return catDal.sourceCategoria(dados);
@@ -84,6 +90,10 @@ public class CategoriaBll {
         }
         if (nome.length() < 3) {
             throw new Exception("A descrição da categoria deve ter no mínimo 3 letras!\n");
+        }
+        if (objeto.getValor().compareTo(BigDecimal.ZERO) == 0
+                || objeto.getValor().compareTo(BigDecimal.ZERO) == -1) {
+            throw new Exception("O valor da categoria informado é inválido");
         }
 
         List<Categoria> lista = catDal.getAllCategorias();

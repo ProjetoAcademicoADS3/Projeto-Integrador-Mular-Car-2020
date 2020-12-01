@@ -117,11 +117,13 @@ public class MarcasApp extends javax.swing.JDialog {
 
         jPanelMarca.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel1.setText("Código");
 
         jTextFieldCodigo.setEditable(false);
 
-        jLabel2.setText("Descrição:");
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        jLabel2.setText("Marca do Veículo");
 
         jButtonSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-document-save-icon-24px.png"))); // NOI18N
         jButtonSalvar.setText("Salvar");
@@ -161,9 +163,17 @@ public class MarcasApp extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Código", "Descrição", "Status"
+                "Código", "Marca do Veículo", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTableMarca.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jTableMarcaMouseReleased(evt);
@@ -179,6 +189,7 @@ public class MarcasApp extends javax.swing.JDialog {
             jTableMarca.getColumnModel().getColumn(2).setMaxWidth(70);
         }
 
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel3.setText("Quant. de Registros:");
 
         jButtonFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-window-close-icon-24px.png"))); // NOI18N
@@ -189,6 +200,7 @@ public class MarcasApp extends javax.swing.JDialog {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel5.setText("Status");
 
         jComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));

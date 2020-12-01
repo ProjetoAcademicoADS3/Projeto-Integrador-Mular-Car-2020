@@ -14,19 +14,44 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class CanvasTelaPrincipal extends javax.swing.JPanel {
-    BufferedImage imagemFundo;
+    
+    private static final String HOME_USUARIO    = System.getProperty("user.home");
+    
+    private BufferedImage imagemFundo;
+    
+    
     /**
      * Creates new form CanvasTelaPrincipal
      * @throws java.io.IOException
      */
     public CanvasTelaPrincipal() throws IOException {
         initComponents();
-    
-        this.imagemFundo = ImageIO.read(new File ("C:\\Users\\roger\\Documents\\Projeto-Integrador-ADS3-2-Sem.-2020\\src\\br\\com\\mulacar\\imagens\\Travel-BMV-icon-256px.png"));
+        
+        inicializar();
+        
     }
+    
+    private void inicializar() {
+        try {       
+            
+            String path = Paths.get(".").toAbsolutePath().normalize().toString();
+            
+            URL pathImage = this.getClass().getResource(path + "/br/com/mulacar/imagens/Travel-BMV-icon-256px.png");
+
+            this.imagemFundo = ImageIO.read(new File(path + "/src/br/com/mulacar/imagens/Travel-BMV-icon-256px.png"));
+            
+        } catch (IOException ex) {
+            Logger.getLogger(CanvasTelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
 
     @Override
         protected void paintComponent(Graphics g){
@@ -56,6 +81,8 @@ public class CanvasTelaPrincipal extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

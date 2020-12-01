@@ -76,7 +76,7 @@ public class RelatorioDeMarcaApp extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Código", "Descrição", "Status"
+                "Código", "Marca do Veículo", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {

@@ -104,6 +104,25 @@ public class MarcaDal {
         }
         return mar;
     }
+    
+    public Marca getMarcaByNome(String nome) throws Exception {
+        Marca marca = new Marca();
+        String sql = "SELECT * FROM marca WHERE upper(mar_nome) = ?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1,nome);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                marca.setId(rs.getInt("mar_id"));
+                marca.setDescricao(rs.getString("mar_nome"));
+                marca.setStatus(EnumStatus.valueOf(rs.getString("mar_status")));
+            }
+        } catch (Exception erro) {
+            throw erro;
+        }
+        return marca;
+    }
 
     public ArrayList sourceMarca(String dados) throws Exception {
         String textoDigitado = dados.trim().toLowerCase();
