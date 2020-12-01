@@ -17,6 +17,7 @@ public class Cliente {
 
     private Long id;
     private String razaoSocial;
+    private String nomeFantasia;
     private String nome;
     private EnumStatus status;
     private String cpfCnpj;
@@ -27,8 +28,9 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(String razaoSocial, String nome, EnumStatus status, String cpfCnpj, String rg, String orgaoEmissor, EnumTipoCliente tipoCliente) {
+    public Cliente(String razaoSocial,String nomeFantasia, String nome, EnumStatus status, String cpfCnpj, String rg, String orgaoEmissor, EnumTipoCliente tipoCliente) {
         this.razaoSocial = razaoSocial;
+        this.nomeFantasia = nomeFantasia;
         this.nome = nome;
         this.status = status;
         this.cpfCnpj = cpfCnpj;
@@ -37,9 +39,10 @@ public class Cliente {
         this.tipoCliente = tipoCliente;
     }
 
-    public Cliente(Long id, String razaoSocial, String nome, EnumStatus status, String cpfCnpj, String rg, String orgaoEmissor, EnumTipoCliente tipoCliente) {
+    public Cliente(Long id, String razaoSocial,String nomeFantasia, String nome, EnumStatus status, String cpfCnpj, String rg, String orgaoEmissor, EnumTipoCliente tipoCliente) {
         this.id = id;
         this.razaoSocial = razaoSocial;
+        this.nomeFantasia = nomeFantasia;
         this.nome = nome;
         this.status = status;
         this.cpfCnpj = cpfCnpj;
@@ -63,6 +66,15 @@ public class Cliente {
     public void setRazaoSocial(String razaoSocial) {
         this.razaoSocial = razaoSocial;
     }
+
+    public String getNomeFantasia() {
+        return nomeFantasia;
+    }
+
+    public void setNomeFantasia(String nomeFantasia) {
+        this.nomeFantasia = nomeFantasia;
+    }
+    
 
     public String getNome() {
         return nome;
@@ -114,7 +126,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" + "id=" + id + ", razaoSocial=" + razaoSocial + ", nome=" + nome + ", status=" + status + ", cpfCnpj=" + cpfCnpj + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", tipoCliente=" + tipoCliente + '}';
+        return "Cliente{" + "id=" + id + ", razaoSocial=" + razaoSocial + ", nomeFantasia=" + nomeFantasia + ", nome=" + nome + ", status=" + status + ", cpfCnpj=" + cpfCnpj + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", tipoCliente=" + tipoCliente + '}';
     }
 
     @Override

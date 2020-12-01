@@ -62,7 +62,7 @@ public class CategoriaDal {
             preparedStatement.setBigDecimal(2, categoria.getValor());
             preparedStatement.setString(3, categoria.getStatus().toString());
             preparedStatement.setInt(4, categoria.getId());
-            
+
             preparedStatement.executeUpdate();
 
         } catch (SQLException erro) {
@@ -97,6 +97,26 @@ public class CategoriaDal {
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                cat.setId(rs.getInt("cat_id"));
+                cat.setDescricao(rs.getString("cat_nome"));
+                cat.setValor(rs.getBigDecimal("cat_valor"));
+                cat.setStatus(EnumStatus.valueOf(rs.getString("cat_status")));
+            }
+        } catch (Exception erro) {
+            throw erro;
+        }
+        return cat;
+    }
+
+    public Categoria getCategoriaByName(String nome) throws Exception {
+        Categoria cat = new Categoria();
+        String sql = "SELECT * FROM categoria WHERE UPPER(cat_nome) = ?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, nome);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {

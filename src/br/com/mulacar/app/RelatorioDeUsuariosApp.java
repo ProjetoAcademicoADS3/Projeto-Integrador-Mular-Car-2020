@@ -58,28 +58,20 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanelRelatorioUsuarios = new javax.swing.JPanel();
-        jButtonPesquisarUsuarios = new javax.swing.JButton();
-        jTextFieldDigitarDadosParaPesquisa = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableRelatorioUsuarios = new javax.swing.JTable();
         jButtonFecharRelatorio = new javax.swing.JButton();
         jButtonListarUsuario = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldQuantRegistros = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jComboBoxOrdenarUsuarioPor = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Lista de Usuários");
         setResizable(false);
 
         jPanelRelatorioUsuarios.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        jButtonPesquisarUsuarios.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
-        jButtonPesquisarUsuarios.setText("Pesquisar");
-        jButtonPesquisarUsuarios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonPesquisarUsuariosActionPerformed(evt);
-            }
-        });
 
         jTableRelatorioUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -112,6 +104,7 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
         }
 
         jButtonFecharRelatorio.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jButtonFecharRelatorio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-window-close-icon-24px.png"))); // NOI18N
         jButtonFecharRelatorio.setText("Fechar");
         jButtonFecharRelatorio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,6 +113,7 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
         });
 
         jButtonListarUsuario.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jButtonListarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Data-List-icon-24px.png"))); // NOI18N
         jButtonListarUsuario.setText("Listar");
         jButtonListarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,8 +121,13 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         jLabel1.setText("Quant.Registros");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        jLabel2.setText("Ordenar por: ");
+
+        jComboBoxOrdenarUsuarioPor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanelRelatorioUsuariosLayout = new javax.swing.GroupLayout(jPanelRelatorioUsuarios);
         jPanelRelatorioUsuarios.setLayout(jPanelRelatorioUsuariosLayout);
@@ -138,14 +137,15 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanelRelatorioUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE)
-                    .addGroup(jPanelRelatorioUsuariosLayout.createSequentialGroup()
-                        .addComponent(jButtonPesquisarUsuarios)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldDigitarDadosParaPesquisa))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRelatorioUsuariosLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRelatorioUsuariosLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxOrdenarUsuarioPor, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonListarUsuario)
                         .addGap(18, 18, 18)
@@ -158,19 +158,19 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
         jPanelRelatorioUsuariosLayout.setVerticalGroup(
             jPanelRelatorioUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelRelatorioUsuariosLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addGroup(jPanelRelatorioUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonPesquisarUsuarios)
-                    .addComponent(jTextFieldDigitarDadosParaPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanelRelatorioUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonFecharRelatorio)
                     .addComponent(jButtonListarUsuario)
+                    .addComponent(jButtonFecharRelatorio)
+                    .addComponent(jLabel2)
+                    .addComponent(jComboBoxOrdenarUsuarioPor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanelRelatorioUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17))
+                .addGap(22, 22, 22))
         );
 
         jPanelRelatorioUsuariosLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButtonFecharRelatorio, jButtonListarUsuario});
@@ -195,15 +195,6 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButtonPesquisarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarUsuariosActionPerformed
-        // TODO add your handling code here:
-        try {
-            imprimirRelatorioDeUsuarios(usuBll.pesquisarUsuario(jTextFieldDigitarDadosParaPesquisa.getText()));
-        } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null, erro.getMessage());
-        }
-    }//GEN-LAST:event_jButtonPesquisarUsuariosActionPerformed
 
     private void jButtonListarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarUsuarioActionPerformed
         // TODO add your handling code here:
@@ -267,12 +258,12 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonFecharRelatorio;
     private javax.swing.JButton jButtonListarUsuario;
-    private javax.swing.JButton jButtonPesquisarUsuarios;
+    private javax.swing.JComboBox<String> jComboBoxOrdenarUsuarioPor;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanelRelatorioUsuarios;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableRelatorioUsuarios;
-    private javax.swing.JTextField jTextFieldDigitarDadosParaPesquisa;
     private javax.swing.JTextField jTextFieldQuantRegistros;
     // End of variables declaration//GEN-END:variables
 }

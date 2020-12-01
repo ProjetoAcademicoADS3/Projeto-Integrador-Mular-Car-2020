@@ -123,6 +123,7 @@ public class VeiculoDal {
             preparedStatement.setInt(12, veic.getCategoria().getId());
             preparedStatement.setInt(13, veic.getModelo().getId());
             preparedStatement.setString(14, veic.getSituacao().toString());
+            preparedStatement.setInt(15, veic.getId());
             preparedStatement.executeUpdate();
 
         } catch (Exception erro) {
@@ -151,7 +152,7 @@ public class VeiculoDal {
                 veic.setNumPassageiros(rs.getInt("vei_num_passageiro"));
                 veic.setKm(rs.getLong("vei_km"));
                 CategoriaDal catDal = new CategoriaDal();
-                veic.setCategoria(catDal.getCategoriaById(rs.getInt("vei_cat_id")));
+                veic.setCategoria(catDal.getCategoriaById(rs.getInt("vei_categoria_id")));
                 ModeloDal modDal = new ModeloDal();
                 veic.setModelo(modDal.getModeloById(rs.getInt("vei_modelo_id")));
                 veic.setSituacao(EnumSituacaoVeiculo.valueOf(rs.getString("vei_situacao")));
@@ -189,7 +190,7 @@ public class VeiculoDal {
                 veic.setNumPassageiros(rs.getInt("vei_num_passageiro"));
                 veic.setKm(rs.getLong("vei_km"));
                 CategoriaDal catDal = new CategoriaDal();
-                veic.setCategoria(catDal.getCategoriaById(rs.getInt("vei_cat_id")));
+                veic.setCategoria(catDal.getCategoriaById(rs.getInt("vei_categoria_id")));
                 ModeloDal modDal = new ModeloDal();
                 veic.setModelo(modDal.getModeloById(rs.getInt("vei_modelo_id")));
                 veic.setSituacao(EnumSituacaoVeiculo.valueOf(rs.getString("vei_situacao")));

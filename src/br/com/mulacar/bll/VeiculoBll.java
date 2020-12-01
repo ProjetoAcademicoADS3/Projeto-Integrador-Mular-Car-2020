@@ -30,11 +30,20 @@ public class VeiculoBll {
     }
 
     public void adicionarVeiculo(Veiculo veiculo) throws Exception {
+        validarVeiculo(veiculo);
         veicDal.addVeiculo(veiculo);
     }
 
     public void excluirVeiculo(int id) throws Exception {
-        veicDal.deleteVeiculo(id);
+        try {
+            veicDal.deleteVeiculo(id);
+        } catch (Exception erro) {
+            String mensagem = erro.getMessage();
+            if (mensagem.toLowerCase().contains("violates foreign")) {
+                throw new Exception("Este registro não pode ser excluído"
+                        + " porque existe outros registros vinculados a ele\n");
+            }
+        }
     }
 
     public void atualizarVeiculo(Veiculo veic) throws Exception {
@@ -58,14 +67,21 @@ public class VeiculoBll {
         int anoFabricPrimeiroVeiculo = 1886;
         int renavanPadrao = 11;
         String renavan = objeto.getRenavan().toLowerCase().trim();
+        String placa = objeto.getPlaca().toLowerCase().trim();
 
-        String validos = "1234567890";
-        for (int i = 0; i < validos.length(); i++) {
-            if (!renavan.contains("" + validos.charAt(i))) {
-                throw new Exception("Renavan inválido!\n"
-                        + "O renavan informado deve ter apenas números.");
+        List<Veiculo> listaVeiculos = veicDal.getAllVeiculo();
+        for (int pos = 0; pos < listaVeiculos.size(); pos++) {
+            Veiculo veiculo = listaVeiculos.get(pos);
+            if (renavan.equals(veiculo.getRenavan().trim())) {
+                throw new Exception("O número de renavan informado já existe "
+                        + "para outro veículo!\nVerifique.");
+            }
+            if (placa.equals(veiculo.getPlaca())) {
+                throw new Exception("A placa informada já existe para "
+                        + "outro veículo!\nVerifique.");
             }
         }
+
         if (objeto.getPlaca().length() != placaPadrao) {
             throw new Exception("Placa inválida!\n"
                     + "A placa informada deve ter 7 caracteres\n");
@@ -99,7 +115,7 @@ public class VeiculoBll {
             throw new Exception("Valor de compra do veículo inválido!\n"
                     + "Verifique");
         }
-        if (objeto.getPrecoVenda().compareTo(BigDecimal.ZERO) ==  0
+        if (objeto.getPrecoVenda().compareTo(BigDecimal.ZERO) == 0
                 || objeto.getPrecoVenda().compareTo(BigDecimal.ZERO) == -1) {
             throw new Exception("Valor de venda do veículo inválido!\n"
                     + "Verifique.");
@@ -118,6 +134,20 @@ public class VeiculoBll {
             throw new Exception("Informe o modelo do veículo!\n");
         }
 
+    }
+
+    public void ordenaListaModelos(List<Veiculo> lista) throws Exception {
+        for (int i = 0; i < lista.size(); i++) {
+            for (int j = i; j < lista.size(); j++) {
+                if (lista.get(i).getModelo().getDescricao().compareToIgnoreCase
+        (lista.get(j).getModelo().getDescricao()) >= 0) {
+                    Veiculo temp = lista.get(j);
+                    lista.set(j, lista.get(i));
+                    lista.set(i, temp);
+                }
+            }
+        }
+        // retorna o array ordenado por nome
     }
 
 }

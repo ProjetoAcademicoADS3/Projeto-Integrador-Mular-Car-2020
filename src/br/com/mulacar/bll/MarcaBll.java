@@ -61,6 +61,10 @@ public class MarcaBll {
     public Marca getMarcaPorId(int id) throws Exception {
         return marDal.getMarcaById(id);
     }
+    
+    public Marca getMarcaPorNome(String nome) throws Exception {
+        return marDal.getMarcaByNome(nome);
+    }
 
     public ArrayList pesquisarMarca(String dados) throws Exception {
         return marDal.sourceMarca(dados);

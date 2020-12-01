@@ -90,7 +90,7 @@ public class RelatorioDeModeloApp extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Código", "Descrição", "Marca", "Status"
+                "Código", "Modelo do Veículo", "Marca do Veículo", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {

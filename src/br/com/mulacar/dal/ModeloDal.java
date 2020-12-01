@@ -116,6 +116,26 @@ public class ModeloDal {
         }
         return mod;
     }
+    public Modelo getModeloByName(String nome) throws Exception {
+        Modelo mod = new Modelo();
+        String sql = "SELECT * FROM modelo WHERE upper (mod_nome) = ?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, nome);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                mod.setId(rs.getInt("mod_id"));
+                mod.setDescricao(rs.getString("mod_nome"));
+                mod.setStatus(EnumStatus.valueOf(rs.getString("mod_status")));
+                MarcaBll marBll = new MarcaBll();
+                mod.setMarca(marBll.getMarcaPorId(rs.getInt("mod_marca_id")));
+            }
+        } catch (Exception erro) {
+            throw erro;
+        }
+        return mod;
+    }
 
     public ArrayList sourceModelo(String dados) throws Exception {
         String textoDigitado = dados.trim().toLowerCase();

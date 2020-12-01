@@ -28,6 +28,8 @@ public class CategoriaApp extends javax.swing.JDialog {
     public CategoriaApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        jTextFieldValor.setDocument(new LimiteDeDigitos(8));
 
         catBll = new CategoriaBll();
 
@@ -125,11 +127,13 @@ public class CategoriaApp extends javax.swing.JDialog {
 
         jPanelCategoria.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel1.setText("Código");
 
         jTextFieldCodigo.setEditable(false);
 
-        jLabel2.setText("Descrição:");
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        jLabel2.setText("Categoria do Veículo");
 
         jButtonSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-document-save-icon-24px.png"))); // NOI18N
         jButtonSalvar.setText("Salvar");
@@ -169,9 +173,17 @@ public class CategoriaApp extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Código", "Descrição", "Valor", "Status"
+                "Código", "Categoria do Veículo", "Valor  R$", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTableCategoria.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jTableCategoriaMouseReleased(evt);
@@ -190,6 +202,7 @@ public class CategoriaApp extends javax.swing.JDialog {
             jTableCategoria.getColumnModel().getColumn(3).setMaxWidth(70);
         }
 
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel3.setText("Quant. de Registros:");
 
         jButtonFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-window-close-icon-24px.png"))); // NOI18N
@@ -200,8 +213,16 @@ public class CategoriaApp extends javax.swing.JDialog {
             }
         });
 
-        jLabel4.setText("Valor:");
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        jLabel4.setText("Valor R$ :");
 
+        jTextFieldValor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldValorKeyTyped(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel5.setText("Status");
 
         jComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -311,7 +332,7 @@ public class CategoriaApp extends javax.swing.JDialog {
         } else {
             try {
                 String descricao = jTextFieldDescCategoria.getText();
-                BigDecimal valor = new BigDecimal(jTextFieldValor.getText());
+                BigDecimal valor = new BigDecimal(jTextFieldValor.getText().replaceAll(",", "."));
                 EnumStatus status = EnumStatus.valueOf(jComboBoxStatus.getSelectedItem().toString());
 
                 categoria = new Categoria(descricao, status, valor);
@@ -388,6 +409,14 @@ public class CategoriaApp extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
     }//GEN-LAST:event_jTableCategoriaMouseReleased
+
+    private void jTextFieldValorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldValorKeyTyped
+        // TODO add your handling code here:
+        String caracteres = ".,0987654321";
+        if (!caracteres.contains(evt.getKeyChar()+"")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextFieldValorKeyTyped
 
     /**
      * @param args the command line arguments

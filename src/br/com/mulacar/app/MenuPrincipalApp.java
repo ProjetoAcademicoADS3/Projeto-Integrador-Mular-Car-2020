@@ -551,6 +551,13 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
     private void jMenuItemRelVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRelVeiculosActionPerformed
         // TODO add your handling code here:
+        try {
+            new RelatorioDeVeiculosApp(this, true).setVisible(true);
+            this.setVisible(true);
+            
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
     }//GEN-LAST:event_jMenuItemRelVeiculosActionPerformed
 
     private void jMenuItemCadMarcasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadMarcasActionPerformed

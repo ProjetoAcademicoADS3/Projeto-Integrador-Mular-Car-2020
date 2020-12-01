@@ -62,6 +62,10 @@ public class ModeloBll {
     public Modelo getModeloPorId(int id) throws Exception {
         return modDal.getModeloById(id);
     }
+    
+    public Modelo getModeloPorNome(String nome) throws Exception {
+        return modDal.getModeloByName(nome);
+    }
 
     public ArrayList pesquisarModelo(String dados) throws Exception {
         return modDal.sourceModelo(dados);
@@ -73,7 +77,7 @@ public class ModeloBll {
 
     public void validarModelo(Modelo objeto) throws Exception {
         String nome = objeto.getDescricao().trim().toLowerCase();
-        String invalidos = "!@#$%¨&*()+={[}]/?><;:";
+        String invalidos = "!@#$%¨&*()+={[}]?><;:";
         for (int i = 0; i < invalidos.length(); i++) {
             if (nome.contains("" + invalidos.charAt(i))) {
                 throw new Exception("Descrição inválida para esta modelo!\n");

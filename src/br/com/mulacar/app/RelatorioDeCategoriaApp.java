@@ -73,7 +73,7 @@ public class RelatorioDeCategoriaApp extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Código", "Descrição", "Valor", "Status"
+                "Código", "Categoria do Veículo", "Valor  R$", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
