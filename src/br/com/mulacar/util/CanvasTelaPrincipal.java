@@ -44,8 +44,6 @@ public class CanvasTelaPrincipal extends javax.swing.JPanel {
             
             String path = Paths.get(".").toAbsolutePath().normalize().toString();
             
-            URL pathImage = this.getClass().getResource(path + "/br/com/mulacar/imagens/Travel-BMV-icon-256px.png");
-
             this.imagemFundo = ImageIO.read(new File(path + "/src/br/com/mulacar/imagens/Travel-BMV-icon-256px.png"));
             
         } catch (IOException ex) {

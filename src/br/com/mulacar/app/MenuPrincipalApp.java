@@ -208,10 +208,12 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton3);
 
+        jMenuOperacoes.setMnemonic('o');
         jMenuOperacoes.setText("Operação");
         jMenuOperacoes.add(jSeparator1);
 
         jMenuItemLocarVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-add-icon-24px.png"))); // NOI18N
+        jMenuItemLocarVeiculos.setMnemonic('o');
         jMenuItemLocarVeiculos.setText("Locação de Veículos");
         jMenuItemLocarVeiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -221,11 +223,13 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenuOperacoes.add(jMenuItemLocarVeiculos);
 
         jMenuItemDevolverVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-delete-icon-24px.png"))); // NOI18N
+        jMenuItemDevolverVeiculos.setMnemonic('d');
         jMenuItemDevolverVeiculos.setText("Devolução de Veículos");
         jMenuOperacoes.add(jMenuItemDevolverVeiculos);
         jMenuOperacoes.add(jSeparator2);
 
         jMenuItemSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Log-Out - icon - Porta - 24 x 24px.png"))); // NOI18N
+        jMenuItemSair.setMnemonic('s');
         jMenuItemSair.setText("Sair");
         jMenuItemSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -236,8 +240,10 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
         jMenuBarTelaPrincipal.add(jMenuOperacoes);
 
+        jMenuCadastros.setMnemonic('c');
         jMenuCadastros.setText("Cadastros");
 
+        jMenuItemCadCategorias.setMnemonic('c');
         jMenuItemCadCategorias.setText("Categorias");
         jMenuItemCadCategorias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -246,6 +252,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         });
         jMenuCadastros.add(jMenuItemCadCategorias);
 
+        jMenuItemCadMarcas.setMnemonic('m');
         jMenuItemCadMarcas.setText("Marcas");
         jMenuItemCadMarcas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -254,6 +261,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         });
         jMenuCadastros.add(jMenuItemCadMarcas);
 
+        jMenuItemCadModelos.setMnemonic('o');
         jMenuItemCadModelos.setText("Modelos");
         jMenuItemCadModelos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -263,6 +271,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenuCadastros.add(jMenuItemCadModelos);
 
         jMenuItemCadVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Rolls-Royce.png"))); // NOI18N
+        jMenuItemCadVeiculos.setMnemonic('v');
         jMenuItemCadVeiculos.setText("Veículos");
         jMenuItemCadVeiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -271,6 +280,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         });
         jMenuCadastros.add(jMenuItemCadVeiculos);
 
+        jMenuItemCadClientes.setMnemonic('l');
         jMenuItemCadClientes.setText("Clientes");
         jMenuItemCadClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -280,6 +290,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenuCadastros.add(jMenuItemCadClientes);
 
         jMenuItemCadUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Person-Male-Light-icon-24px.png"))); // NOI18N
+        jMenuItemCadUsuarios.setMnemonic('u');
         jMenuItemCadUsuarios.setText("Usuários");
         jMenuItemCadUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -290,6 +301,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
         jMenuBarTelaPrincipal.add(jMenuCadastros);
 
+        jMenuRelatorios.setMnemonic('r');
         jMenuRelatorios.setText("Relatórios");
         jMenuRelatorios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -355,7 +367,8 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
         jMenuBarTelaPrincipal.add(jMenuRelatorios);
 
-        jMenuFerramentas.setText("?");
+        jMenuFerramentas.setMnemonic('a');
+        jMenuFerramentas.setText("Ajuda");
         jMenuFerramentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuFerramentasActionPerformed(evt);
@@ -479,12 +492,10 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
     //Sair do programa
     private void jMenuItemSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSairActionPerformed
-        // TODO add your handling code here:
         System.exit(0);                                 //Sai do sistema fechando a tela
     }//GEN-LAST:event_jMenuItemSairActionPerformed
 
     private void jMenuItemCadCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadCategoriasActionPerformed
-        // TODO add your handling code here:
         try {
             new CategoriaApp(this, true).setVisible(true);
             this.setVisible(true);
@@ -494,7 +505,12 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCadCategoriasActionPerformed
 
     private void jMenuItemCadClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadClientesActionPerformed
-        // TODO add your handling code here:
+        try {
+            new ClienteApp(this, true).setVisible(true);
+            this.setVisible(true);
+
+        } catch (Exception e) {
+        }        
     }//GEN-LAST:event_jMenuItemCadClientesActionPerformed
 
     private void jMenuItemCadVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadVeiculosActionPerformed
@@ -504,7 +520,6 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCadVeiculosActionPerformed
 
     private void jMenuItemCadUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadUsuariosActionPerformed
-        // TODO add your handling code here:
         try {
             new UsuarioApp(this, true).setVisible(true);
             this.setVisible(true);

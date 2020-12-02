@@ -6,6 +6,7 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenuOperacoes">
           <Properties>
+            <Property name="mnemonic" type="int" value="111"/>
             <Property name="text" type="java.lang.String" value="Opera&#xe7;&#xe3;o"/>
           </Properties>
           <SubComponents>
@@ -16,6 +17,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/br/com/mulacar/imagens/car-add-icon-24px.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="111"/>
                 <Property name="text" type="java.lang.String" value="Loca&#xe7;&#xe3;o de Ve&#xed;culos"/>
               </Properties>
               <Events>
@@ -27,6 +29,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/br/com/mulacar/imagens/car-delete-icon-24px.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="100"/>
                 <Property name="text" type="java.lang.String" value="Devolu&#xe7;&#xe3;o de Ve&#xed;culos"/>
               </Properties>
             </MenuItem>
@@ -37,6 +40,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/br/com/mulacar/imagens/Log-Out - icon - Porta - 24 x 24px.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="115"/>
                 <Property name="text" type="java.lang.String" value="Sair"/>
               </Properties>
               <Events>
@@ -47,11 +51,13 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenuCadastros">
           <Properties>
+            <Property name="mnemonic" type="int" value="99"/>
             <Property name="text" type="java.lang.String" value="Cadastros"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCadCategorias">
               <Properties>
+                <Property name="mnemonic" type="int" value="99"/>
                 <Property name="text" type="java.lang.String" value="Categorias"/>
               </Properties>
               <Events>
@@ -60,6 +66,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCadMarcas">
               <Properties>
+                <Property name="mnemonic" type="int" value="109"/>
                 <Property name="text" type="java.lang.String" value="Marcas"/>
               </Properties>
               <Events>
@@ -68,6 +75,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCadModelos">
               <Properties>
+                <Property name="mnemonic" type="int" value="111"/>
                 <Property name="text" type="java.lang.String" value="Modelos"/>
               </Properties>
               <Events>
@@ -79,6 +87,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/br/com/mulacar/imagens/Rolls-Royce.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="118"/>
                 <Property name="text" type="java.lang.String" value="Ve&#xed;culos"/>
               </Properties>
               <Events>
@@ -87,6 +96,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCadClientes">
               <Properties>
+                <Property name="mnemonic" type="int" value="108"/>
                 <Property name="text" type="java.lang.String" value="Clientes"/>
               </Properties>
               <Events>
@@ -98,6 +108,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/br/com/mulacar/imagens/Person-Male-Light-icon-24px.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="117"/>
                 <Property name="text" type="java.lang.String" value="Usu&#xe1;rios"/>
               </Properties>
               <Events>
@@ -108,6 +119,7 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenuRelatorios">
           <Properties>
+            <Property name="mnemonic" type="int" value="114"/>
             <Property name="text" type="java.lang.String" value="Relat&#xf3;rios"/>
           </Properties>
           <Events>
@@ -174,7 +186,8 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenuFerramentas">
           <Properties>
-            <Property name="text" type="java.lang.String" value="?"/>
+            <Property name="mnemonic" type="int" value="97"/>
+            <Property name="text" type="java.lang.String" value="Ajuda"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuFerramentasActionPerformed"/>
