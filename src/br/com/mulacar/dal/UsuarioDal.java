@@ -6,7 +6,6 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.dal;
 
 import br.com.mulacar.enumeration.EnumPerfil;
@@ -45,7 +44,6 @@ public class UsuarioDal {
             preparedStatement.setString(6, usu.getPerfil().toString());
             preparedStatement.setDate(7, new java.sql.Date(usu.getDataCadastro().getTime()));
 
-
             preparedStatement.executeUpdate();
 
         } catch (SQLException erro) {
@@ -54,7 +52,7 @@ public class UsuarioDal {
     }
 
     public void deleteUsuario(int id) throws Exception {
-     String sql = "DELETE FROM usuario WHERE usu_id=?";
+        String sql = "DELETE FROM usuario WHERE usu_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -66,12 +64,14 @@ public class UsuarioDal {
     }
 
     public void updateUsuario(Usuario usu) throws Exception {
-       String sql = "UPDATE usuario SET usu_nome=?,"
+        String sql = "UPDATE usuario SET"
+                + "usu_nome=?,"
                 + "usu_cpf=?,"
                 + "usu_email=?,"
                 + "usu_senha=?,"
-                + "usu_status=?"
-                + "usu_perfil=? WHERE usu_id=?";
+                + "usu_status=?,"
+                + "usu_perfil=?,"
+                + "usu_data_cadastro=? WHERE usu_id=?";
         try {
             PreparedStatement preparedStatement
                     = conexao.prepareStatement(sql);
@@ -82,7 +82,8 @@ public class UsuarioDal {
             preparedStatement.setString(4, usu.getSenha());
             preparedStatement.setString(5, usu.getStatus().toString());
             preparedStatement.setString(6, usu.getPerfil().toString());
-            preparedStatement.setInt(7, usu.getId());
+            preparedStatement.setDate(7, new java.sql.Date(usu.getDataCadastro().getTime()));
+            preparedStatement.setInt(8, usu.getId());
             preparedStatement.executeUpdate();
 
         } catch (Exception erro) {
@@ -103,12 +104,10 @@ public class UsuarioDal {
                 usu.setCpf(rs.getString("usu_cpf"));
                 usu.setEmail(rs.getString("usu_email"));
                 usu.setSenha(rs.getString("usu_senha"));
-                usu.setStatus(EnumStatus.ATIVO);
-                if (rs.getString("usu_perfil").equalsIgnoreCase("ADMINISTRADOR")) {
-                    usu.setPerfil(EnumPerfil.ADMINISTRADOR);
-                } else {
-                    usu.setPerfil(EnumPerfil.CLIENTE);
-                }
+                usu.setStatus(EnumStatus.valueOf(rs.getString("usu_status")));
+                usu.setPerfil(EnumPerfil.valueOf(rs.getString("usu_perfil")));
+                usu.setDataCadastro(rs.getDate("usu_data_cadastro"));
+
                 listaUsuarios.add(usu);
             }
         } catch (Exception erro) {
@@ -149,21 +148,21 @@ public class UsuarioDal {
     }
 
     public ArrayList sourceUsuario(String dados) throws Exception {
-        
-         String textoDigitado = dados;
-        
+
+        String textoDigitado = dados;
+
         ArrayList<Usuario> resultadoDaPesquisa = new ArrayList<>();
-       
+
         boolean vdd = false;
-        
+
         for (Usuario usu : getAllUsuarios()) {
-            
+
             if (usu.getNome().toLowerCase().trim().contains(textoDigitado)
                     || usu.getCpf().toLowerCase().trim().contains(textoDigitado)
                     || (usu.getEmail().toLowerCase().trim().contains(textoDigitado))) {
-                
+
                 resultadoDaPesquisa.add(usu);
-                
+
                 vdd = true;
             }
         }
@@ -172,12 +171,12 @@ public class UsuarioDal {
         }
         return resultadoDaPesquisa;
     }
-    
+
     public Usuario getUsuarioByEmail(String email) throws Exception {
         Usuario usu = null;
-        
+
         String sql = "SELECT * FROM usuario WHERE usu_email LIKE ?";
-        
+
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setString(1, email);
@@ -191,13 +190,13 @@ public class UsuarioDal {
                 usu.setEmail(rs.getString("usu_email"));
                 usu.setSenha(rs.getString("usu_senha"));
                 usu.setDataCadastro(rs.getDate("usu_data_cadastro"));
-                
+
                 EnumStatus status = EnumStatus.valueOf(rs.getString("usu_status"));
                 usu.setStatus(status);
-                
+
                 EnumPerfil perfil = EnumPerfil.valueOf(rs.getString("usu_perfil"));
                 usu.setPerfil(perfil);
-                
+
 //                if (rs.getString("usu_perfil").equalsIgnoreCase("ADMINISTRADOR")) {
 //                    usu.setPerfil(EnumPerfil.ADMINISTRADOR);
 //                } else {
@@ -209,5 +208,5 @@ public class UsuarioDal {
                     + erro.getMessage());
         }
         return usu;
-    }    
+    }
 }
