@@ -11,6 +11,7 @@ package br.com.mulacar.app;
 import br.com.mulacar.enumeration.EnumUF;
 import br.com.mulacar.dal.ClienteDal;
 import br.com.mulacar.enumeration.EnumTipoCliente;
+import br.com.mulacar.model.Cliente;
 import java.awt.Dimension;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
@@ -401,6 +402,13 @@ public class ClienteApp extends javax.swing.JDialog {
             String variavel = jTextFieldNomeOuNomeFantasia.getText();
             String orgaoEmissor = jTextFieldOrgaoEmissor.getText();
             String rgRazaoSocial = jTextFieldRgOuRazãoSocial.getText();
+            
+            
+//            Cliente cliente = new Cliente
+//            
+//            clienteDal.addCliente(cliente);
+            
+            
 
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Atenção !!!\n" + erro.getMessage());

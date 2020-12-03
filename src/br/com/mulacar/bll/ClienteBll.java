@@ -9,7 +9,7 @@
 
 package br.com.mulacar.bll;
 
-import br.com.mulacar.dal.ClienteDal;
+import br.com.mulacar.dal.ClienteDal;   
 import br.com.mulacar.enumeration.EnumTipoCliente;
 import br.com.mulacar.model.Cliente;
 import br.com.mulacar.util.UtilObjetos;
