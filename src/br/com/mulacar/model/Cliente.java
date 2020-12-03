@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public class Cliente {
 
-    private Long id;
+    private int id;
     private String razaoSocial;
     private String nomeFantasia;
     private String nome;
@@ -24,11 +24,13 @@ public class Cliente {
     private String rg;
     private String orgaoEmissor;
     private EnumTipoCliente tipoCliente;
+    private Endereco endereco;
+    private Contato contato;
 
     public Cliente() {
     }
 
-    public Cliente(String razaoSocial,String nomeFantasia, String nome, EnumStatus status, String cpfCnpj, String rg, String orgaoEmissor, EnumTipoCliente tipoCliente) {
+    public Cliente(String razaoSocial, String nomeFantasia, String nome, EnumStatus status, String cpfCnpj, String rg, String orgaoEmissor, EnumTipoCliente tipoCliente, Endereco endereco, Contato contato) {
         this.razaoSocial = razaoSocial;
         this.nomeFantasia = nomeFantasia;
         this.nome = nome;
@@ -37,25 +39,15 @@ public class Cliente {
         this.rg = rg;
         this.orgaoEmissor = orgaoEmissor;
         this.tipoCliente = tipoCliente;
+        this.endereco = endereco;
+        this.contato = contato;
     }
 
-    public Cliente(Long id, String razaoSocial,String nomeFantasia, String nome, EnumStatus status, String cpfCnpj, String rg, String orgaoEmissor, EnumTipoCliente tipoCliente) {
-        this.id = id;
-        this.razaoSocial = razaoSocial;
-        this.nomeFantasia = nomeFantasia;
-        this.nome = nome;
-        this.status = status;
-        this.cpfCnpj = cpfCnpj;
-        this.rg = rg;
-        this.orgaoEmissor = orgaoEmissor;
-        this.tipoCliente = tipoCliente;
-    }
-
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -124,15 +116,31 @@ public class Cliente {
         this.tipoCliente = tipoCliente;
     }
 
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public Contato getContato() {
+        return contato;
+    }
+
+    public void setContato(Contato contato) {
+        this.contato = contato;
+    }
+
     @Override
     public String toString() {
-        return "Cliente{" + "id=" + id + ", razaoSocial=" + razaoSocial + ", nomeFantasia=" + nomeFantasia + ", nome=" + nome + ", status=" + status + ", cpfCnpj=" + cpfCnpj + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", tipoCliente=" + tipoCliente + '}';
+        return "Cliente{" + "id=" + id + ", razaoSocial=" + razaoSocial + ", nomeFantasia=" + nomeFantasia + ", nome=" + nome + ", status=" + status + ", cpfCnpj=" + cpfCnpj + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", tipoCliente=" + tipoCliente + ", endereco=" + endereco + ", contato=" + contato + '}';
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 17 * hash + Objects.hashCode(this.id);
+        int hash = 7;
+        hash = 79 * hash + this.id;
         return hash;
     }
 
@@ -148,11 +156,13 @@ public class Cliente {
             return false;
         }
         final Cliente other = (Cliente) obj;
-        if (!Objects.equals(this.id, other.id)) {
+        if (this.id != other.id) {
             return false;
         }
         return true;
     }
+    
+
     
     
 

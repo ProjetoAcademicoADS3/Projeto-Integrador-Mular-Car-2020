@@ -33,7 +33,7 @@ public class Conexao {
 
                 Class.forName(driver);
                 conexao = DriverManager.getConnection(url, usuario, password);
-                JOptionPane.showMessageDialog(null, "Conectado !");
+//                JOptionPane.showMessageDialog(null, "Conectado !");
 
             } catch (ClassNotFoundException erro) {
                 erro.printStackTrace();

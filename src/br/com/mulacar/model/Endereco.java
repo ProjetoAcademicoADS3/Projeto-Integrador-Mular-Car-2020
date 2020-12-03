@@ -1,7 +1,7 @@
 package br.com.mulacar.model;
 
+import br.com.mulacar.enumeration.EnumUF;
 import br.com.mulacar.enumeration.EnumTipoEndereco;
-import br.com.mulacar.enumeration.EnumTipoTelefone;
 import java.util.Objects;
 
 /**
@@ -10,33 +10,35 @@ import java.util.Objects;
  */
 public class Endereco {
     
-    private Long id;
-    private EnumTipoEndereco tipoTelefone;
+    private int id;
+    private EnumTipoEndereco tipoEndereco;
     private String cep;
     private String rua;
     private String numero;
     private String complemento;
     private String bairro;
     private String cidade;
-    private String uf;
+    private EnumUF uf;
+    private Cliente cliente;
+    private Motorista motorista;
 
     public Endereco() {
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public EnumTipoEndereco getTipoTelefone() {
-        return tipoTelefone;
+    public EnumTipoEndereco getTipoEndereco() {
+        return tipoEndereco;
     }
 
-    public void setTipoTelefone(EnumTipoEndereco tipoTelefone) {
-        this.tipoTelefone = tipoTelefone;
+    public void setTipoEndereco(EnumTipoEndereco tipoEndereco) {
+        this.tipoEndereco = tipoEndereco;
     }
 
     public String getCep() {
@@ -87,17 +89,33 @@ public class Endereco {
         this.cidade = cidade;
     }
 
-    public String getUf() {
+    public EnumUF getUf() {
         return uf;
     }
 
-    public void setUf(String uf) {
+    public void setUf(EnumUF uf) {
         this.uf = uf;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Motorista getMotorista() {
+        return motorista;
+    }
+
+    public void setMotorista(Motorista motorista) {
+        this.motorista = motorista;
     }
 
     @Override
     public String toString() {
-        return "Endereco{" + "id=" + id + ", tipoTelefone=" + tipoTelefone + ", cep=" + cep + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento + ", bairro=" + bairro + ", cidade=" + cidade + ", uf=" + uf + '}';
+        return "Endereco{" + "id=" + id + ", tipoEndereco=" + tipoEndereco + ", cep=" + cep + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento + ", bairro=" + bairro + ", cidade=" + cidade + ", uf=" + uf + ", cliente=" + cliente + ", motorista=" + motorista + '}';
     }
 
     @Override

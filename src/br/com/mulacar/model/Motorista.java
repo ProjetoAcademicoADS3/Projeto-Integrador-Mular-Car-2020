@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public class Motorista {
 
-    private Long id;
+    private int id;
     private String razaoSocial;
     private String nome;
     private String cpf;
@@ -29,11 +29,11 @@ public class Motorista {
     private String pathImagem;
     private EnumTipoCliente tipoCliente;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
