@@ -401,6 +401,8 @@ public class ClienteApp extends javax.swing.JDialog {
             String variavel = jTextFieldNomeOuNomeFantasia.getText();
             String orgaoEmissor = jTextFieldOrgaoEmissor.getText();
             String rgRazaoSocial = jTextFieldRgOuRazãoSocial.getText();
+            
+            //Cliente cliente = 
 
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Atenção !!!\n" + erro.getMessage());

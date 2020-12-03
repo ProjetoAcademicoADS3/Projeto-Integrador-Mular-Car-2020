@@ -18,9 +18,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class CategoriaApp extends javax.swing.JDialog {
 
-    DefaultTableModel model;
-    CategoriaBll catBll = new CategoriaBll();
-    Categoria categoria;
+    private DefaultTableModel model;
+    private CategoriaBll catBll = new CategoriaBll();
+    private Categoria categoria;
 
     /**
      * Creates new form CategoriaApp
@@ -75,7 +75,8 @@ public class CategoriaApp extends javax.swing.JDialog {
     public void preencherCampos(int id) {
         try {
             if (id > 0) {
-                categoria = catBll.getCategoriaPorId(id);
+                
+                this.categoria = catBll.getCategoriaPorId(new Categoria(id));
                 jTextFieldCodigo.setText(id + "");
                 jTextFieldDescCategoria.setText(categoria.getDescricao());
                 jTextFieldValor.setText(String.format("%.2f", categoria.getValor()));
@@ -355,7 +356,7 @@ public class CategoriaApp extends javax.swing.JDialog {
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
         try {
-            catBll.excluirCategoria(catBll.getCategoriaPorId(categoria.getId()));
+            catBll.excluirCategoria(this.categoria);
             imprimirDadosCategoria(catBll.getConsultaCategorias());
             limpaCampos();
 

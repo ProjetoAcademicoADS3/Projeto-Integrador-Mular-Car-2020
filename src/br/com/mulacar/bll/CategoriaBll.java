@@ -35,7 +35,7 @@ public class CategoriaBll {
 
     public void excluirCategoria(Categoria categoria) throws Exception {
         try {
-            catDal.deleteCategoria(categoria.getId());
+            catDal.deleteCategoria(categoria);
         } catch (Exception erro) {
             String mensagem = erro.getMessage();
             if (mensagem.toLowerCase().contains("violates foreign")) {
@@ -61,8 +61,8 @@ public class CategoriaBll {
         return catDal.getAllCategorias();
     }
 
-    public Categoria getCategoriaPorId(int id) throws Exception {
-        return catDal.getCategoriaById(id);
+    public Categoria getCategoriaPorId(Categoria categoria) throws Exception {
+        return catDal.getCategoriaById(categoria);
     }
     
     public Categoria getCategoriaPorNome(String nome) throws Exception {
