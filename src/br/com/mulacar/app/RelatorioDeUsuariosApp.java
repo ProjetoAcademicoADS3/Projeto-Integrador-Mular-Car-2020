@@ -33,7 +33,7 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
         model.setNumRows(0);
         usuBll.ordenaListaUsuarioa(listaUsuarios);
         for (int pos = 0; pos < listaUsuarios.size(); pos++) {
-            String[] linha = new String[8];
+            String[] linha = new String[9];
             Usuario usu = listaUsuarios.get(pos);
             linha[0] = usu.getId() + "";
             linha[1] = usu.getNome().toUpperCase();
@@ -42,6 +42,8 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
             linha[4] = usu.getSenha();
             linha[5] = usu.getPerfil().toString();
             linha[6] = usu.getStatus().toString();
+            SimpleDateFormat dataForm = new SimpleDateFormat("dd/MM/yyyy");
+            linha[7] = dataForm.format(usu.getDataCadastro());
             model.addRow(linha);
         }
         jTextFieldQuantRegistros.setText(listaUsuarios.size() + "");
@@ -68,7 +70,7 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
         jComboBoxOrdenarUsuarioPor = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Lista de Usuários");
+        setTitle("Relatório de usuários");
         setResizable(false);
 
         jPanelRelatorioUsuarios.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -78,9 +80,17 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Cód.", "Nome", "Cpf", "Email", "Senha", "Perfil", "Status"
+                "Cód.", "Nome", "Cpf", "Email", "Senha", "Perfil", "Status", "Data"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTableRelatorioUsuarios);
         if (jTableRelatorioUsuarios.getColumnModel().getColumnCount() > 0) {
             jTableRelatorioUsuarios.getColumnModel().getColumn(0).setMinWidth(50);
@@ -136,7 +146,7 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
             .addGroup(jPanelRelatorioUsuariosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelRelatorioUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRelatorioUsuariosLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -146,7 +156,7 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBoxOrdenarUsuarioPor, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 333, Short.MAX_VALUE)
                         .addComponent(jButtonListarUsuario)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonFecharRelatorio)))
