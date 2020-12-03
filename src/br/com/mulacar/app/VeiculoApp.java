@@ -133,8 +133,8 @@ public class VeiculoApp extends javax.swing.JDialog {
                 jComboBoxCategorias.setSelectedItem(veiculo.getCategoria().getDescricao().toUpperCase());
                 jComboBoxModelos.setSelectedItem(veiculo.getModelo().getDescricao().toUpperCase());
                 jTextFieldMarca.setText(veiculo.getModelo().getMarca().getDescricao().toUpperCase());
-                jComboBoxAnoFabricacao.setSelectedItem(veiculo.getAnoFabricacao());
-                jComboBoxAnoModelo.setSelectedItem(veiculo.getAnoModelo());
+                jComboBoxAnoFabricacao.setSelectedItem(veiculo.getAnoFabricacao() + "");
+                jComboBoxAnoModelo.setSelectedItem(veiculo.getAnoModelo() + "");
                 jComboBoxTipoDeCombustivel.setSelectedItem(veiculo.getTipoCombustivel().toString());
                 jComboBoxTipoDoVeiculo.setSelectedItem(veiculo.getTipo().toString());
                 jTextFieldRenavan.setText(veiculo.getRenavan());
@@ -142,11 +142,13 @@ public class VeiculoApp extends javax.swing.JDialog {
                 jTextFieldPrecoVenda.setText(String.format("%.2f", veiculo.getPrecoVenda()));
                 jTextFieldPlaca.setText(veiculo.getPlaca());
                 jComboBoxStatus.setSelectedItem(veiculo.getStatus().toString());
-                jComboBoxNumPassageiros.setSelectedItem(veiculo.getNumPassageiros());
+                jComboBoxNumPassageiros.setSelectedItem(veiculo.getNumPassageiros() + "");
                 jTextFieldKm.setText(veiculo.getKm() + "");
                 jComboBoxSituacao.setSelectedItem(veiculo.getSituacao().toString());
                 jButtonSalvarVeiculo.setLabel("Editar");
 
+            } else {
+                JOptionPane.showMessageDialog(null, "Registro não encontrado.\n");
             }
 
         } catch (Exception erro) {
@@ -223,11 +225,10 @@ public class VeiculoApp extends javax.swing.JDialog {
         jTextField_Id = new javax.swing.JTextField();
         jLabel67 = new javax.swing.JLabel();
         jComboBoxSituacao = new javax.swing.JComboBox<>();
-        jLabel68 = new javax.swing.JLabel();
-        jTextFieldQuantRegistros = new javax.swing.JTextField();
         jTextFieldMarca = new javax.swing.JTextField();
         jComboBoxAnoFabricacao = new javax.swing.JComboBox<>();
         jComboBoxAnoModelo = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Manutenção de Cadastro de Veículos");
@@ -368,13 +369,17 @@ public class VeiculoApp extends javax.swing.JDialog {
 
         jComboBoxSituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel68.setText("Quant.Registros:");
-
-        jTextFieldQuantRegistros.setEditable(false);
-
         jTextFieldMarca.setEditable(false);
 
         jComboBoxAnoFabricacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Action-remove-icon-24px.png"))); // NOI18N
+        jButton1.setText("Excluir");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelCadVeiculos3Layout = new javax.swing.GroupLayout(jPanelCadVeiculos3);
         jPanelCadVeiculos3.setLayout(jPanelCadVeiculos3Layout);
@@ -456,14 +461,12 @@ public class VeiculoApp extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextFieldKm, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanelCadVeiculos3Layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(jLabel68)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonNovoCadVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonListarVeiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonSalvarVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -525,8 +528,7 @@ public class VeiculoApp extends javax.swing.JDialog {
                     .addComponent(jButtonListarVeiculos)
                     .addComponent(jButtonSalvarVeiculo)
                     .addComponent(jButtonFechar)
-                    .addComponent(jLabel68)
-                    .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1))
                 .addGap(23, 23, 23))
         );
 
@@ -554,7 +556,9 @@ public class VeiculoApp extends javax.swing.JDialog {
     private void jButtonPesquisarVeiculojButtonPesquisarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarVeiculojButtonPesquisarUsuarioActionPerformed
         // TODO add your handling code here:
         try {
+            
             preencherCampos(jTextFieldPesquisarVeiculo.getText());
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Atenção!\n" + erro.getMessage());
         }
@@ -726,6 +730,21 @@ public class VeiculoApp extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jTextFieldKmKeyTyped
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try {
+//            Veiculo veiculo = new Veiculo();
+//            veiculo = veiculoBll.getConsultarVeiculoByPlaca(
+//                    jTextFieldPlaca.getText());
+//            veiculoBll.excluirVeiculo(veiculo.getId());
+//            limpaCampos();
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, "Atenção ao botão Excluir !\n" + erro.getMessage());
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -770,6 +789,7 @@ public class VeiculoApp extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonListarVeiculos;
     private javax.swing.JButton jButtonNovoCadVeiculo;
@@ -800,7 +820,6 @@ public class VeiculoApp extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel65;
     private javax.swing.JLabel jLabel66;
     private javax.swing.JLabel jLabel67;
-    private javax.swing.JLabel jLabel68;
     private javax.swing.JPanel jPanelCadVeiculos3;
     private javax.swing.JTextField jTextFieldKm;
     private javax.swing.JTextField jTextFieldMarca;
@@ -808,7 +827,6 @@ public class VeiculoApp extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldPlaca;
     private javax.swing.JTextField jTextFieldPrecoCompra;
     private javax.swing.JTextField jTextFieldPrecoVenda;
-    private javax.swing.JTextField jTextFieldQuantRegistros;
     private javax.swing.JTextField jTextFieldRenavan;
     private javax.swing.JTextField jTextField_Id;
     // End of variables declaration//GEN-END:variables

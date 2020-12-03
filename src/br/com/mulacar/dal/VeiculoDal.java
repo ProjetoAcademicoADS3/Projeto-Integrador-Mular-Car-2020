@@ -169,7 +169,7 @@ public class VeiculoDal {
 
     public Veiculo getVeiculoByPlaca(String placa) throws Exception {
         Veiculo veic = new Veiculo();
-        String sql = "SELECT * FROM veiculo WHERE vei_placa=?";
+        String sql = "SELECT * from veiculo WHERE vei_placa=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setString(1, placa);
@@ -210,9 +210,7 @@ public class VeiculoDal {
         for (Veiculo veic : getAllVeiculo()) {
 
             if (veic.getPlaca().toLowerCase().trim().contains(textoDigitado)
-                    || veic.getRenavan().trim().contains(textoDigitado)
-                    || (veic.getModelo().getDescricao().toLowerCase().trim().contains(textoDigitado))
-                    || veic.getCategoria().getDescricao().toLowerCase().trim().contains(textoDigitado)) {
+                    || veic.getRenavan().trim().contains(textoDigitado)) {
 
                 resultadoDaPesquisa.add(veic);
 
