@@ -8,8 +8,6 @@ package br.com.mulacar.app;
 import br.com.mulacar.bll.VeiculoBll;
 import br.com.mulacar.model.Veiculo;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -42,17 +40,17 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
                 String[] linha = new String[16];
                 Veiculo aux = listaVeiculos.get(pos);
                 linha[0] = aux.getId() + "";
-                linha[1] = aux.getCategoria().getDescricao().toUpperCase();
-                linha[2] = aux.getModelo().getDescricao().toUpperCase();
-                linha[3] = aux.getModelo().getMarca().getDescricao().toUpperCase();
-                linha[4] = aux.getAnoFabricacao() + "";
-                linha[5] = aux.getAnoModelo() + "";
-                linha[6] = aux.getTipoCombustivel().toString();
-                linha[7] = aux.getTipo().toString();
-                linha[8] = aux.getRenavan();
-                linha[9] = String.format("%.2f", aux.getPrecoCompra());
-                linha[10] = String.format("%.2f", aux.getPrecoVenda());
-                linha[11] = aux.getPlaca();
+                linha[1] = aux.getPlaca();
+                linha[2] = aux.getRenavan();
+                linha[3] = aux.getCategoria().getDescricao().toUpperCase();
+                linha[4] = aux.getModelo().getDescricao().toUpperCase();
+                linha[5] = aux.getModelo().getMarca().getDescricao().toUpperCase();
+                linha[6] = aux.getAnoFabricacao() + "";
+                linha[7] = aux.getAnoModelo() + "";
+                linha[8] = aux.getTipoCombustivel().toString();
+                linha[9] = aux.getTipo().toString();
+                linha[10] = String.format("%.2f", aux.getPrecoCompra());
+                linha[11] = String.format("%.2f", aux.getPrecoVenda());
                 linha[12] = aux.getStatus().toString();
                 linha[13] = aux.getNumPassageiros() + "";
                 linha[14] = aux.getKm() + "";
@@ -112,7 +110,7 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Código", "Categoria", "Modelo", "Marca", "Ano Fab.", "Ano Mod.", "Combustível", "Tipo", "Renavan", "Pço. Compra", "Pço. Venda", "Placa", "Status", "Num. Pass.", "Km", "Situação"
+                "Código", "Placa", "Renavan", "Categoria", "Modelo", "Marca", "Ano Fab.", "Ano Mod.", "Combustível", "Tipo", "Pço. Compra", "Pço. Venda", "Status", "Num. Pass.", "Km", "Situação"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -128,12 +126,12 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
             jTableVeiculos.getColumnModel().getColumn(0).setMinWidth(50);
             jTableVeiculos.getColumnModel().getColumn(0).setPreferredWidth(50);
             jTableVeiculos.getColumnModel().getColumn(0).setMaxWidth(50);
-            jTableVeiculos.getColumnModel().getColumn(4).setMinWidth(60);
-            jTableVeiculos.getColumnModel().getColumn(4).setPreferredWidth(60);
-            jTableVeiculos.getColumnModel().getColumn(4).setMaxWidth(60);
-            jTableVeiculos.getColumnModel().getColumn(5).setMinWidth(60);
-            jTableVeiculos.getColumnModel().getColumn(5).setPreferredWidth(60);
-            jTableVeiculos.getColumnModel().getColumn(5).setMaxWidth(60);
+            jTableVeiculos.getColumnModel().getColumn(6).setMinWidth(60);
+            jTableVeiculos.getColumnModel().getColumn(6).setPreferredWidth(60);
+            jTableVeiculos.getColumnModel().getColumn(6).setMaxWidth(60);
+            jTableVeiculos.getColumnModel().getColumn(7).setMinWidth(60);
+            jTableVeiculos.getColumnModel().getColumn(7).setPreferredWidth(60);
+            jTableVeiculos.getColumnModel().getColumn(7).setMaxWidth(60);
             jTableVeiculos.getColumnModel().getColumn(14).setMinWidth(70);
             jTableVeiculos.getColumnModel().getColumn(14).setPreferredWidth(70);
             jTableVeiculos.getColumnModel().getColumn(14).setMaxWidth(70);
