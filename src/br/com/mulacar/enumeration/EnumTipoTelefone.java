@@ -9,8 +9,37 @@
 
 package br.com.mulacar.enumeration;
 
+import java.util.Arrays;
+import java.util.Vector;
+
 public enum EnumTipoTelefone {
     
-    CELULAR, FIXO;
+    CELULAR("Celular"), 
+    FIXO("Fixo");
+    
+ private final String tipo;
+    
+    EnumTipoTelefone(final String tipo) {
+        this.tipo = tipo;
+    }
+        
+    public static Vector<EnumTipoTelefone> carregarTiposTelefones() {
+        
+        Vector<EnumTipoTelefone> tipos = new Vector();
+        
+        tipos.addAll(Arrays.asList(EnumTipoTelefone.values()));   
+        
+        return tipos;
+    }     
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    @Override
+    public String toString() {
+        return this.tipo;
+    }    
+
     
 }

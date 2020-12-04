@@ -1,5 +1,5 @@
 --projeto MULA CAR
-
+--feito diagrama de classe também
 CREATE TABLE usuario (
     usu_id serial NOT NULL,
     usu_nome varchar(60) NOT NULL,
@@ -28,7 +28,7 @@ INSERT INTO usuario
 ( 'Bete Tie Senai', '69520032070', 'bete@gmail.com', '123456', 'ADMINISTRADOR', '2020-11-10', 'ATIVO');
 
 
-
+--feito diagrama de classe também
 CREATE TABLE marca (
     mar_id serial NOT NULL,
     mar_nome varchar(60) NOT NULL,
@@ -73,7 +73,7 @@ INSERT INTO marca
 ('honda','INATIVO');
 	
 
-	
+--feito diagrama de classe também	
 CREATE TABLE modelo (
     mod_id serial NOT NULL,
     mod_nome varchar(60) NOT NULL,
@@ -124,7 +124,7 @@ INSERT INTO modelo
 ('prisma','INATIVO',3);
 
 
-
+--feito diagrama de classe também
 CREATE TABLE categoria (
     cat_id serial NOT NULL,
     cat_nome varchar(60) NOT NULL,
@@ -144,7 +144,7 @@ INSERT INTO categoria
 ('UTILITARIO', 200.00, 'ATIVO');
 
 
-
+--feito diagrama de classe também
 CREATE TABLE veiculo (
     vei_id serial NOT NULL,
     vei_placa varchar(7) NOT NULL,
@@ -175,7 +175,7 @@ CREATE TABLE veiculo (
 );
 
 
-
+--feito diagrama de classe também
 CREATE TABLE cliente (
     cli_id serial NOT NULL,
     cli_razao_social varchar(100) NULL,
@@ -222,7 +222,7 @@ cli_tipo)VALUES
 ( 'Bete Tie Senai SA','SOFTWARE & TESTES', null,'ATIVO','94346804000190',null,null,'PESSOA_JURIDICA');
 
 
-
+--feito diagrama de classe também
 CREATE TABLE motorista (
     mot_id serial NOT NULL,
     mot_nome varchar(60) NOT NULL,
@@ -252,7 +252,7 @@ VALUES
  'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC'),
 
 
- 
+--feito diagrama de classe também
 CREATE TABLE contato (
     con_id serial NOT NULL,
     con_tipo varchar(20) NOT NULL,

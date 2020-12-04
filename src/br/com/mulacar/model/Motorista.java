@@ -29,6 +29,10 @@ public class Motorista {
     private String pathImagem;
     private EnumTipoCliente tipoCliente;
 
+    public Motorista(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

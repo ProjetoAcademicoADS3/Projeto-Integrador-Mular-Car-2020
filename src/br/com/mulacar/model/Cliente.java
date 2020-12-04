@@ -27,9 +27,13 @@ public class Cliente {
     private Endereco endereco;
     private Contato contato;
 
-    public Cliente() {
+      public Cliente() {
     }
 
+    public Cliente(int id) {
+        this.id = id;
+    }
+    
     public Cliente(String razaoSocial, String nomeFantasia, String nome, EnumStatus status, String cpfCnpj, String rg, String orgaoEmissor, EnumTipoCliente tipoCliente, Endereco endereco, Contato contato) {
         this.razaoSocial = razaoSocial;
         this.nomeFantasia = nomeFantasia;
@@ -42,6 +46,7 @@ public class Cliente {
         this.endereco = endereco;
         this.contato = contato;
     }
+
 
     public int getId() {
         return id;
