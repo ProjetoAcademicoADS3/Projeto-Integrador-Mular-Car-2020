@@ -15,8 +15,6 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
-
 
 public class CategoriaBll {
 
@@ -27,7 +25,7 @@ public class CategoriaBll {
         super();
         catDal = new CategoriaDal();
     }
-
+    
     public void adicionarCategoria(Categoria categoria) throws Exception {
         validarCategoria(categoria);
         catDal.addCategoria(categoria);

@@ -9,6 +9,8 @@
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.CategoriaBll;
+import br.com.mulacar.dal.CategoriaDalOrdena;
+import br.com.mulacar.dal.CategoriaDalOrdenaNome;
 import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.model.Categoria;
 import java.math.BigDecimal;
@@ -21,6 +23,7 @@ public class CategoriaApp extends javax.swing.JDialog {
     private DefaultTableModel model;
     private CategoriaBll catBll = new CategoriaBll();
     private Categoria categoria;
+    private CategoriaDalOrdena categoriaOrdena;
 
     /**
      * Creates new form CategoriaApp
@@ -28,6 +31,8 @@ public class CategoriaApp extends javax.swing.JDialog {
     public CategoriaApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        categoriaOrdena = new CategoriaDalOrdenaNome();
         
         jTextFieldValor.setDocument(new LimiteDeDigitos(8));
 
@@ -46,7 +51,7 @@ public class CategoriaApp extends javax.swing.JDialog {
     private void imprimirDadosCategoria(List<Categoria> listaDeCategorias) throws Exception {
         model = (DefaultTableModel) jTableCategoria.getModel();
         model.setNumRows(0);
-        catBll.ordenaListaCategorias(listaDeCategorias);
+        categoriaOrdena.ordenaCategorias(listaDeCategorias);
         for (int pos = 0; pos < listaDeCategorias.size(); pos++) {
             String[] linha = new String[4];
             Categoria cat = listaDeCategorias.get(pos);

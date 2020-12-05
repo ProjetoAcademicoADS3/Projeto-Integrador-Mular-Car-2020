@@ -6,19 +6,24 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.CategoriaBll;
+import br.com.mulacar.dal.CategoriaDalOrdena;
+import br.com.mulacar.dal.CategoriaDalOrdenaNome;
+import br.com.mulacar.dal.CategoriaDalOrdenaStatus;
+import br.com.mulacar.dal.CategoriaDalOrdenaValor;
 import br.com.mulacar.model.Categoria;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
 public class RelatorioDeCategoriaApp extends javax.swing.JDialog {
 
-    CategoriaBll categoriaBll = new CategoriaBll();
+    private CategoriaBll categoriaBll = new CategoriaBll();
+    private CategoriaDalOrdena categoriaOrdenaNome;
+    private CategoriaDalOrdena categoriaOrdenaValor;
+    private CategoriaDalOrdena categoriaOrdenaStatus;
 
     /**
      * Creates new form RelatorioCategoriaApp
@@ -26,9 +31,13 @@ public class RelatorioDeCategoriaApp extends javax.swing.JDialog {
     public RelatorioDeCategoriaApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
+        categoriaOrdenaNome = new CategoriaDalOrdenaNome();
+        categoriaOrdenaValor = new CategoriaDalOrdenaValor();
+        categoriaOrdenaStatus = new CategoriaDalOrdenaStatus();
+
         jComboBoxOrdenarPor.removeAllItems();
-        String[] ordenarPor = {" ","Categoria", "Valor", "Status"};
+        String[] ordenarPor = {" ", "Categoria", "Valor", "Status"};
         for (int i = 0; i < ordenarPor.length; i++) {
             jComboBoxOrdenarPor.addItem(ordenarPor[i]);
         }
@@ -38,7 +47,14 @@ public class RelatorioDeCategoriaApp extends javax.swing.JDialog {
     private void imprimirDadosCategoria(List<Categoria> listaDeCategorias) throws Exception {
         DefaultTableModel model = (DefaultTableModel) jTablePesquisaCategoria.getModel();
         model.setNumRows(0);
-        categoriaBll.ordenaListaCategorias(listaDeCategorias);
+        if (jComboBoxOrdenarPor.getSelectedIndex() == 1) {
+            categoriaOrdenaNome.ordenaCategorias(listaDeCategorias);
+        } else if (jComboBoxOrdenarPor.getSelectedIndex() == 2) {
+            categoriaOrdenaValor.ordenaCategorias(listaDeCategorias);
+        } else if (jComboBoxOrdenarPor.getSelectedIndex() == 3) {
+            categoriaOrdenaStatus.ordenaCategorias(listaDeCategorias);
+        }
+
         for (int pos = 0; pos < listaDeCategorias.size(); pos++) {
             String[] linha = new String[4];
             Categoria cat = listaDeCategorias.get(pos);

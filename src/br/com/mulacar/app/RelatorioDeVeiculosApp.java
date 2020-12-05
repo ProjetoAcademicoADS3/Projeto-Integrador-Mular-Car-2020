@@ -6,6 +6,9 @@
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.VeiculoBll;
+import br.com.mulacar.dal.VeiculoDalOrdena;
+import br.com.mulacar.dal.VeiculoDalOrdenaCategoria;
+import br.com.mulacar.dal.VeiculoDalOrdenaSituacao;
 import br.com.mulacar.model.Veiculo;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -17,17 +20,35 @@ import javax.swing.table.DefaultTableModel;
  */
 public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
 
-    Veiculo veiculo;
-    VeiculoBll veiculoBll;
-    DefaultTableModel model;
+    private Veiculo veiculo;
+    private VeiculoBll veiculoBll;
+    private DefaultTableModel model;
+    private VeiculoDalOrdena veiculoOrdenaCategoria;
+    private VeiculoDalOrdena veiculoOrdenaSituacao;
+    
 
     /**
      * Creates new form RelatorioDeVeiculosApp
      */
     public RelatorioDeVeiculosApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();
-        veiculoBll = new VeiculoBll();
+        try {
+            initComponents();
+            veiculoBll = new VeiculoBll();
+            veiculoOrdenaCategoria = new VeiculoDalOrdenaCategoria();
+            veiculoOrdenaSituacao = new VeiculoDalOrdenaSituacao();
+            
+            String [] opcaoDeOrdenacao = {" ", "Categoria", "Situação"};
+            jComboBoxOrdenarPor.removeAllItems();
+            for (String opcao : opcaoDeOrdenacao) {
+                jComboBoxOrdenarPor.addItem(opcao);
+            }
+            
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Atenção na inicializacao dos componentes\n"
+                    + ex.getMessage());
+        }
 
     }
 
@@ -35,7 +56,12 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
         try {
             model = (DefaultTableModel) jTableVeiculos.getModel();
             model.setNumRows(0);
-            veiculoBll.ordenaListaModelos(listaVeiculos);
+            if (jComboBoxOrdenarPor.getSelectedIndex() == 1) {
+                veiculoOrdenaCategoria.ordenaVeiculos(listaVeiculos);
+            }else if (jComboBoxOrdenarPor.getSelectedIndex() == 2){
+                veiculoOrdenaSituacao.ordenaVeiculos(listaVeiculos);
+            }
+
             for (int pos = 0; pos < listaVeiculos.size(); pos++) {
                 String[] linha = new String[16];
                 Veiculo aux = listaVeiculos.get(pos);
@@ -143,6 +169,7 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel2.setText("Ordenar por:");
 
+        jComboBoxOrdenarPor.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
         jComboBoxOrdenarPor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanelRelatorioDeVeiculosLayout = new javax.swing.GroupLayout(jPanelRelatorioDeVeiculos);
@@ -217,7 +244,7 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
             // TODO add your handling code here:
             imprimirDadosVeiculo(veiculoBll.getConsultarVeiculos());
         } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null,"Atenção no botão listar " +  erro.getMessage());
+            JOptionPane.showMessageDialog(null, "Atenção no botão listar " + erro.getMessage());
         }
 
 
