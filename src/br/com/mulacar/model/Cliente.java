@@ -11,7 +11,6 @@ package br.com.mulacar.model;
 
 import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.enumeration.EnumTipoCliente;
-import java.util.Objects;
 
 public class Cliente {
 
