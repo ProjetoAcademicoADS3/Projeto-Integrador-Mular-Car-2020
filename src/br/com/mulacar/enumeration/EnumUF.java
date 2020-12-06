@@ -11,10 +11,6 @@ import java.util.Vector;
 /**
  * Enum com todas as Unidades da Federação do Brasil. Contém o nome da Unidade, a sigla e a capital
  * da Unidade da Federação. As unidades estão listadas por ordem alfabética no enum.
- *
- * @author Ricardo Giaviti
- * @version 1.1.1
- * @since 1.0.0
  */
 public enum EnumUF {
 

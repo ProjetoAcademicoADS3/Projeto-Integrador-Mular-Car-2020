@@ -11,6 +11,7 @@ package br.com.mulacar.bll;
 
 import br.com.mulacar.dal.ClienteDal;   
 import br.com.mulacar.enumeration.EnumTipoCliente;
+import br.com.mulacar.exception.MulaCarException;
 import br.com.mulacar.model.Cliente;
 import br.com.mulacar.util.UtilObjetos;
 import java.util.List;
@@ -26,11 +27,12 @@ public class ClienteBll {
         clienteDal = new ClienteDal();
     }
 
-    public void adicionarCliente(Cliente cliente) throws Exception {
+    public Cliente adicionarCliente(Cliente cliente) throws Exception {
 
         this.validarCliente(cliente);
         
-        clienteDal.addCliente(cliente);
+        return clienteDal.addCliente(cliente);
+        
     }
 
     public void excluirCliente(Cliente cliente) throws Exception {
@@ -123,13 +125,19 @@ public class ClienteBll {
                 || UtilObjetos.ehNuloOuVazio(cliente.getTipoCliente());
         
         if (temCamposNulos) {
-            throw new Exception("Cpf/Cnpj inválido para o cliente!\n");
+            throw new Exception("Campos obrigatórios não foram preenchidos!\n");
         }
     }
 
     private void validarTamanhoMinimoNomeOuFantasia(Cliente cliente, int tamanhoMinimo) throws Exception {
-        if (cliente.getNome().length() < tamanhoMinimo || cliente.getNomeFantasia().length() < tamanhoMinimo) {
-            throw new Exception("O nome/nome fantasiado cliente deve ter no mínimo 3 letras!\n");
+        if (cliente.getTipoCliente().equals(EnumTipoCliente.PESSOA_FISICA)) {
+            if (cliente.getNome().length() < tamanhoMinimo) {
+                throw new Exception("O nome cliente deve ter no mínimo 3 letras!\n");
+            }
+        } else {
+            if (cliente.getNomeFantasia().length() < tamanhoMinimo) {
+                throw new Exception("O nome fantasia do cliente deve ter no mínimo 3 letras!\n");
+            }            
         }
     }
 
@@ -158,7 +166,7 @@ public class ClienteBll {
             clienteBanco = clienteDal.getClienteByCpfCnpj(cliente);
 
             if (!UtilObjetos.ehNuloOuVazio(clienteBanco)) {
-                throw new Exception("Cliente já possui cadastro.");
+                throw new MulaCarException("Cliente já possui cadastro.");
             }
         }
         
@@ -168,7 +176,7 @@ public class ClienteBll {
             clienteBanco = clienteDal.getClienteByRg(cliente);
 
             if (!UtilObjetos.ehNuloOuVazio(clienteBanco)) {
-                throw new Exception("Cliente já possui cadastro.");
+                throw new MulaCarException("Cliente já possui cadastro.");
             }        
         }
     }

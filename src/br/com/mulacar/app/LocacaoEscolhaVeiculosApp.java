@@ -70,6 +70,11 @@ public class LocacaoEscolhaVeiculosApp extends javax.swing.JDialog {
         jButton6.setMinimumSize(new java.awt.Dimension(110, 90));
         jButton6.setPreferredSize(new java.awt.Dimension(110, 90));
         jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Arrow-previous-icon64px in.png"))); // NOI18N
         jButton7.setText("Seleção do Veiculo");
@@ -225,6 +230,10 @@ public class LocacaoEscolhaVeiculosApp extends javax.swing.JDialog {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments

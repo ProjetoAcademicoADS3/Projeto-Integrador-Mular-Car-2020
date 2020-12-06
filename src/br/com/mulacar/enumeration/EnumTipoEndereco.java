@@ -9,8 +9,37 @@
 
 package br.com.mulacar.enumeration;
 
+import java.util.Arrays;
+import java.util.Vector;
+
 public enum EnumTipoEndereco {
     
-    COMERCIAL, RESIDENCIAL;
+    COMERCIAL("Comercial"), 
+    RESIDENCIAL("Residencial");
+    
+    private final String tipo;
+    
+    EnumTipoEndereco(final String tipo) {
+        this.tipo = tipo;
+    }
+        
+    public static Vector<EnumTipoEndereco> carregarTiposEndereco() {
+        
+        Vector<EnumTipoEndereco> tipos = new Vector();
+        
+        tipos.addAll(Arrays.asList(EnumTipoEndereco.values()));   
+        
+        return tipos;
+    }     
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    @Override
+    public String toString() {
+        return this.tipo;
+    }
+    
     
 }

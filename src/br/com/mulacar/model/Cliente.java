@@ -24,13 +24,15 @@ public class Cliente {
     private String rg;
     private String orgaoEmissor;
     private EnumTipoCliente tipoCliente;
-    private Endereco endereco;
-    private Contato contato;
 
     public Cliente() {
     }
 
-    public Cliente(String razaoSocial, String nomeFantasia, String nome, EnumStatus status, String cpfCnpj, String rg, String orgaoEmissor, EnumTipoCliente tipoCliente, Endereco endereco, Contato contato) {
+    public Cliente(int id) {
+        this.id = id;
+    }
+
+    public Cliente(String razaoSocial, String nomeFantasia, String nome, EnumStatus status, String cpfCnpj, String rg, String orgaoEmissor, EnumTipoCliente tipoCliente) {
         this.razaoSocial = razaoSocial;
         this.nomeFantasia = nomeFantasia;
         this.nome = nome;
@@ -39,10 +41,8 @@ public class Cliente {
         this.rg = rg;
         this.orgaoEmissor = orgaoEmissor;
         this.tipoCliente = tipoCliente;
-        this.endereco = endereco;
-        this.contato = contato;
     }
-
+    
     public int getId() {
         return id;
     }
@@ -116,25 +116,9 @@ public class Cliente {
         this.tipoCliente = tipoCliente;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
-
-    public Contato getContato() {
-        return contato;
-    }
-
-    public void setContato(Contato contato) {
-        this.contato = contato;
-    }
-
     @Override
     public String toString() {
-        return "Cliente{" + "id=" + id + ", razaoSocial=" + razaoSocial + ", nomeFantasia=" + nomeFantasia + ", nome=" + nome + ", status=" + status + ", cpfCnpj=" + cpfCnpj + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", tipoCliente=" + tipoCliente + ", endereco=" + endereco + ", contato=" + contato + '}';
+        return "Cliente{" + "id=" + id + ", razaoSocial=" + razaoSocial + ", nomeFantasia=" + nomeFantasia + ", nome=" + nome + ", status=" + status + ", cpfCnpj=" + cpfCnpj + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", tipoCliente=" + tipoCliente + '}';
     }
 
     @Override

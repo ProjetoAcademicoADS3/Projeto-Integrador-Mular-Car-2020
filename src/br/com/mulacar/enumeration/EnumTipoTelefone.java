@@ -9,8 +9,50 @@
 
 package br.com.mulacar.enumeration;
 
+import java.util.Arrays;
+import java.util.Vector;
+
 public enum EnumTipoTelefone {
     
-    CELULAR, FIXO;
+    CELULAR("Celular"), 
+    FIXO("Fixo");
+
+    public static EnumTipoTelefone valueOf(Object selectedItem) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+ private final String descricao;
+    
+    EnumTipoTelefone(final String descricao) {
+        this.descricao = descricao;
+    }
+    
+    public static EnumTipoTelefone fromDescricao(final String tipoDescricao) {
+      for (final EnumTipoTelefone desc : EnumTipoTelefone.values()) {
+        if (desc.descricao.equalsIgnoreCase(tipoDescricao)) {
+          return desc;
+        }
+      }
+
+      throw new IllegalArgumentException(tipoDescricao);
+    }    
+        
+    public static Vector<EnumTipoTelefone> carregarTiposTelefones() {
+        
+        Vector<EnumTipoTelefone> tipos = new Vector();
+        
+        tipos.addAll(Arrays.asList(EnumTipoTelefone.values()));   
+        
+        return tipos;
+    }     
+
+    public String getTipo() {
+        return descricao;
+    }
+
+    @Override
+    public String toString() {
+        return this.descricao;
+    }    
     
 }
