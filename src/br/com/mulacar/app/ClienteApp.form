@@ -25,7 +25,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jTabbedPaneCliente" pref="783" max="32767" attributes="0"/>
+              <Component id="jTabbedPaneCliente" pref="850" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -93,11 +93,11 @@
                               <Component id="jTextFieldCpf" min="-2" pref="200" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="227" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="294" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jButtonFisicaParaTabEndereco" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonIrPFisicaParaTabEndereco" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -126,7 +126,7 @@
                           <Component id="jLabelOrgaoEmissor" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="211" max="32767" attributes="0"/>
-                      <Component id="jButtonFisicaParaTabEndereco" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonIrPFisicaParaTabEndereco" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -161,7 +161,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jTextFieldCpf">
             </Component>
-            <Component class="javax.swing.JButton" name="jButtonFisicaParaTabEndereco">
+            <Component class="javax.swing.JButton" name="jButtonIrPFisicaParaTabEndereco">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/br/com/mulacar/imagens/seta-continuar.png"/>
@@ -170,7 +170,7 @@
                 <Property name="text" type="java.lang.String" value="Continuar"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonFisicaParaTabEnderecoActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonIrPFisicaParaTabEnderecoActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -213,11 +213,11 @@
                               <Component id="jTextFieldCnpj" min="-2" pref="243" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="20" pref="221" max="32767" attributes="0"/>
+                      <EmptySpace min="20" pref="288" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="jButtonJuridicaParaTabEndereco" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonIrParaTabEndereco" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -241,7 +241,7 @@
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="247" max="32767" attributes="0"/>
-                      <Component id="jButtonJuridicaParaTabEndereco" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButtonIrParaTabEndereco" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -269,7 +269,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jTextFieldNomeFantasia">
             </Component>
-            <Component class="javax.swing.JButton" name="jButtonJuridicaParaTabEndereco">
+            <Component class="javax.swing.JButton" name="jButtonIrParaTabEndereco">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/br/com/mulacar/imagens/seta-continuar.png"/>
@@ -278,7 +278,7 @@
                 <Property name="text" type="java.lang.String" value="Continuar"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonJuridicaParaTabEnderecoActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonIrParaTabEnderecoActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -300,36 +300,17 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane2" alignment="1" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="jButtonEnderecoParaContato" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
-                                      <Component id="jComboBoxTipoEndereco" min="-2" pref="206" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
-                                      <Component id="jTextFieldRua" min="-2" pref="433" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jTextFieldCEP" pref="170" max="32767" attributes="0"/>
-                                  <Component id="jTextFieldBairro" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="jTextFieldNumero" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="jButtonIncluirEnderecoTeste" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jButtonIrParaTabContato" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                      <Component id="jTextFieldComplemento" min="-2" pref="433" max="-2" attributes="0"/>
+                                  </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
@@ -339,21 +320,46 @@
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="jComboBoxUf" max="32767" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                      <Component id="jTextFieldComplemento" min="-2" pref="433" max="-2" attributes="0"/>
-                                  </Group>
                               </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-                                      <Component id="jButton1" min="-2" pref="166" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="jButtonExcluirEnderecoTabela" min="-2" max="-2" attributes="0"/>
                                   </Group>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
+                                      <Component id="jComboBoxTipoEndereco" min="-2" pref="206" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jTextFieldCEP" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+                                      <Component id="jTextFieldRua" min="-2" pref="433" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jButtonAdicionarEnderecoTabela" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="125" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="jTextFieldBairro" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="jTextFieldNumero" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -391,12 +397,16 @@
                           <Component id="jTextFieldCidade" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jComboBoxUf" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonExcluirEnderecoTabela" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonAdicionarEnderecoTabela" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" pref="186" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" pref="178" max="32767" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButtonEnderecoParaContato" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jButtonIrParaTabContato" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonIncluirEnderecoTeste" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -480,7 +490,7 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JButton" name="jButtonEnderecoParaContato">
+            <Component class="javax.swing.JButton" name="jButtonIrParaTabContato">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/br/com/mulacar/imagens/seta-continuar.png"/>
@@ -489,7 +499,7 @@
                 <Property name="text" type="java.lang.String" value="Continuar"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEnderecoParaContatoActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonIrParaTabContatoActionPerformed"/>
               </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane2">
@@ -502,55 +512,61 @@
                 <Component class="javax.swing.JTable" name="jTableEnderecos">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="8" rowCount="4">
-                        <Column editable="true" title="Tipo" type="java.lang.Object"/>
-                        <Column editable="true" title="Cep" type="java.lang.Object"/>
-                        <Column editable="true" title="Rua" type="java.lang.Object"/>
-                        <Column editable="true" title="N&#xfa;mero" type="java.lang.Object"/>
-                        <Column editable="true" title="Compl." type="java.lang.Object"/>
-                        <Column editable="true" title="Bairro" type="java.lang.Object"/>
-                        <Column editable="true" title="Cidade" type="java.lang.Object"/>
-                        <Column editable="true" title="Estado" type="java.lang.Object"/>
+                      <Table columnCount="9" rowCount="0">
+                        <Column editable="false" title="Id" type="java.lang.Object"/>
+                        <Column editable="false" title="Tipo" type="java.lang.Object"/>
+                        <Column editable="false" title="Cep" type="java.lang.Object"/>
+                        <Column editable="false" title="Rua" type="java.lang.Object"/>
+                        <Column editable="false" title="N&#xfa;mero" type="java.lang.Object"/>
+                        <Column editable="false" title="Compl." type="java.lang.Object"/>
+                        <Column editable="false" title="Bairro" type="java.lang.Object"/>
+                        <Column editable="false" title="Cidade" type="java.lang.Object"/>
+                        <Column editable="false" title="Estado" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="3" resizable="false">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="false">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="false">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="false">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="5" resizable="false">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="false">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="15" resizable="false">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="15" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="3" resizable="false">
                           <Title/>
                           <Editor/>
                           <Renderer/>
@@ -564,13 +580,39 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="jButton1">
+            <Component class="javax.swing.JButton" name="jButtonIncluirEnderecoTeste">
               <Properties>
-                <Property name="mnemonic" type="int" value="97"/>
-                <Property name="text" type="java.lang.String" value="Adicionar Endere&#xe7;o"/>
+                <Property name="mnemonic" type="int" value="112"/>
+                <Property name="text" type="java.lang.String" value="preencher Endere&#xe7;o para Teste"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonIncluirEnderecoTesteActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonExcluirEnderecoTabela">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/br/com/mulacar/imagens/Action-remove-icon-24px.png"/>
+                </Property>
+                <Property name="mnemonic" type="int" value="101"/>
+                <Property name="text" type="java.lang.String" value="Excluir"/>
+                <Property name="toolTipText" type="java.lang.String" value="Selecione o endere&#xe7;o na tabela e clique aqui para excluir."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonExcluirEnderecoTabelaActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonAdicionarEnderecoTabela">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/br/com/mulacar/imagens/Apps-File-New-icon-24px.png"/>
+                </Property>
+                <Property name="mnemonic" type="int" value="97"/>
+                <Property name="text" type="java.lang.String" value="Adicionar"/>
+                <Property name="toolTipText" type="java.lang.String" value="Preencha os dados do endere&#xe7;o e clique aqui para adicionar. na tabela."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAdicionarEnderecoTabelaActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -614,7 +656,7 @@
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jScrollPane1" alignment="1" pref="769" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" alignment="1" pref="836" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -695,6 +737,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/br/com/mulacar/imagens/Actions-window-close-icon-24px.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="102"/>
                 <Property name="text" type="java.lang.String" value="Fechar"/>
               </Properties>
               <Events>
@@ -723,7 +766,7 @@
                 <Component class="javax.swing.JTable" name="jTableContatos">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="3" rowCount="4">
+                      <Table columnCount="3" rowCount="0">
                         <Column editable="true" title="E-mail" type="java.lang.Object"/>
                         <Column editable="false" title="Tipo Telefone" type="java.lang.Object"/>
                         <Column editable="false" title="N&#xfa;mero" type="java.lang.Object"/>

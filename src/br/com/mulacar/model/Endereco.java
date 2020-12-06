@@ -25,6 +25,12 @@ public class Endereco {
     public Endereco() {
     }
 
+    public Endereco(int id) {
+        this.id = id;
+    }
+    
+    
+
     public int getId() {
         return id;
     }

@@ -14,13 +14,14 @@ import java.util.Vector;
  */
 public enum EnumUF {
 
-    AMAZONAS("Amazonas", "AM", "Manaus"),
-    ALAGOAS("Alagoas", "AL", "Maceió"),
     ACRE("Acre", "AC", "Rio Branco"),
+    ALAGOAS("Alagoas", "AL", "Maceió"),
     AMAPA("Amapá", "AP", "Macapá"),
+    AMAZONAS("Amazonas", "AM", "Manaus"),
     BAHIA("Bahia", "BA", "Salvador"),
-    PARA("Pará", "PA", "Belém"),
+    CEARA("Ceará", "CE", "Fortaleza"),
     MATO_GROSSO("Mato Grosso", "MT", "Cuiabá"),
+    PARA("Pará", "PA", "Belém"),
     MINAS_GERAIS("Minas Gerais", "MG", "Belo Horizonte"),
     MATO_GROSSO_DO_SUL("Mato Grosso do Sul", "MS", "Campo Grande"),
     GOIAS("Goiás", "GO", "Goiânia"),
@@ -32,7 +33,6 @@ public enum EnumUF {
     RONDONIA("Rondônia", "RO", "Porto Velho"),
     RORAIMA("Roraima", "RR", "Boa Vista"),
     PARANA("Paraná", "PR", "Curitiba"),
-    CEARA("Ceará", "CE", "Fortaleza"),
     PERNAMBUCO("Pernambuco", "PE", "Recife"),
     SANTA_CATARINA("Santa Catarina", "SC", "Florianópolis"),
     PARAIBA("Paraíba", "PB", "João Pessoa"),

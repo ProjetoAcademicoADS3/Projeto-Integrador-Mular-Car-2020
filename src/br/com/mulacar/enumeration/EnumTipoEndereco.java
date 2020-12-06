@@ -14,8 +14,8 @@ import java.util.Vector;
 
 public enum EnumTipoEndereco {
     
-    COMERCIAL("Comercial"), 
-    RESIDENCIAL("Residencial");
+    RESIDENCIAL("Residencial"),
+    COMERCIAL("Comercial"); 
     
     private final String tipo;
     
