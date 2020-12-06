@@ -21,6 +21,13 @@ public class Categoria {
     public Categoria() {
     }
 
+<<<<<<< .merge_file_a09932
+=======
+    public Categoria(int id) {
+        this.id = id;
+    }
+
+>>>>>>> .merge_file_a05464
     public Categoria(String descricao) {
         this.descricao = descricao;
     }
@@ -78,10 +85,6 @@ public class Categoria {
     }
 
     public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-}
         this.valor = valor;
     }
 
