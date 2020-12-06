@@ -41,11 +41,11 @@ public class CategoriaDal {
         }
     }
 
-    public void deleteCategoria(int id) throws Exception {
+    public void deleteCategoria(Categoria categoria) throws Exception {
         String sql = "DELETE FROM categoria WHERE cat_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, categoria.getId());
             preparedStatement.executeUpdate();
         } catch (Exception erro) {
             throw erro;
@@ -91,12 +91,12 @@ public class CategoriaDal {
         return listaCategorias;
     }
 
-    public Categoria getCategoriaById(int id) throws Exception {
+    public Categoria getCategoriaById(Categoria categoria) throws Exception {
         Categoria cat = new Categoria();
         String sql = "SELECT * FROM categoria WHERE cat_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, categoria.getId());
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {

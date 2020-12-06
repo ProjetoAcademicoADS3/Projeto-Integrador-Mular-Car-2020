@@ -75,7 +75,7 @@ public class CategoriaApp extends javax.swing.JDialog {
     public void preencherCampos(int id) {
         try {
             if (id > 0) {
-                categoria = catBll.getCategoriaPorId(id);
+                categoria = catBll.getCategoriaPorId(categoria);
                 jTextFieldCodigo.setText(id + "");
                 jTextFieldDescCategoria.setText(categoria.getDescricao());
                 jTextFieldValor.setText(String.format("%.2f", categoria.getValor()));
@@ -355,7 +355,7 @@ public class CategoriaApp extends javax.swing.JDialog {
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
         try {
-            catBll.excluirCategoria(catBll.getCategoriaPorId(categoria.getId()));
+            catBll.excluirCategoria(catBll.getCategoriaPorId(categoria));
             imprimirDadosCategoria(catBll.getConsultaCategorias());
             limpaCampos();
 
@@ -481,5 +481,4 @@ public class CategoriaApp extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldQuantRegistros;
     private javax.swing.JTextField jTextFieldValor;
     // End of variables declaration//GEN-END:variables
-}
 }

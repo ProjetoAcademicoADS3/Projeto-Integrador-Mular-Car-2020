@@ -21,6 +21,10 @@ public class Categoria {
     public Categoria() {
     }
 
+    public Categoria(int id) {
+        this.id = id;
+    }
+    
     public Categoria(String descricao) {
         this.descricao = descricao;
     }
@@ -78,10 +82,6 @@ public class Categoria {
     }
 
     public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-}
         this.valor = valor;
     }
 

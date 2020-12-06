@@ -12,6 +12,7 @@ import br.com.mulacar.enumeration.EnumSituacaoVeiculo;
 import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.enumeration.EnumTipoCombustivel;
 import br.com.mulacar.enumeration.EnumTipoVeiculo;
+import br.com.mulacar.model.Categoria;
 import br.com.mulacar.model.Veiculo;
 import java.sql.Connection;
 import br.com.mulacar.util.Conexao;
@@ -152,7 +153,7 @@ public class VeiculoDal {
                 veic.setNumPassageiros(rs.getInt("vei_num_passageiro"));
                 veic.setKm(rs.getLong("vei_km"));
                 CategoriaDal catDal = new CategoriaDal();
-                veic.setCategoria(catDal.getCategoriaById(rs.getInt("vei_categoria_id")));
+                veic.setCategoria(catDal.getCategoriaById(new Categoria(rs.getInt("vei_categoria_id"))));
                 ModeloDal modDal = new ModeloDal();
                 veic.setModelo(modDal.getModeloById(rs.getInt("vei_modelo_id")));
                 veic.setSituacao(EnumSituacaoVeiculo.valueOf(rs.getString("vei_situacao")));
@@ -190,7 +191,7 @@ public class VeiculoDal {
                 veic.setNumPassageiros(rs.getInt("vei_num_passageiro"));
                 veic.setKm(rs.getLong("vei_km"));
                 CategoriaDal catDal = new CategoriaDal();
-                veic.setCategoria(catDal.getCategoriaById(rs.getInt("vei_categoria_id")));
+                veic.setCategoria(catDal.getCategoriaById(new Categoria(rs.getInt("vei_categoria_id"))));
                 ModeloDal modDal = new ModeloDal();
                 veic.setModelo(modDal.getModeloById(rs.getInt("vei_modelo_id")));
                 veic.setSituacao(EnumSituacaoVeiculo.valueOf(rs.getString("vei_situacao")));
@@ -238,5 +239,4 @@ public class VeiculoDal {
 
     }
 
-}
 }
