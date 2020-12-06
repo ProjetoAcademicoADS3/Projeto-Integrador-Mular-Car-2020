@@ -11,12 +11,12 @@ import br.com.mulacar.model.Veiculo;
  *
  * @author roger
  */
-public class VeiculoDalOrdenaCategoria extends VeiculoDalOrdena {
+public class VeiculoDalOrdenadoPorCategoria extends VeiculoDalOrdena {
 
     @Override
     public boolean ePrimeiro(Veiculo veiculo1, Veiculo veiculo2) throws Exception {
-        if (veiculo1.getCategoria().getDescricao().
-                compareToIgnoreCase(veiculo2.getCategoria().getDescricao()) <= 0) {
+        if (veiculo1.getCategoria().getDescricao().toString().
+                compareToIgnoreCase(veiculo2.getCategoria().getDescricao().toString()) <= 0) {
             return true;
         } else {
             return false;

@@ -733,11 +733,11 @@ public class VeiculoApp extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try {
-//            Veiculo veiculo = new Veiculo();
-//            veiculo = veiculoBll.getConsultarVeiculoByPlaca(
-//                    jTextFieldPlaca.getText());
-//            veiculoBll.excluirVeiculo(veiculo.getId());
-//            limpaCampos();
+            Veiculo veiculo = new Veiculo();
+            veiculo = veiculoBll.getConsultarVeiculoByPlaca(
+                    jTextFieldPlaca.getText());
+            veiculoBll.excluirVeiculo(veiculo.getId());
+            limpaCampos();
 
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Atenção ao botão Excluir !\n" + erro.getMessage());

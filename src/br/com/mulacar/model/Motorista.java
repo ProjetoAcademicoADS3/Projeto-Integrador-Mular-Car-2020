@@ -26,8 +26,11 @@ public class Motorista {
     private String numeroCnh;
     private Date dataValidadeCnh;
     private EnumCategoriaCnh categoriaCnh;
-    private String pathImagem;
+    private String pathImagemCnh;
     private EnumTipoCliente tipoCliente;
+
+    public Motorista() {
+    }
 
     public Motorista(int id) {
         this.id = id;
@@ -105,12 +108,12 @@ public class Motorista {
         this.categoriaCnh = categoriaCnh;
     }
 
-    public String getPathImagem() {
-        return pathImagem;
+    public String getPathImagemCnh() {
+        return pathImagemCnh;
     }
 
-    public void setPathImagem(String pathImagem) {
-        this.pathImagem = pathImagem;
+    public void setPathImagemCnh(String pathImagemCnh) {
+        this.pathImagemCnh = pathImagemCnh;
     }
 
     public EnumTipoCliente getTipoCliente() {
@@ -123,7 +126,7 @@ public class Motorista {
 
     @Override
     public String toString() {
-        return "Motorista{" + "id=" + id + ", razaoSocial=" + razaoSocial + ", nome=" + nome + ", cpf=" + cpf + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", numeroCnh=" + numeroCnh + ", dataValidadeCnh=" + dataValidadeCnh + ", categoriaCnh=" + categoriaCnh + ", pathImagem=" + pathImagem + ", tipoCliente=" + tipoCliente + '}';
+        return "Motorista{" + "id=" + id + ", razaoSocial=" + razaoSocial + ", nome=" + nome + ", cpf=" + cpf + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", numeroCnh=" + numeroCnh + ", dataValidadeCnh=" + dataValidadeCnh + ", categoriaCnh=" + categoriaCnh + ", pathImagemCnh=" + pathImagemCnh + ", tipoCliente=" + tipoCliente + '}';
     }
 
     @Override

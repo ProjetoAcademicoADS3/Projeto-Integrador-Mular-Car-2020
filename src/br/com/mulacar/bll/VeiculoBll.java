@@ -57,6 +57,18 @@ public class VeiculoBll {
     public Veiculo getConsultarVeiculoByPlaca(String placa) throws Exception {
         return veicDal.getVeiculoByPlaca(placa);
     }
+    
+    public List<Veiculo> getConsultarVeiculoByCategoria(int categoria, String situacao) throws Exception {
+        return veicDal.getVeiculoByCategoria(categoria,situacao);
+    }
+    
+    public List<Veiculo> getConsultarVeiculoByCategoria(int categoria) throws Exception {
+        return veicDal.getVeiculoByCategoria(categoria);
+    }
+    
+    public List<Veiculo> getConsultarVeiculoBySituacao(String situacao) throws Exception {
+        return veicDal.getVeiculoBySituacao(situacao);
+    }
 
     public ArrayList sourceVeiculo(String dados) throws Exception {
         return veicDal.sourceVeiculo(dados);

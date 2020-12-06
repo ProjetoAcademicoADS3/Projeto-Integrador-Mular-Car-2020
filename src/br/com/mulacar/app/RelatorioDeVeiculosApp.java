@@ -5,10 +5,14 @@
  */
 package br.com.mulacar.app;
 
+import br.com.mulacar.bll.CategoriaBll;
 import br.com.mulacar.bll.VeiculoBll;
 import br.com.mulacar.dal.VeiculoDalOrdena;
-import br.com.mulacar.dal.VeiculoDalOrdenaCategoria;
 import br.com.mulacar.dal.VeiculoDalOrdenaSituacao;
+import br.com.mulacar.dal.VeiculoDalOrdenadoCategoriaSituacao;
+import br.com.mulacar.dal.VeiculoDalOrdenadoPorCategoria;
+import br.com.mulacar.enumeration.EnumSituacaoVeiculo;
+import br.com.mulacar.model.Categoria;
 import br.com.mulacar.model.Veiculo;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -22,10 +26,11 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
 
     private Veiculo veiculo;
     private VeiculoBll veiculoBll;
+    private CategoriaBll categoriaBll;
     private DefaultTableModel model;
     private VeiculoDalOrdena veiculoOrdenaCategoria;
     private VeiculoDalOrdena veiculoOrdenaSituacao;
-    
+    private VeiculoDalOrdena veiculoOrdenadoCategoriaSituacao;
 
     /**
      * Creates new form RelatorioDeVeiculosApp
@@ -35,15 +40,32 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
         try {
             initComponents();
             veiculoBll = new VeiculoBll();
-            veiculoOrdenaCategoria = new VeiculoDalOrdenaCategoria();
+            categoriaBll = new CategoriaBll();
+            veiculoOrdenaCategoria = new VeiculoDalOrdenadoPorCategoria();
             veiculoOrdenaSituacao = new VeiculoDalOrdenaSituacao();
-            
-            String [] opcaoDeOrdenacao = {" ", "Categoria", "Situação"};
+            veiculoOrdenadoCategoriaSituacao = new VeiculoDalOrdenadoCategoriaSituacao();
+
+            String[] opcaoDeOrdenacao = {" ", "categoria", "categoria / situacao", "situação"};
             jComboBoxOrdenarPor.removeAllItems();
             for (String opcao : opcaoDeOrdenacao) {
-                jComboBoxOrdenarPor.addItem(opcao);
+                jComboBoxOrdenarPor.addItem(opcao.toUpperCase());
             }
-            
+
+            jComboBoxSituacaoDoVeiculo.removeAllItems();
+            jComboBoxSituacaoDoVeiculo.addItem(" ");
+            for (EnumSituacaoVeiculo situacao : EnumSituacaoVeiculo.values()) {
+                jComboBoxSituacaoDoVeiculo.addItem(situacao.toString());
+            }
+
+            categoriaBll = new CategoriaBll();
+            List<Categoria> listaCategoria = categoriaBll.getConsultaCategorias();
+            categoriaBll.ordenaListaCategorias(listaCategoria);
+            jComboBoxListarPorCategoria.removeAllItems();
+            jComboBoxListarPorCategoria.addItem(" ");
+            for (int pos = 0; pos < listaCategoria.size(); pos++) {
+                Categoria cat = listaCategoria.get(pos);
+                jComboBoxListarPorCategoria.addItem(cat.getDescricao().toUpperCase());
+            }
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Atenção na inicializacao dos componentes\n"
@@ -56,15 +78,24 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
         try {
             model = (DefaultTableModel) jTableVeiculos.getModel();
             model.setNumRows(0);
-            if (jComboBoxOrdenarPor.getSelectedIndex() == 1) {
+            int categoria = 1;
+            int categoriaSituacao = 2;
+            int situacao = 3;
+
+            if (jComboBoxOrdenarPor.getSelectedIndex() == categoria) {
                 veiculoOrdenaCategoria.ordenaVeiculos(listaVeiculos);
-            }else if (jComboBoxOrdenarPor.getSelectedIndex() == 2){
+            }
+            if (jComboBoxOrdenarPor.getSelectedIndex() == situacao) {
                 veiculoOrdenaSituacao.ordenaVeiculos(listaVeiculos);
+            }
+            if (jComboBoxOrdenarPor.getSelectedIndex() == categoriaSituacao) {
+                veiculoOrdenadoCategoriaSituacao.ordenaVeiculos(listaVeiculos);
             }
 
             for (int pos = 0; pos < listaVeiculos.size(); pos++) {
                 String[] linha = new String[16];
                 Veiculo aux = listaVeiculos.get(pos);
+
                 linha[0] = aux.getId() + "";
                 linha[1] = aux.getPlaca();
                 linha[2] = aux.getRenavan();
@@ -82,6 +113,7 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
                 linha[14] = aux.getKm() + "";
                 linha[15] = aux.getSituacao().toString();
                 model.addRow(linha);
+
             }
             jTextFieldQuantRegistros.setText(listaVeiculos.size() + "");
 
@@ -108,6 +140,10 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
         jTextFieldQuantRegistros = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jComboBoxOrdenarPor = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        jComboBoxListarPorCategoria = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jComboBoxSituacaoDoVeiculo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Relatorio de veículos");
@@ -131,6 +167,7 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
             }
         });
 
+        jTableVeiculos.setAutoCreateRowSorter(true);
         jTableVeiculos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -166,11 +203,28 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel1.setText("Quant. Registros: ");
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
         jLabel2.setText("Ordenar por:");
 
-        jComboBoxOrdenarPor.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jComboBoxOrdenarPor.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jComboBoxOrdenarPor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxOrdenarPor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxOrdenarPorActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jLabel3.setText("Filtrar por:");
+
+        jComboBoxListarPorCategoria.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jComboBoxListarPorCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
+        jLabel4.setText("Situação");
+
+        jComboBoxSituacaoDoVeiculo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jComboBoxSituacaoDoVeiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanelRelatorioDeVeiculosLayout = new javax.swing.GroupLayout(jPanelRelatorioDeVeiculos);
         jPanelRelatorioDeVeiculos.setLayout(jPanelRelatorioDeVeiculosLayout);
@@ -183,8 +237,16 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRelatorioDeVeiculosLayout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 778, Short.MAX_VALUE)
+                        .addComponent(jComboBoxOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(46, 46, 46)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxListarPorCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxSituacaoDoVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 201, Short.MAX_VALUE)
                         .addComponent(jButtonListar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonFechar))
@@ -203,7 +265,11 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
                     .addComponent(jButtonFechar)
                     .addComponent(jButtonListar)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBoxOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jComboBoxListarPorCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jComboBoxSituacaoDoVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
@@ -242,13 +308,42 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
     private void jButtonListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarActionPerformed
         try {
             // TODO add your handling code here:
-            imprimirDadosVeiculo(veiculoBll.getConsultarVeiculos());
+            int indiceCategoria = jComboBoxListarPorCategoria.getSelectedIndex();
+            int indiceSituacao = jComboBoxSituacaoDoVeiculo.getSelectedIndex();
+            String situacao = jComboBoxSituacaoDoVeiculo.getSelectedItem().toString();
+            
+            Categoria categoria = new Categoria();
+            String nomeCategoria = jComboBoxListarPorCategoria.getSelectedItem().toString();
+            categoria = categoriaBll.getCategoriaPorNome(nomeCategoria);
+
+            if (indiceCategoria != 0 && indiceSituacao != 0) {
+
+                imprimirDadosVeiculo(veiculoBll.
+                        getConsultarVeiculoByCategoria(categoria.getId(),
+                                situacao));
+            } else if (indiceCategoria != 0 && indiceSituacao == 0) {
+                imprimirDadosVeiculo(veiculoBll.getConsultarVeiculoByCategoria(categoria.getId()));
+            } else if (indiceCategoria == 0 && indiceSituacao != 0){
+                imprimirDadosVeiculo(veiculoBll.getConsultarVeiculoBySituacao(situacao));
+            }else {
+                imprimirDadosVeiculo(veiculoBll.getConsultarVeiculos());
+            }
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, "Atenção no botão listar " + erro.getMessage());
         }
 
 
     }//GEN-LAST:event_jButtonListarActionPerformed
+
+    private void jComboBoxOrdenarPorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxOrdenarPorActionPerformed
+        // TODO add your handling code here:
+        try {
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, "Atenção do ordenar !" + erro.getMessage());
+        }
+    }//GEN-LAST:event_jComboBoxOrdenarPorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -295,9 +390,13 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonListar;
+    private javax.swing.JComboBox<String> jComboBoxListarPorCategoria;
     private javax.swing.JComboBox<String> jComboBoxOrdenarPor;
+    private javax.swing.JComboBox<String> jComboBoxSituacaoDoVeiculo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanelRelatorioDeVeiculos;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableVeiculos;
