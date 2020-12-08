@@ -87,6 +87,7 @@ public class ClienteBll {
         return clienteDal.getClienteByNomeOuFantasia(cliente);
     }
     
+
     public void ordenaListaClientes(List<Cliente> lista) throws Exception {
         for (int i = 0; i < lista.size(); i++) {
             for (int j = i; j < lista.size(); j++) {

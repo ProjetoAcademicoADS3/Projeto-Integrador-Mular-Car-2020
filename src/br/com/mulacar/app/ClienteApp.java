@@ -141,9 +141,8 @@ public class ClienteApp extends javax.swing.JDialog {
         
         UtilTabela.limparTabelas(jTableContatos, jTableEnderecos);
         
-        
 //      PARA PRODUÇÃO ATRIBUIR FALSE  
-        this.ambienteDesenvolvimento = false;
+        this.ambienteDesenvolvimento = true;
         
         if (ambienteDesenvolvimento) {
             this.preecherDadosTesteCliente();
