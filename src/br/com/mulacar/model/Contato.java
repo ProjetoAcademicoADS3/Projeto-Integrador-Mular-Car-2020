@@ -18,8 +18,9 @@ public class Contato {
     public Contato() {
     }
 
-    public Contato(String email, EnumTipoTelefone tipoTelefone, String numero) {
-        this.email = email;
+    public Contato(int id, String email, EnumTipoTelefone tipoTelefone, String numero) {
+        this.id     = id;
+        this.email  = email;
         this.tipoTelefone = tipoTelefone;
         this.numero = numero;
     }

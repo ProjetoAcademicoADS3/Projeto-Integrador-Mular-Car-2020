@@ -17,7 +17,6 @@ import java.util.Objects;
 public class Motorista {
 
     private int id;
-    private String razaoSocial;
     private String nome;
     private String cpf;
     private String rg;
@@ -26,7 +25,6 @@ public class Motorista {
     private Date dataValidadeCnh;
     private EnumCategoriaCnh categoriaCnh;
     private String pathImagemCnh;
-    private EnumTipoCliente tipoCliente;
 
     public Motorista() {
     }
@@ -41,14 +39,6 @@ public class Motorista {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getRazaoSocial() {
-        return razaoSocial;
-    }
-
-    public void setRazaoSocial(String razaoSocial) {
-        this.razaoSocial = razaoSocial;
     }
 
     public String getNome() {
@@ -115,17 +105,9 @@ public class Motorista {
         this.pathImagemCnh = pathImagemCnh;
     }
 
-    public EnumTipoCliente getTipoCliente() {
-        return tipoCliente;
-    }
-
-    public void setTipoCliente(EnumTipoCliente tipoCliente) {
-        this.tipoCliente = tipoCliente;
-    }
-
     @Override
     public String toString() {
-        return "Motorista{" + "id=" + id + ", razaoSocial=" + razaoSocial + ", nome=" + nome + ", cpf=" + cpf + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", numeroCnh=" + numeroCnh + ", dataValidadeCnh=" + dataValidadeCnh + ", categoriaCnh=" + categoriaCnh + ", pathImagemCnh=" + pathImagemCnh + ", tipoCliente=" + tipoCliente + '}';
+        return "Motorista{" + "id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", numeroCnh=" + numeroCnh + ", dataValidadeCnh=" + dataValidadeCnh + ", categoriaCnh=" + categoriaCnh + ", pathImagemCnh=" + pathImagemCnh + '}';
     }
 
     @Override

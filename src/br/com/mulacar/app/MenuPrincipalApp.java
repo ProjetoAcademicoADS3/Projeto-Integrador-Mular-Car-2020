@@ -510,6 +510,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
             this.setVisible(true);
 
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao abrir a janela de manutenção de clientes.");
         }        
     }//GEN-LAST:event_jMenuItemCadClientesActionPerformed
 

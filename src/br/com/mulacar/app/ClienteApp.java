@@ -22,6 +22,10 @@ import br.com.mulacar.model.Contato;
 import br.com.mulacar.model.Endereco;
 import br.com.mulacar.util.UtilComponentes;
 import br.com.mulacar.util.UtilObjetos;
+import br.com.mulacar.util.UtilString;
+import br.com.mulacar.util.UtilTabela;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -40,6 +45,10 @@ import javax.swing.table.DefaultTableModel;
 public class ClienteApp extends javax.swing.JDialog {
 
     private static final Logger LOG = Logger.getLogger(ClienteApp.class.getName());
+    
+    private static final int LIMITE_CARACTERES_CPF = 11;
+    
+    private static final int LIMITE_CARACTERES_CEP = 8;
     
     private List<Contato> contatos;
 
@@ -53,11 +62,11 @@ public class ClienteApp extends javax.swing.JDialog {
     
     private boolean ambienteDesenvolvimento = false;
     
-    private DefaultTableModel tableModel;
-    
     private String mensagemErroPadrao;
     
     private int idEnderecoSelecinadoTabela;
+    
+    private int idContatoSelecinadoTabela;
     
     public ClienteApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -75,32 +84,66 @@ public class ClienteApp extends javax.swing.JDialog {
 
         setResizable(false);    
         
-        mensagemErroPadrao = "Entre em contato com suporte";
-
-        clienteBll = new ClienteBll();
+        jButtonRemoverEnderecoTabela.setEnabled(false);
         
-        enderecoBll = new EnderecoBll();
-        
-        contatoBll = new ContatoBll();
-        
-        contatos = new ArrayList();
-        
-        enderecos = new ArrayList();
-        
-        jButtonExcluirEnderecoTabela.setEnabled(false);
-        
-        adicionarMouseListenerTabelaEnderecos();
-        
-        limparTabela(jTableContatos);
-        
-        limparTabela(jTableEnderecos);
-        
-        this.carregarComboBoxes();        
+        jButtonRemoverContatoTabela.setEnabled(false);
         
         jButtonIncluirEnderecoTeste.setVisible(false);
         
+        this.mensagemErroPadrao = "Entre em contato com suporte";
+
+        this.clienteBll = new ClienteBll();
+        
+        this.enderecoBll = new EnderecoBll();
+        
+        this.contatoBll = new ContatoBll();
+        
+        this.contatos = new ArrayList();
+        
+        this.enderecos = new ArrayList();
+        
+        this.adicionarMouseListenerTabelaContatos();
+        
+        this.adicionarMouseListenerTabelaEnderecos();
+
+        this.reiniciarTodosCampos();
+        
+        UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldCpf, LIMITE_CARACTERES_CPF);
+        
+        UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldCEP, LIMITE_CARACTERES_CEP);
+        
+        UtilComponentes.adicionarKeyListenerSomenteLetras(jTextFieldNome, 
+                                                        jTextFieldOrgaoEmissor,
+                                                        jTextFieldRazaoSocial,
+                                                        jTextFieldNomeFantasia,
+                                                        jTextFieldRua,
+                                                        jTextFieldComplemento,
+                                                        jTextFieldCidade,
+                                                        jTextFieldBairro);
+        
+        
+        UtilComponentes.adicionarKeyListenerSomenteNumeros(jTextFieldCpf, 
+                                                        jTextFieldRg,
+                                                        jTextFieldCnpj,
+                                                        jTextFieldCEP,
+                                                        jTextFieldNumero,
+                                                        jTextFieldNumeroTelefone);
+        
+        UtilString.ehEmailValido(jTextField1Email.getText());
+        
+        jTextFieldNome.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+//                TODO: BLOQUEAR CAMPOS DE PESSOA JURIDICA
+            }
+            
+        });
+        
+        UtilTabela.limparTabelas(jTableContatos, jTableEnderecos);
+        
+        
 //      PARA PRODUÇÃO ATRIBUIR FALSE  
-        this.ambienteDesenvolvimento = true;
+        this.ambienteDesenvolvimento = false;
         
         if (ambienteDesenvolvimento) {
             this.preecherDadosTesteCliente();
@@ -108,6 +151,8 @@ public class ClienteApp extends javax.swing.JDialog {
         }
         
     }    
+    
+   
 
     private void adicionarMouseListenerTabelaEnderecos() {
         jTableEnderecos.addMouseListener(new MouseAdapter() {
@@ -117,10 +162,23 @@ public class ClienteApp extends javax.swing.JDialog {
                 
                 idEnderecoSelecinadoTabela = Integer.parseInt(jTableEnderecos.getValueAt(linha, 0).toString());
                 
-                habilitarDesabilitarBotaoExcluir();
+                habilitarDesabilitarBotaoRemoverItemTabela(jTableEnderecos, jButtonRemoverEnderecoTabela);
             }
         });
     }
+    
+    private void adicionarMouseListenerTabelaContatos() {
+        jTableContatos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                int linha = jTableContatos.getSelectedRow();
+                
+                idContatoSelecinadoTabela = Integer.parseInt(jTableContatos.getValueAt(linha, 0).toString());
+                
+                habilitarDesabilitarBotaoRemoverItemTabela(jTableContatos, jButtonRemoverContatoTabela);
+            }
+        });
+    }    
 
     private void carregarComboBoxes() {
         Vector<EnumUF> ufs = EnumUF.carregarUnidadesFederativas();
@@ -149,6 +207,7 @@ public class ClienteApp extends javax.swing.JDialog {
         jLabelCpjCnpj = new javax.swing.JLabel();
         jTextFieldCpf = new javax.swing.JTextField();
         jButtonIrPFisicaParaTabEndereco = new javax.swing.JButton();
+        jButtonLimparCamposPessoaFisica = new javax.swing.JButton();
         jPanelPessoaJuridica = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldRazaoSocial = new javax.swing.JTextField();
@@ -178,7 +237,7 @@ public class ClienteApp extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableEnderecos = new javax.swing.JTable();
         jButtonIncluirEnderecoTeste = new javax.swing.JButton();
-        jButtonExcluirEnderecoTabela = new javax.swing.JButton();
+        jButtonRemoverEnderecoTabela = new javax.swing.JButton();
         jButtonAdicionarEnderecoTabela = new javax.swing.JButton();
         jPanelContato = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
@@ -187,11 +246,12 @@ public class ClienteApp extends javax.swing.JDialog {
         jTextFieldNumeroTelefone = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         jTextField1Email = new javax.swing.JTextField();
-        jButtonAdicionarContatoTabela = new javax.swing.JButton();
         jButtonFechar = new javax.swing.JButton();
         jButtonConcluirCadastro = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableContatos = new javax.swing.JTable();
+        jButtonAdicionarContatoTabela = new javax.swing.JButton();
+        jButtonRemoverContatoTabela = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -214,6 +274,13 @@ public class ClienteApp extends javax.swing.JDialog {
         jButtonIrPFisicaParaTabEndereco.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonIrPFisicaParaTabEnderecoActionPerformed(evt);
+            }
+        });
+
+        jButtonLimparCamposPessoaFisica.setText("Limpar Campos");
+        jButtonLimparCamposPessoaFisica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLimparCamposPessoaFisicaActionPerformed(evt);
             }
         });
 
@@ -241,16 +308,18 @@ public class ClienteApp extends javax.swing.JDialog {
                     .addGroup(jPanelPessoaFisicaLayout.createSequentialGroup()
                         .addGap(98, 98, 98)
                         .addComponent(jTextFieldCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 294, Short.MAX_VALUE))
+                .addGap(0, 305, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPessoaFisicaLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonLimparCamposPessoaFisica)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonIrPFisicaParaTabEndereco)
                 .addContainerGap())
         );
         jPanelPessoaFisicaLayout.setVerticalGroup(
             jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelPessoaFisicaLayout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(25, 25, 25)
                 .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelNome))
@@ -258,7 +327,7 @@ public class ClienteApp extends javax.swing.JDialog {
                 .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelCpjCnpj)
                     .addComponent(jTextFieldCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16)
+                .addGap(18, 18, 18)
                 .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelRgOuRazaoSocial)
                     .addComponent(jTextFieldRg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -266,8 +335,10 @@ public class ClienteApp extends javax.swing.JDialog {
                 .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldOrgaoEmissor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelOrgaoEmissor))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
-                .addComponent(jButtonIrPFisicaParaTabEndereco)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
+                .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonLimparCamposPessoaFisica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonIrPFisicaParaTabEndereco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -310,7 +381,7 @@ public class ClienteApp extends javax.swing.JDialog {
                     .addGroup(jPanelPessoaJuridicaLayout.createSequentialGroup()
                         .addGap(110, 110, 110)
                         .addComponent(jTextFieldCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 288, Short.MAX_VALUE))
+                .addGap(20, 299, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPessoaJuridicaLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jButtonIrParaTabEndereco)
@@ -319,7 +390,7 @@ public class ClienteApp extends javax.swing.JDialog {
         jPanelPessoaJuridicaLayout.setVerticalGroup(
             jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelPessoaJuridicaLayout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addGap(25, 25, 25)
                 .addGroup(jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldRazaoSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -331,7 +402,7 @@ public class ClienteApp extends javax.swing.JDialog {
                 .addGroup(jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, Short.MAX_VALUE)
                 .addComponent(jButtonIrParaTabEndereco)
                 .addContainerGap())
         );
@@ -383,23 +454,14 @@ public class ClienteApp extends javax.swing.JDialog {
         });
         jScrollPane2.setViewportView(jTableEnderecos);
         if (jTableEnderecos.getColumnModel().getColumnCount() > 0) {
-            jTableEnderecos.getColumnModel().getColumn(0).setResizable(false);
             jTableEnderecos.getColumnModel().getColumn(0).setPreferredWidth(3);
-            jTableEnderecos.getColumnModel().getColumn(1).setResizable(false);
             jTableEnderecos.getColumnModel().getColumn(1).setPreferredWidth(10);
-            jTableEnderecos.getColumnModel().getColumn(2).setResizable(false);
             jTableEnderecos.getColumnModel().getColumn(2).setPreferredWidth(10);
-            jTableEnderecos.getColumnModel().getColumn(3).setResizable(false);
             jTableEnderecos.getColumnModel().getColumn(3).setPreferredWidth(20);
-            jTableEnderecos.getColumnModel().getColumn(4).setResizable(false);
             jTableEnderecos.getColumnModel().getColumn(4).setPreferredWidth(5);
-            jTableEnderecos.getColumnModel().getColumn(5).setResizable(false);
             jTableEnderecos.getColumnModel().getColumn(5).setPreferredWidth(20);
-            jTableEnderecos.getColumnModel().getColumn(6).setResizable(false);
             jTableEnderecos.getColumnModel().getColumn(6).setPreferredWidth(15);
-            jTableEnderecos.getColumnModel().getColumn(7).setResizable(false);
             jTableEnderecos.getColumnModel().getColumn(7).setPreferredWidth(15);
-            jTableEnderecos.getColumnModel().getColumn(8).setResizable(false);
             jTableEnderecos.getColumnModel().getColumn(8).setPreferredWidth(3);
         }
 
@@ -411,13 +473,13 @@ public class ClienteApp extends javax.swing.JDialog {
             }
         });
 
-        jButtonExcluirEnderecoTabela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Action-remove-icon-24px.png"))); // NOI18N
-        jButtonExcluirEnderecoTabela.setMnemonic('e');
-        jButtonExcluirEnderecoTabela.setText("Excluir");
-        jButtonExcluirEnderecoTabela.setToolTipText("Selecione o endereço na tabela e clique aqui para excluir.");
-        jButtonExcluirEnderecoTabela.addActionListener(new java.awt.event.ActionListener() {
+        jButtonRemoverEnderecoTabela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Action-remove-icon-24px.png"))); // NOI18N
+        jButtonRemoverEnderecoTabela.setMnemonic('r');
+        jButtonRemoverEnderecoTabela.setText("Remover");
+        jButtonRemoverEnderecoTabela.setToolTipText("Selecione o endereço na tabela e clique aqui para excluir.");
+        jButtonRemoverEnderecoTabela.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonExcluirEnderecoTabelaActionPerformed(evt);
+                jButtonRemoverEnderecoTabelaActionPerformed(evt);
             }
         });
 
@@ -462,9 +524,9 @@ public class ClienteApp extends javax.swing.JDialog {
                             .addGroup(jPanelEnderecoLayout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanelEnderecoLayout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEnderecoLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButtonExcluirEnderecoTabela))))
+                                .addComponent(jButtonRemoverEnderecoTabela))))
                     .addGroup(jPanelEnderecoLayout.createSequentialGroup()
                         .addGroup(jPanelEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelEnderecoLayout.createSequentialGroup()
@@ -485,7 +547,7 @@ public class ClienteApp extends javax.swing.JDialog {
                         .addGroup(jPanelEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelEnderecoLayout.createSequentialGroup()
                                 .addComponent(jButtonAdicionarEnderecoTabela)
-                                .addGap(0, 125, Short.MAX_VALUE))
+                                .addGap(0, 136, Short.MAX_VALUE))
                             .addComponent(jTextFieldBairro, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTextFieldNumero))))
                 .addContainerGap())
@@ -493,7 +555,7 @@ public class ClienteApp extends javax.swing.JDialog {
         jPanelEnderecoLayout.setVerticalGroup(
             jPanelEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelEnderecoLayout.createSequentialGroup()
-                .addGap(13, 13, 13)
+                .addGap(25, 25, 25)
                 .addGroup(jPanelEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jComboBoxTipoEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -512,15 +574,17 @@ public class ClienteApp extends javax.swing.JDialog {
                     .addComponent(jTextFieldBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addGap(18, 18, 18)
-                .addGroup(jPanelEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextFieldCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(jComboBoxUf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonExcluirEnderecoTabela)
-                    .addComponent(jButtonAdicionarEnderecoTabela))
+                .addGroup(jPanelEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonRemoverEnderecoTabela)
+                        .addComponent(jButtonAdicionarEnderecoTabela))
+                    .addGroup(jPanelEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBoxUf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel10)
+                        .addComponent(jTextFieldCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanelEnderecoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonIrParaTabContato)
@@ -535,14 +599,6 @@ public class ClienteApp extends javax.swing.JDialog {
         jLabel13.setText("Telefone:");
 
         jLabel14.setText("E-mail:");
-
-        jButtonAdicionarContatoTabela.setMnemonic('a');
-        jButtonAdicionarContatoTabela.setText("Adicionar");
-        jButtonAdicionarContatoTabela.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAdicionarContatoTabelaActionPerformed(evt);
-            }
-        });
 
         jButtonFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-window-close-icon-24px.png"))); // NOI18N
         jButtonFechar.setMnemonic('f');
@@ -585,6 +641,26 @@ public class ClienteApp extends javax.swing.JDialog {
             jTableContatos.getColumnModel().getColumn(2).setPreferredWidth(60);
         }
 
+        jButtonAdicionarContatoTabela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Apps-File-New-icon-24px.png"))); // NOI18N
+        jButtonAdicionarContatoTabela.setMnemonic('a');
+        jButtonAdicionarContatoTabela.setText("Adicionar");
+        jButtonAdicionarContatoTabela.setToolTipText("Preencha os dados do endereço e clique aqui para adicionar. na tabela.");
+        jButtonAdicionarContatoTabela.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAdicionarContatoTabelaActionPerformed(evt);
+            }
+        });
+
+        jButtonRemoverContatoTabela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Action-remove-icon-24px.png"))); // NOI18N
+        jButtonRemoverContatoTabela.setMnemonic('r');
+        jButtonRemoverContatoTabela.setText("Remover");
+        jButtonRemoverContatoTabela.setToolTipText("Selecione o endereço na tabela e clique aqui para excluir.");
+        jButtonRemoverContatoTabela.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRemoverContatoTabelaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelContatoLayout = new javax.swing.GroupLayout(jPanelContato);
         jPanelContato.setLayout(jPanelContatoLayout);
         jPanelContatoLayout.setHorizontalGroup(
@@ -604,20 +680,22 @@ public class ClienteApp extends javax.swing.JDialog {
                             .addComponent(jLabel14))
                         .addGap(31, 31, 31)
                         .addGroup(jPanelContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1Email, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBoxTipoTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1Email, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanelContatoLayout.createSequentialGroup()
-                                .addComponent(jTextFieldNumeroTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonAdicionarContatoTabela)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonAdicionarContatoTabela)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE))
+                                .addComponent(jButtonRemoverContatoTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanelContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jComboBoxTipoTelefone, javax.swing.GroupLayout.Alignment.LEADING, 0, 237, Short.MAX_VALUE)
+                                .addComponent(jTextFieldNumeroTelefone, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addGap(0, 290, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 847, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelContatoLayout.setVerticalGroup(
             jPanelContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelContatoLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(25, 25, 25)
                 .addGroup(jPanelContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(jTextField1Email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -628,11 +706,14 @@ public class ClienteApp extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanelContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jTextFieldNumeroTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldNumeroTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonRemoverContatoTabela)
                     .addComponent(jButtonAdicionarContatoTabela))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(jPanelContatoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonFechar)
                     .addComponent(jButtonConcluirCadastro))
@@ -647,17 +728,18 @@ public class ClienteApp extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPaneCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
+                .addComponent(jTabbedPaneCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 861, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jTabbedPaneCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonIrPFisicaParaTabEnderecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIrPFisicaParaTabEnderecoActionPerformed
@@ -693,11 +775,11 @@ public class ClienteApp extends javax.swing.JDialog {
 
             contatoBll.adicionarContatos(this.contatos);
             
-            limparTabela(jTableContatos);
+            UtilTabela.limparTabelas(jTableContatos);
             
             this.contatos = new ArrayList<>();
             
-            limparTabela(jTableEnderecos);
+            UtilTabela.limparTabelas(jTableEnderecos);
             
             this.enderecos = new ArrayList();
             
@@ -761,52 +843,6 @@ public class ClienteApp extends javax.swing.JDialog {
         jTabbedPaneCliente.setSelectedIndex(3);
     }//GEN-LAST:event_jButtonIrParaTabContatoActionPerformed
 
-    private void jButtonAdicionarContatoTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarContatoTabelaActionPerformed
-
-        try {
-            
-            String email = jTextField1Email.getText();
-            
-            EnumTipoTelefone tipoTelefone = EnumTipoTelefone.fromDescricao(jComboBoxTipoTelefone.getSelectedItem().toString());
-           
-            String numeroTelefone = jTextFieldNumeroTelefone.getText();
-            
-            boolean temCamposVazios = UtilObjetos.ehNuloOuVazio(email)
-                                      || UtilObjetos.ehNuloOuVazio(tipoTelefone)
-                                      || UtilObjetos.ehNuloOuVazio(numeroTelefone);
-            
-            if (temCamposVazios) {
-                JOptionPane.showMessageDialog(null, "Campos obrigatórios devem ser preenchidos.");
-                return;
-            }
-            
-            boolean jaExisteEmailNaTabela = this.contatos.stream()
-                                            .map(Contato::getEmail)
-                                            .filter(email::equals)
-                                            .findFirst()
-                                            .isPresent();
-            
-            if (jaExisteEmailNaTabela) {
-                JOptionPane.showMessageDialog(null, "Já existe um contato cadastrado com esse email.");
-                return;
-            }
-            
-            Contato contato = new Contato(email, tipoTelefone, numeroTelefone);
-
-            this.contatos.add(contato);
-
-            limparTabela(jTableContatos);
-        
-            preencherTabelaContato(this.contatos);
-            
-            UtilComponentes.limparCampos(jTextFieldNumeroTelefone, jTextField1Email);
-            
-        } catch (Exception ex) {
-            Logger.getLogger(ClienteApp.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Problema ao adicionar telefone. Entre em contato com suporte.");
-        }
-    }//GEN-LAST:event_jButtonAdicionarContatoTabelaActionPerformed
-
     private void jButtonIncluirEnderecoTesteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirEnderecoTesteActionPerformed
             jComboBoxTipoEndereco.setSelectedItem(EnumTipoEndereco.RESIDENCIAL);
             jTextFieldCEP.setText("74356400");
@@ -818,7 +854,7 @@ public class ClienteApp extends javax.swing.JDialog {
             jComboBoxUf.setSelectedItem(EnumUF.ESPIRITO_SANTO);        
     }//GEN-LAST:event_jButtonIncluirEnderecoTesteActionPerformed
 
-    private void jButtonExcluirEnderecoTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirEnderecoTabelaActionPerformed
+    private void jButtonRemoverEnderecoTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverEnderecoTabelaActionPerformed
         try {
             String pergunta = "Remover o endereço da tabela?";
             String tituloJanela = "Endereço";
@@ -836,7 +872,7 @@ public class ClienteApp extends javax.swing.JDialog {
                                                     label);
             if (opcao == JOptionPane.YES_OPTION) {
                 
-                limparTabela(jTableEnderecos);
+                UtilTabela.limparTabelas(jTableEnderecos);
                 
                 int indiceEnderecoParaRemover = this.idEnderecoSelecinadoTabela - 1;
                 
@@ -846,11 +882,9 @@ public class ClienteApp extends javax.swing.JDialog {
                 
                 this.preencherTabelaEndereco(this.enderecos);
                 
-                DefaultTableModel model = (DefaultTableModel) jTableEnderecos.getModel();                
-
-                habilitarDesabilitarBotaoExcluir();
+                this.habilitarDesabilitarBotaoRemoverItemTabela(jTableEnderecos, jButtonRemoverEnderecoTabela);
                 
-                jButtonExcluirEnderecoTabela.setEnabled(false);
+                jButtonRemoverEnderecoTabela.setEnabled(false);
                 
                 JOptionPane.showMessageDialog(this, "Endereço Removido.");
             } 
@@ -858,26 +892,37 @@ public class ClienteApp extends javax.swing.JDialog {
             LOG.log(Level.SEVERE, null, erro);
             JOptionPane.showMessageDialog(null, "Erro ao remover o endereço da tabela. " + mensagemErroPadrao);
         }
-    }//GEN-LAST:event_jButtonExcluirEnderecoTabelaActionPerformed
+    }//GEN-LAST:event_jButtonRemoverEnderecoTabelaActionPerformed
 
-    private void habilitarDesabilitarBotaoExcluir() {
+    private void habilitarDesabilitarBotaoRemoverItemTabela(JTable tabela, JButton botao) {
         
-        DefaultTableModel model = (DefaultTableModel) jTableEnderecos.getModel();
+        DefaultTableModel model = (DefaultTableModel) tabela.getModel();
         
         if (model.getRowCount() > 0) {
-            jButtonExcluirEnderecoTabela.setEnabled(true);
+            botao.setEnabled(true);
         } else {
-            jButtonExcluirEnderecoTabela.setEnabled(false);
+            botao.setEnabled(false);
         }
     }
 
     private void recriarIdsTemporariosEnderecosTabela() {
-        for (Endereco end : this.enderecos) {
-            if (end.getId() != 1) {
-                end.setId(end.getId() - 1);
+       
+        for (int i = 0; i < this.enderecos.size(); i++) {
+                this.enderecos.get(i).setId(i + 1);
+        }
+//        this.enderecos
+//                .stream()
+//                .filter((end) -> (end.getId() != 1))
+//                .forEachOrdered((end) -> {end.setId(end.getId() - 1);        
+    }
+    
+    private void recriarIdsTemporariosContatosTabela() {
+        for (Contato cont : this.contatos) {
+            if (cont.getId() != 1) {
+                cont.setId(cont.getId() - 1);
             }
         }
-    }
+    }    
 
 
     private void jButtonAdicionarEnderecoTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarEnderecoTabelaActionPerformed
@@ -919,7 +964,7 @@ public class ClienteApp extends javax.swing.JDialog {
             
             this.enderecos.add(endereco);
 
-            limparTabela(jTableEnderecos);
+            UtilTabela.limparTabelas(jTableEnderecos);
         
             preencherTabelaEndereco(enderecos);
             
@@ -939,6 +984,113 @@ public class ClienteApp extends javax.swing.JDialog {
         
     }//GEN-LAST:event_jButtonAdicionarEnderecoTabelaActionPerformed
 
+    private void jButtonAdicionarContatoTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarContatoTabelaActionPerformed
+
+        try {
+            String email = jTextField1Email.getText();
+            
+            EnumTipoTelefone tipoTelefone = EnumTipoTelefone.fromDescricao(jComboBoxTipoTelefone.getSelectedItem().toString());
+           
+            String numeroTelefone = jTextFieldNumeroTelefone.getText();
+            
+            boolean temCamposVazios = UtilObjetos.ehNuloOuVazio(email)
+                                      || UtilObjetos.ehNuloOuVazio(tipoTelefone)
+                                      || UtilObjetos.ehNuloOuVazio(numeroTelefone);
+            
+            if (temCamposVazios) {
+                JOptionPane.showMessageDialog(null, "Campos obrigatórios devem ser preenchidos.");
+                jTextField1Email.setFocusable(true);
+                return;
+            }
+            
+            boolean emailValido = UtilString.ehEmailValido(email);
+            
+            if (!emailValido) {
+                JOptionPane.showMessageDialog(null, "Preencha com um email validdo.");
+                jTextField1Email.setFocusable(true);
+                return;                
+            }
+            
+            boolean jaExisteEmailNaTabela = this.contatos.stream()
+                                            .map(Contato::getEmail)
+                                            .filter(email::equals)
+                                            .findFirst()
+                                            .isPresent();
+            
+            if (jaExisteEmailNaTabela) {
+                JOptionPane.showMessageDialog(null, "Já existe um contato cadastrado com esse email.");
+                return;
+            }
+            
+            int idTemporario = this.contatos.size() + 1;
+            
+            Contato contato = new Contato(idTemporario, email, tipoTelefone, numeroTelefone);
+
+            this.contatos.add(contato);
+
+            UtilTabela.limparTabelas(jTableContatos);
+        
+            preencherTabelaContato(this.contatos);
+            
+            UtilComponentes.limparCampos(jTextFieldNumeroTelefone, jTextField1Email);
+            
+            jTextField1Email.setFocusable(true);
+            
+        } catch (Exception ex) {
+            Logger.getLogger(ClienteApp.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Problema ao adicionar telefone. Entre em contato com suporte.");
+        }
+
+    }//GEN-LAST:event_jButtonAdicionarContatoTabelaActionPerformed
+
+    private void jButtonRemoverContatoTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverContatoTabelaActionPerformed
+        try {
+            String pergunta = "Remover contato da tabela?";
+            String tituloJanela = "Contato";
+            Icon icone =new ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Delete-icon - x - 24 x 24px.png"));
+            String[] botaoOpcoes = {"Sim", "Não"};
+            String label = botaoOpcoes[0];
+            
+            int opcao = JOptionPane.showOptionDialog(this, 
+                                                    pergunta,
+                                                    tituloJanela,
+                                                    JOptionPane.YES_NO_OPTION, 
+                                                    JOptionPane.WARNING_MESSAGE,
+                                                    null,
+                                                    botaoOpcoes,
+                                                    label);
+            if (opcao == JOptionPane.YES_OPTION) {
+                
+                UtilTabela.limparTabelas(jTableContatos);
+                
+                int indiceContatoParaRemover = this.idContatoSelecinadoTabela - 1;
+                
+                this.contatos.remove(indiceContatoParaRemover);
+                
+                this.recriarIdsTemporariosContatosTabela();
+                
+                this.preencherTabelaContato(this.contatos);
+                
+                habilitarDesabilitarBotaoRemoverItemTabela(jTableContatos, jButtonRemoverContatoTabela);
+                
+                jButtonRemoverContatoTabela.setEnabled(false);
+                
+                JOptionPane.showMessageDialog(this, "Contato Removido.");
+            } 
+        } catch (Exception erro) {
+            LOG.log(Level.SEVERE, null, erro);
+            JOptionPane.showMessageDialog(null, "Erro ao remover o contato da tabela. " + mensagemErroPadrao);
+        }
+
+    }//GEN-LAST:event_jButtonRemoverContatoTabelaActionPerformed
+
+    private void jButtonLimparCamposPessoaFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimparCamposPessoaFisicaActionPerformed
+        UtilComponentes.limparCampos(jTextFieldNome,
+                                    jTextFieldCpf,
+                                    jTextFieldRg,
+                                    jTextFieldOrgaoEmissor);
+    }//GEN-LAST:event_jButtonLimparCamposPessoaFisicaActionPerformed
+
     private void preencherTabelaContato(List<Contato> contatos) throws Exception {
         
         DefaultTableModel model = (DefaultTableModel) jTableContatos.getModel();
@@ -948,11 +1100,12 @@ public class ClienteApp extends javax.swing.JDialog {
 //        contatoBll.ordenaListaContatos(this.telefones);
         
         for (int i = 0; i < contatos.size(); i++) {
-            String[] linha = new String[3];
+            String[] linha = new String[4];
             
-            linha[0] = contatos.get(i).getEmail();
-            linha[1] = contatos.get(i).getTipoTelefone().name();
-            linha[2] = String.valueOf(contatos.get(i).getNumero());
+            linha[0] = String.valueOf(contatos.get(i).getId());
+            linha[1] = contatos.get(i).getEmail();
+            linha[2] = contatos.get(i).getTipoTelefone().name();
+            linha[3] = String.valueOf(contatos.get(i).getNumero());
             
             model.addRow(linha);
         }
@@ -984,14 +1137,7 @@ public class ClienteApp extends javax.swing.JDialog {
         }
     }    
     
-    public void limparTabela(JTable tabela) {
-        try {
-            tableModel = (DefaultTableModel) tabela.getModel();
-            tableModel.setNumRows(0);
-        } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null, erro.getMessage());
-        }        
-    }
+
     
     public static void main(String args[]) {
         /* Create and display the dialog */
@@ -1013,12 +1159,14 @@ public class ClienteApp extends javax.swing.JDialog {
     private javax.swing.JButton jButtonAdicionarContatoTabela;
     private javax.swing.JButton jButtonAdicionarEnderecoTabela;
     private javax.swing.JButton jButtonConcluirCadastro;
-    private javax.swing.JButton jButtonExcluirEnderecoTabela;
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonIncluirEnderecoTeste;
     private javax.swing.JButton jButtonIrPFisicaParaTabEndereco;
     private javax.swing.JButton jButtonIrParaTabContato;
     private javax.swing.JButton jButtonIrParaTabEndereco;
+    private javax.swing.JButton jButtonLimparCamposPessoaFisica;
+    private javax.swing.JButton jButtonRemoverContatoTabela;
+    private javax.swing.JButton jButtonRemoverEnderecoTabela;
     private javax.swing.JComboBox<String> jComboBoxTipoEndereco;
     private javax.swing.JComboBox<String> jComboBoxTipoTelefone;
     private javax.swing.JComboBox<String> jComboBoxUf;
@@ -1109,6 +1257,8 @@ public class ClienteApp extends javax.swing.JDialog {
                                     jTextFieldCidade,
                                     jTextField1Email,
                                     jTextFieldNumeroTelefone);
+        
+        UtilTabela.limparTabelas(jTableContatos, jTableEnderecos);
     
         this.carregarComboBoxes();
         

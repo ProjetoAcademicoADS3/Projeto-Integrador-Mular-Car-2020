@@ -6,7 +6,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -25,16 +25,16 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jTabbedPaneCliente" pref="850" max="32767" attributes="0"/>
+              <Component id="jTabbedPaneCliente" pref="861" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <Component id="jTabbedPaneCliente" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="7" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -93,10 +93,12 @@
                               <Component id="jTextFieldCpf" min="-2" pref="200" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="294" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="305" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jButtonLimparCamposPessoaFisica" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jButtonIrPFisicaParaTabEndereco" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -105,7 +107,7 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jTextFieldNome" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabelNome" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -115,7 +117,7 @@
                           <Component id="jLabelCpjCnpj" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextFieldCpf" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabelRgOuRazaoSocial" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextFieldRg" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -125,8 +127,11 @@
                           <Component id="jTextFieldOrgaoEmissor" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabelOrgaoEmissor" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="211" max="32767" attributes="0"/>
-                      <Component id="jButtonIrPFisicaParaTabEndereco" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="225" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jButtonLimparCamposPessoaFisica" max="32767" attributes="0"/>
+                          <Component id="jButtonIrPFisicaParaTabEndereco" max="32767" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -173,6 +178,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonIrPFisicaParaTabEnderecoActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JButton" name="jButtonLimparCamposPessoaFisica">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Limpar Campos"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonLimparCamposPessoaFisicaActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanelPessoaJuridica">
@@ -213,7 +226,7 @@
                               <Component id="jTextFieldCnpj" min="-2" pref="243" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="20" pref="288" max="32767" attributes="0"/>
+                      <EmptySpace min="20" pref="299" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -225,7 +238,7 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jTextFieldRazaoSocial" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -240,7 +253,7 @@
                           <Component id="jTextFieldCnpj" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="247" max="32767" attributes="0"/>
+                      <EmptySpace pref="267" max="32767" attributes="0"/>
                       <Component id="jButtonIrParaTabEndereco" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -327,9 +340,9 @@
                                       <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      <Component id="jButtonExcluirEnderecoTabela" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jButtonRemoverEnderecoTabela" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -356,7 +369,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="jButtonAdicionarEnderecoTabela" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="125" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="136" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="jTextFieldBairro" alignment="1" max="32767" attributes="0"/>
                                   <Component id="jTextFieldNumero" max="32767" attributes="0"/>
@@ -370,7 +383,7 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jComboBoxTipoEndereco" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -392,16 +405,20 @@
                           <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextFieldCidade" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jComboBoxUf" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButtonExcluirEnderecoTabela" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButtonAdicionarEnderecoTabela" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jButtonRemoverEnderecoTabela" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButtonAdicionarEnderecoTabela" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="jComboBoxUf" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextFieldCidade" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" pref="178" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" pref="162" max="32767" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jButtonIrParaTabContato" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -526,47 +543,47 @@
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="3" resizable="false">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="3" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="false">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="false">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="false">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="5" resizable="false">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="5" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="false">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="15" resizable="false">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="15" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="15" resizable="false">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="15" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="3" resizable="false">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="3" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
@@ -589,17 +606,17 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonIncluirEnderecoTesteActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButtonExcluirEnderecoTabela">
+            <Component class="javax.swing.JButton" name="jButtonRemoverEnderecoTabela">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/br/com/mulacar/imagens/Action-remove-icon-24px.png"/>
                 </Property>
-                <Property name="mnemonic" type="int" value="101"/>
-                <Property name="text" type="java.lang.String" value="Excluir"/>
+                <Property name="mnemonic" type="int" value="114"/>
+                <Property name="text" type="java.lang.String" value="Remover"/>
                 <Property name="toolTipText" type="java.lang.String" value="Selecione o endere&#xe7;o na tabela e clique aqui para excluir."/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonExcluirEnderecoTabelaActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonRemoverEnderecoTabelaActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButtonAdicionarEnderecoTabela">
@@ -646,17 +663,20 @@
                               </Group>
                               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jTextField1Email" alignment="0" min="-2" pref="274" max="-2" attributes="0"/>
-                                  <Component id="jComboBoxTipoTelefone" alignment="0" min="-2" pref="274" max="-2" attributes="0"/>
+                                  <Component id="jTextField1Email" alignment="0" min="-2" pref="450" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jTextFieldNumeroTelefone" min="-2" pref="180" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="jButtonAdicionarContatoTabela" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="jButtonRemoverContatoTabela" min="-2" pref="113" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="jComboBoxTipoTelefone" alignment="0" pref="237" max="32767" attributes="0"/>
+                                      <Component id="jTextFieldNumeroTelefone" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="290" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jScrollPane1" alignment="1" pref="836" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" alignment="1" pref="847" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -665,7 +685,7 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextField1Email" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -679,11 +699,15 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextFieldNumeroTelefone" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jButtonRemoverContatoTabela" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonAdicionarContatoTabela" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="201" max="-2" attributes="0"/>
-                      <EmptySpace pref="28" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="155" max="-2" attributes="0"/>
+                      <EmptySpace pref="34" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jButtonFechar" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonConcluirCadastro" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -722,15 +746,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField1Email">
-            </Component>
-            <Component class="javax.swing.JButton" name="jButtonAdicionarContatoTabela">
-              <Properties>
-                <Property name="mnemonic" type="int" value="97"/>
-                <Property name="text" type="java.lang.String" value="Adicionar"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAdicionarContatoTabelaActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButtonFechar">
               <Properties>
@@ -798,6 +813,32 @@
                 </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JButton" name="jButtonAdicionarContatoTabela">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/br/com/mulacar/imagens/Apps-File-New-icon-24px.png"/>
+                </Property>
+                <Property name="mnemonic" type="int" value="97"/>
+                <Property name="text" type="java.lang.String" value="Adicionar"/>
+                <Property name="toolTipText" type="java.lang.String" value="Preencha os dados do endere&#xe7;o e clique aqui para adicionar. na tabela."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAdicionarContatoTabelaActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonRemoverContatoTabela">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/br/com/mulacar/imagens/Action-remove-icon-24px.png"/>
+                </Property>
+                <Property name="mnemonic" type="int" value="114"/>
+                <Property name="text" type="java.lang.String" value="Remover"/>
+                <Property name="toolTipText" type="java.lang.String" value="Selecione o endere&#xe7;o na tabela e clique aqui para excluir."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonRemoverContatoTabelaActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>

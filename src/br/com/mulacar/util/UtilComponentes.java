@@ -2,9 +2,12 @@ package br.com.mulacar.util;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.text.JTextComponent;
 
@@ -70,4 +73,57 @@ public class UtilComponentes {
         }
     }
     
+    public static void adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(JTextField campo, int qunatidadeCaracteres) {
+        campo.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (!UtilObjetos.ehNuloOuVazio(campo)) {
+                    String texto = campo.getText();
+
+                    if (texto.length() > qunatidadeCaracteres) {
+                        campo.setText(texto.substring(0, qunatidadeCaracteres));
+                    }
+                }
+            }
+            
+        });
+    }    
+    
+    public static void adicionarKeyListenerSomenteLetras(JTextField... campos) {
+        for (JTextField c : campos) {
+            c.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyReleased(KeyEvent e) {
+                        String string = c.getText();
+
+                        string = UtilString.removerCaracteresNaoAlfaNumericos(string);
+
+                        string = UtilString.removerAcentos(string);
+
+                        string = UtilString.removerNumeros(string);
+
+                        c.setText(string.toUpperCase());
+                }
+            });
+        }
+    }
+
+    public static void adicionarKeyListenerSomenteNumeros(JTextField... campos) {
+        for (JTextField c : campos) {
+            c.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyReleased(KeyEvent e) {
+                        String string = c.getText();
+
+                        string = UtilString.removerCaracteresNaoAlfaNumericos(string);
+
+                        string = UtilString.removerAcentos(string);
+
+                        string = UtilString.removerLetras(string);
+
+                        c.setText(string.toUpperCase());
+                }
+            });
+        }
+    }     
 }
