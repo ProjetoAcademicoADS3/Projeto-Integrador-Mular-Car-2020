@@ -12,7 +12,7 @@ package br.com.mulacar.app;
 import br.com.mulacar.bll.UsuarioBll;
 import br.com.mulacar.model.Usuario;
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.Iterator;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,13 +28,13 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
         initComponents();
     }
     
-    public void imprimirRelatorioDeUsuarios(List<Usuario> listaUsuarios) throws Exception {
+    public void imprimirRelatorioDeUsuarios(Iterator listaDeUsuarios) throws Exception {
         DefaultTableModel model = (DefaultTableModel) jTableRelatorioUsuarios.getModel();
         model.setNumRows(0);
-        usuBll.ordenaListaUsuarioa(listaUsuarios);
-        for (int pos = 0; pos < listaUsuarios.size(); pos++) {
+        int cont = 0;
+        while(listaDeUsuarios.hasNext()) {
             String[] linha = new String[9];
-            Usuario usu = listaUsuarios.get(pos);
+            Usuario usu = (Usuario)listaDeUsuarios.next();
             linha[0] = usu.getId() + "";
             linha[1] = usu.getNome().toUpperCase();
             linha[2] = usu.getCpf();
@@ -45,8 +45,9 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
             SimpleDateFormat dataForm = new SimpleDateFormat("dd/MM/yyyy");
             linha[7] = dataForm.format(usu.getDataCadastro());
             model.addRow(linha);
+            cont++;
         }
-        jTextFieldQuantRegistros.setText(listaUsuarios.size() + "");
+        jTextFieldQuantRegistros.setText(cont + "");
 
     }
 
@@ -66,8 +67,6 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
         jButtonListarUsuario = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldQuantRegistros = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jComboBoxOrdenarUsuarioPor = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Relatório de usuários");
@@ -134,11 +133,6 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         jLabel1.setText("Quant.Registros");
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        jLabel2.setText("Ordenar por: ");
-
-        jComboBoxOrdenarUsuarioPor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         javax.swing.GroupLayout jPanelRelatorioUsuariosLayout = new javax.swing.GroupLayout(jPanelRelatorioUsuarios);
         jPanelRelatorioUsuarios.setLayout(jPanelRelatorioUsuariosLayout);
         jPanelRelatorioUsuariosLayout.setHorizontalGroup(
@@ -146,17 +140,14 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
             .addGroup(jPanelRelatorioUsuariosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelRelatorioUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRelatorioUsuariosLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRelatorioUsuariosLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxOrdenarUsuarioPor, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 333, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonListarUsuario)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonFecharRelatorio)))
@@ -171,9 +162,7 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
                 .addGap(12, 12, 12)
                 .addGroup(jPanelRelatorioUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonListarUsuario)
-                    .addComponent(jButtonFecharRelatorio)
-                    .addComponent(jLabel2)
-                    .addComponent(jComboBoxOrdenarUsuarioPor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonFecharRelatorio))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -268,9 +257,7 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonFecharRelatorio;
     private javax.swing.JButton jButtonListarUsuario;
-    private javax.swing.JComboBox<String> jComboBoxOrdenarUsuarioPor;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanelRelatorioUsuarios;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableRelatorioUsuarios;

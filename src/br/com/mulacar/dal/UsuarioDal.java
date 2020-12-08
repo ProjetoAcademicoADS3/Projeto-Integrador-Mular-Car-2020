@@ -8,6 +8,7 @@
  */
 package br.com.mulacar.dal;
 
+import br.com.mulacar.bll.UsuarioBll;
 import br.com.mulacar.enumeration.EnumPerfil;
 import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.model.Usuario;
@@ -18,11 +19,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class UsuarioDal {
 
     private Connection conexao;
+    private UsuarioBll usuarioBll;
 
     public UsuarioDal() {
         conexao = Conexao.getConexao();
@@ -91,8 +94,9 @@ public class UsuarioDal {
         }
     }
 
-    public List<Usuario> getAllUsuarios() throws Exception {
+    public Iterator getAllUsuarios() throws Exception {
         List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+        usuarioBll = new UsuarioBll();
         String sql = "SELECT * FROM usuario";
         try {
             Statement statement = conexao.createStatement();
@@ -115,7 +119,8 @@ public class UsuarioDal {
                     + "os registros de usuários\n"
                     + erro.getMessage());
         }
-        return listaUsuarios;
+        usuarioBll.ordenaListaUsuarioa(listaUsuarios);
+        return listaUsuarios.iterator();
     }
 
     public Usuario getUsuarioById(int id) throws Exception {
@@ -155,7 +160,8 @@ public class UsuarioDal {
 
         boolean vdd = false;
 
-        for (Usuario usu : getAllUsuarios()) {
+        for (int i= 0; i < resultadoDaPesquisa.size(); i++) {
+            Usuario usu = resultadoDaPesquisa.get(i);
 
             if (usu.getNome().toLowerCase().trim().contains(textoDigitado)
                     || usu.getCpf().toLowerCase().trim().contains(textoDigitado)

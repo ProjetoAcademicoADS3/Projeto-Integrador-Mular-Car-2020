@@ -97,7 +97,7 @@ public class RelatorioDeVeiculosApp extends javax.swing.JDialog {
                 Veiculo aux = listaVeiculos.get(pos);
 
                 linha[0] = aux.getId() + "";
-                linha[1] = aux.getPlaca();
+                linha[1] = aux.getPlaca().toUpperCase();
                 linha[2] = aux.getRenavan();
                 linha[3] = aux.getCategoria().getDescricao().toUpperCase();
                 linha[4] = aux.getModelo().getDescricao().toUpperCase();
