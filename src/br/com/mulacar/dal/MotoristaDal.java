@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -119,21 +118,22 @@ public class MotoristaDal {
             ResultSet rs = statement.executeQuery(sql);
 
             while (rs.next()) {
-                Motorista motorista = new Motorista();
 
-                preencherMotoristaRetornoBanco(motorista, rs);
+                Motorista motoristaRetorno = new Motorista();
 
-                listaMotoristas.add(motorista);
+                preencherMotoristaRetornoBanco(motoristaRetorno, rs);
+
+                listaMotoristas.add(motoristaRetorno);
             }
         } catch (Exception e) {
             Logger.getLogger(Motorista.class.getName()).log(Level.SEVERE, "MotoristaDal - ", e);
-            throw new Exception("Erro ao listar motoristas" + e.getMessage());
+            throw new Exception("Erro ao listar motoristas\n" + e.getMessage());
         }
         return listaMotoristas;
     }
 
     public Motorista getMotoristaById(Motorista motorista) throws Exception {
-        Motorista motoristaRetorno = null;
+        Motorista motoristaRetorno = new Motorista();
 
         String sql = "SELECT * FROM motorista WHERE mot_id = ?";
 
@@ -146,16 +146,17 @@ public class MotoristaDal {
 
             if (rs.next()) {
                 preencherMotoristaRetornoBanco(motoristaRetorno, rs);
+
             }
         } catch (Exception e) {
             Logger.getLogger(Motorista.class.getName()).log(Level.SEVERE, "MotoristaDal - ", e);
             throw e;
         }
-        return motorista;
+        return motoristaRetorno;
     }
 
     public Motorista getMotoristaByCpf(Motorista motorista) throws Exception {
-        Motorista motoristaRetorno = null;
+        Motorista motoristaRetorno = new Motorista();
 
         String sql = "SELECT * FROM motorista WHERE mot_cpf = ?";
 
@@ -175,7 +176,7 @@ public class MotoristaDal {
     }
 
     public Motorista getMotoristaByRg(Motorista motorista) throws Exception {
-        Motorista motoristaRetorno = null;
+        Motorista motoristaRetorno = new Motorista();
 
         String sql = "SELECT * FROM motorista WHERE mot_rg = ?";
 
@@ -195,7 +196,7 @@ public class MotoristaDal {
     }
 
     public Motorista getMotoristaByNumeroCnh(Motorista motorista) throws Exception {
-        Motorista motoristaRetorno = null;
+        Motorista motoristaRetorno = new Motorista();
 
         String sql = "SELECT * FROM motorista where mot_cnh_numero like ? ";
         try {
@@ -215,7 +216,7 @@ public class MotoristaDal {
     }
 
     public Motorista getMotoristaByNome(Motorista motorista) throws Exception {
-        Motorista motoristaRetorno = null;
+        Motorista motoristaRetorno = new Motorista();
 
         String sql = "SELECT * FROM motorista where mot_nome like ? ";
         try {
@@ -235,15 +236,36 @@ public class MotoristaDal {
     }
 
     private void preencherMotoristaRetornoBanco(Motorista motoristaRetorno, ResultSet rs) throws SQLException {
-        motoristaRetorno = new Motorista();
         motoristaRetorno.setId(rs.getInt("mot_id"));
         motoristaRetorno.setNome(rs.getString("mot_nome"));
         motoristaRetorno.setCpf(rs.getString("mot_cpf"));
         motoristaRetorno.setRg(rs.getString("mot_rg"));
+        motoristaRetorno.setOrgaoEmissor(rs.getString("mot_rg_orgao_emissor"));
         motoristaRetorno.setNumeroCnh(rs.getString("mot_cnh_numero"));
-        motoristaRetorno.setDataValidadeCnh(new Date(rs.getString("mot_cnh_data_validade")));
+        motoristaRetorno.setDataValidadeCnh(rs.getDate("mot_cnh_data_validade"));
         motoristaRetorno.setPathImagemCnh(rs.getString("mot_cnh_imagem"));
         motoristaRetorno.setCategoriaCnh(EnumCategoriaCnh.valueOf(rs.getString("mot_cnh_categoria")));
+    }
+
+    public ArrayList sourceMotorista(String dados) throws Exception {
+
+        String textoDigitado = dados.trim().toLowerCase();
+        ArrayList<Motorista> resultado = new ArrayList<>();
+        boolean existe = false;
+        for (Motorista mot : getAllMotoristas()) {
+            if (mot.getNome().toLowerCase().trim().contains(textoDigitado)
+                    || mot.getCpf().trim().contains(textoDigitado)
+                    || mot.getRg().trim().contains(textoDigitado)
+                    || mot.getNumeroCnh().trim().contains(textoDigitado)) {
+                resultado.add(mot);
+                existe = true;
+            }
+        }
+        if (!existe) {
+            throw new Exception("Registro não encontrado!\n");
+        }
+        return resultado;
+
     }
 
 }

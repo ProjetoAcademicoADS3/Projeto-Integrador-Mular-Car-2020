@@ -6,28 +6,23 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.model;
 
 import br.com.mulacar.enumeration.EnumCategoriaCnh;
-import br.com.mulacar.enumeration.EnumStatus;
-import br.com.mulacar.enumeration.EnumTipoCliente;
 import java.util.Date;
 import java.util.Objects;
 
 public class Motorista {
 
     private int id;
-    private String razaoSocial;
     private String nome;
     private String cpf;
     private String rg;
     private String orgaoEmissor;
     private String numeroCnh;
     private Date dataValidadeCnh;
-    private EnumCategoriaCnh categoriaCnh;
     private String pathImagemCnh;
-    private EnumTipoCliente tipoCliente;
+    private EnumCategoriaCnh categoriaCnh;
 
     public Motorista() {
     }
@@ -36,20 +31,15 @@ public class Motorista {
         this.id = id;
     }
 
+    public Motorista(String string) {
+    }
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getRazaoSocial() {
-        return razaoSocial;
-    }
-
-    public void setRazaoSocial(String razaoSocial) {
-        this.razaoSocial = razaoSocial;
     }
 
     public String getNome() {
@@ -116,17 +106,9 @@ public class Motorista {
         this.pathImagemCnh = pathImagemCnh;
     }
 
-    public EnumTipoCliente getTipoCliente() {
-        return tipoCliente;
-    }
-
-    public void setTipoCliente(EnumTipoCliente tipoCliente) {
-        this.tipoCliente = tipoCliente;
-    }
-
     @Override
     public String toString() {
-        return "Motorista{" + "id=" + id + ", razaoSocial=" + razaoSocial + ", nome=" + nome + ", cpf=" + cpf + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", numeroCnh=" + numeroCnh + ", dataValidadeCnh=" + dataValidadeCnh + ", categoriaCnh=" + categoriaCnh + ", pathImagemCnh=" + pathImagemCnh + ", tipoCliente=" + tipoCliente + '}';
+        return "Motorista{" + "id=" + id + ", razaoSocial=" + ", nome=" + nome + ", cpf=" + cpf + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", numeroCnh=" + numeroCnh + ", dataValidadeCnh=" + dataValidadeCnh + ", categoriaCnh=" + categoriaCnh + ", pathImagemCnh=" + pathImagemCnh + ", tipoCliente=";
     }
 
     @Override
@@ -154,6 +136,4 @@ public class Motorista {
         return true;
     }
 
-    
-    
 }
