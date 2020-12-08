@@ -6,8 +6,10 @@
 package br.com.mulacar.dal;
 
 import br.com.mulacar.enumeration.EnumCategoriaCnh;
+import br.com.mulacar.interfaces.Interface_ExibirImagem;
 import br.com.mulacar.model.Motorista;
 import br.com.mulacar.util.Conexao;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,12 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
 /**
  *
  * @author roger
  */
-public class MotoristaDal {
+public class MotoristaDal implements Interface_ExibirImagem{
 
     private Connection conexao;
 
@@ -266,6 +269,19 @@ public class MotoristaDal {
         }
         return resultado;
 
+    }
+
+    @Override
+    public ImageIcon exibirImagem(Motorista motorista)throws Exception {
+        
+        ImageIcon imageIcon = new ImageIcon(motorista.getPathImagemCnh());
+        Image image = imageIcon.getImage();
+        Image newing = image.getScaledInstance(300, 250, java.awt.Image.SCALE_SMOOTH);
+        
+        ImageIcon icon = new ImageIcon(newing);
+        
+        return icon;
+        
     }
 
 }

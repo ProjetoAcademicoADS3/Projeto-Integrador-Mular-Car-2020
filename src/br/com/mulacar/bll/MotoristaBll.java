@@ -6,10 +6,12 @@
 package br.com.mulacar.bll;
 
 import br.com.mulacar.dal.MotoristaDal;
+import br.com.mulacar.interfaces.Interface_ExibirImagem;
 import br.com.mulacar.model.Motorista;
 import br.com.mulacar.util.UtilObjetos;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -19,10 +21,12 @@ public class MotoristaBll {
 
     private static final long sderialVersionUID = 1L;
 
+    private Interface_ExibirImagem objeto;
     private MotoristaDal motoristaDal;
 
     public MotoristaBll() {
         motoristaDal = new MotoristaDal();
+        objeto = new MotoristaDal();
     }
 
     public void adicionarMotorista(Motorista motorista) throws Exception {
@@ -177,6 +181,10 @@ public class MotoristaBll {
 
     public ArrayList pesquisarMotorista(String string) throws Exception {
         return motoristaDal.sourceMotorista(string);
+    }
+    
+    public ImageIcon exibirImagem(Motorista motorista)throws Exception {
+        return objeto.exibirImagem(motorista);
     }
 
 }

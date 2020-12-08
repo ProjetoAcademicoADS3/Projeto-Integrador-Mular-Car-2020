@@ -6,6 +6,8 @@
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.MotoristaBll;
+import br.com.mulacar.dal.Imagem_Adapter;
+import br.com.mulacar.interfaces.Interface_ExibirImagem;
 import br.com.mulacar.model.Motorista;
 import java.awt.Image;
 import java.text.SimpleDateFormat;
@@ -29,7 +31,6 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
     public RelatorioDeMotoristaApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        jTextFieldPathDoArquivo.setVisible(false);
         jTextFieldDigitarDadosParaPesquisa.requestFocus();
 
         motoristaBll = new MotoristaBll();
@@ -63,14 +64,13 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
 
             Motorista motorista = new Motorista(codigo);
             Motorista mot = motoristaBll.getMotoristaPorId(motorista);
-            jTextFieldPathDoArquivo.setText(mot.getPathImagemCnh());
 
-            ImageIcon imageIcon = new ImageIcon(mot.getPathImagemCnh());
-            Image image = imageIcon.getImage();
-            Image newing = image.getScaledInstance(300, 250, java.awt.Image.SCALE_SMOOTH);
-
-            ImageIcon icon = new ImageIcon(newing);
-            jLabelExibirFotoDaCNH.setIcon(icon);
+//            jLabelExibirFotoDaCNH.setIcon(motoristaBll.exibirImagem(mot));
+            
+            Interface_ExibirImagem exibir_Adapter = new Imagem_Adapter();
+            jLabelExibirFotoDaCNH.setIcon(exibir_Adapter.exibirImagem(mot));
+            
+            
 
         } else {
             JOptionPane.showMessageDialog(null, "Nenhum Registro Encontrado!\nVerifique !");
@@ -94,7 +94,6 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
         jTableMotoristas = new javax.swing.JTable();
         jLabelExibirFotoDaCNH = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextFieldPathDoArquivo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jTextFieldQuantRegistros = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -154,9 +153,6 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
         jLabel3.setText("Imagem da CNH do motorista");
 
-        jTextFieldPathDoArquivo.setEditable(false);
-        jTextFieldPathDoArquivo.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
-
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
         jLabel4.setText("Quant.Registros:");
 
@@ -176,17 +172,14 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
         jPanelRelatorioDeMotoristasLayout.setHorizontalGroup(
             jPanelRelatorioDeMotoristasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelRelatorioDeMotoristasLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanelRelatorioDeMotoristasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanelRelatorioDeMotoristasLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanelRelatorioDeMotoristasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
-                            .addGroup(jPanelRelatorioDeMotoristasLayout.createSequentialGroup()
-                                .addComponent(jTextFieldDigitarDadosParaPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE))))
+                        .addComponent(jTextFieldDigitarDadosParaPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE))
                     .addGroup(jPanelRelatorioDeMotoristasLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanelRelatorioDeMotoristasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelRelatorioDeMotoristasLayout.createSequentialGroup()
                                 .addComponent(jLabel4)
@@ -200,9 +193,7 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanelRelatorioDeMotoristasLayout.createSequentialGroup()
-                .addGap(203, 203, 203)
-                .addComponent(jTextFieldPathDoArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(203, 772, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(14, 14, 14))
         );
@@ -225,9 +216,7 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
                         .addComponent(jLabel3))
                     .addComponent(jLabelExibirFotoDaCNH, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addGroup(jPanelRelatorioDeMotoristasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldPathDoArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                .addComponent(jButton1)
                 .addGap(30, 30, 30))
         );
 
@@ -342,7 +331,6 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableMotoristas;
     private javax.swing.JTextField jTextFieldDigitarDadosParaPesquisa;
-    private javax.swing.JTextField jTextFieldPathDoArquivo;
     private javax.swing.JTextField jTextFieldQuantRegistros;
     // End of variables declaration//GEN-END:variables
 }
