@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -113,17 +114,25 @@ public class UtilComponentes {
             c.addKeyListener(new KeyAdapter() {
                 @Override
                 public void keyReleased(KeyEvent e) {
-                        String string = c.getText();
+                    String string = c.getText();
 
-                        string = UtilString.removerCaracteresNaoAlfaNumericos(string);
+                    string = UtilString.removerCaracteresNaoAlfaNumericos(string);
 
-                        string = UtilString.removerAcentos(string);
+                    string = UtilString.removerAcentos(string);
 
-                        string = UtilString.removerLetras(string);
+                    string = UtilString.removerLetras(string);
 
-                        c.setText(string.toUpperCase());
+                    c.setText(string.toUpperCase());
                 }
             });
         }
-    }     
+    } 
+
+    public static void setFocusTextField(JTextField field, JFrame frame) {
+//        frame.addWindowListener( new WindowAdapter() {
+//            public void windowOpened( WindowEvent e ){
+//                field.requestFocus();
+//            }
+//        });         
+    }
 }

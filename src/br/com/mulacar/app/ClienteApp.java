@@ -24,6 +24,7 @@ import br.com.mulacar.util.UtilComponentes;
 import br.com.mulacar.util.UtilObjetos;
 import br.com.mulacar.util.UtilString;
 import br.com.mulacar.util.UtilTabela;
+import java.awt.HeadlessException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -78,6 +79,19 @@ public class ClienteApp extends javax.swing.JDialog {
     
     private void inicializar() {
         
+        /**
+         * DESTINADO A AMBIENTE DE DESENVOLVIMENTO
+         * PARA PRODUÇÃO ATRIBUIR FALSE PARA A VARIAVEL  ambienteDesenvolvimento 
+         */ 
+        this.ambienteDesenvolvimento = false;
+        
+        if (ambienteDesenvolvimento) {
+            this.preecherDadosTesteCliente();
+            this.jButtonIncluirEnderecoTeste.setVisible(true);
+        }        
+  
+        
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         setTitle("Manutenção de Clientes");
@@ -121,7 +135,6 @@ public class ClienteApp extends javax.swing.JDialog {
                                                         jTextFieldCidade,
                                                         jTextFieldBairro);
         
-        
         UtilComponentes.adicionarKeyListenerSomenteNumeros(jTextFieldCpf, 
                                                         jTextFieldRg,
                                                         jTextFieldCnpj,
@@ -131,28 +144,124 @@ public class ClienteApp extends javax.swing.JDialog {
         
         UtilString.ehEmailValido(jTextField1Email.getText());
         
-        jTextFieldNome.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-//                TODO: BLOQUEAR CAMPOS DE PESSOA JURIDICA
-            }
-            
-        });
+        adicionarListenersCamposPessoaFisica();
+        
+        adicionarListenersCamposPessoaJuridica();
+        
+        jLabelAlertaPessoaJuridica.setVisible(false); 
+        
+        jLabelAlertaPessoaFisica.setVisible(false);
+        
+        UtilComponentes.habilitarComponentes(false,
+                                            jTextFieldRazaoSocial,
+                                            jTextFieldCnpj,
+                                            jTextFieldNomeFantasia);         
         
         UtilTabela.limparTabelas(jTableContatos, jTableEnderecos);
         
-//      PARA PRODUÇÃO ATRIBUIR FALSE  
-        this.ambienteDesenvolvimento = true;
+    }   
+
+    private void adicionarListenersCamposPessoaFisica() {
+        jTextFieldNome.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                bloquearCamposPessoaJuridica();
+            }
+        });
         
-        if (ambienteDesenvolvimento) {
-            this.preecherDadosTesteCliente();
-            this.jButtonIncluirEnderecoTeste.setVisible(true);
+        jTextFieldCpf.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                bloquearCamposPessoaJuridica();
+            }
+        });
+        
+        jTextFieldRg.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                bloquearCamposPessoaJuridica();
+            }
+        });
+         
+        jTextFieldOrgaoEmissor.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                bloquearCamposPessoaJuridica();
+            }
+        });
+    }   
+    
+    public void bloquearCamposPessoaJuridica() {
+        boolean temCamposPessoaFisicaPreenchidos = jTextFieldNome.getText().length() > 0
+                                                || jTextFieldCpf.getText().length() > 0
+                                                || jTextFieldRg.getText().length() > 0
+                                                || jTextFieldOrgaoEmissor.getText().length() > 0;
+
+        if (temCamposPessoaFisicaPreenchidos) {
+            UtilComponentes.habilitarComponentes(false,
+                                                jTextFieldRazaoSocial,
+                                                jTextFieldCnpj,
+                                                jTextFieldNomeFantasia);  
+            
+            jLabelAlertaPessoaJuridica.setVisible(true);
+        } else {
+            UtilComponentes.habilitarComponentes(true,
+                                                jTextFieldRazaoSocial,
+                                                jTextFieldCnpj,
+                                                jTextFieldNomeFantasia);  
+            
+            jLabelAlertaPessoaJuridica.setVisible(false);
         }
-        
     }    
     
-   
+    private void adicionarListenersCamposPessoaJuridica() {
+        jTextFieldRazaoSocial.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                bloquearCamposPessoaFisica();
+            }
+        });
+        
+        jTextFieldNomeFantasia.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                bloquearCamposPessoaFisica();
+            }
+        });
+         
+        jTextFieldCnpj.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                bloquearCamposPessoaFisica();
+            }
+        });
+    }      
+    
+    public void bloquearCamposPessoaFisica() {
+        boolean temCamposPessoaJuridicaPreenchidos =    jTextFieldNomeFantasia.getText().length() > 0
+                                                     || jTextFieldRazaoSocial.getText().length() > 0
+                                                     || jTextFieldRg.getText().length() > 0;
 
+        if (temCamposPessoaJuridicaPreenchidos) {
+            UtilComponentes.habilitarComponentes(false,
+                                                jTextFieldNome,
+                                                jTextFieldCpf,
+                                                jTextFieldRg,
+                                                jTextFieldOrgaoEmissor); 
+            
+            jLabelAlertaPessoaFisica.setVisible(true);
+            
+        } else {
+            UtilComponentes.habilitarComponentes(true,
+                                                jTextFieldNome,
+                                                jTextFieldCpf,
+                                                jTextFieldRg,
+                                                jTextFieldOrgaoEmissor);  
+            
+            jLabelAlertaPessoaFisica.setVisible(false);
+        }
+    }     
+    
     private void adicionarMouseListenerTabelaEnderecos() {
         jTableEnderecos.addMouseListener(new MouseAdapter() {
             @Override
@@ -207,6 +316,7 @@ public class ClienteApp extends javax.swing.JDialog {
         jTextFieldCpf = new javax.swing.JTextField();
         jButtonIrPFisicaParaTabEndereco = new javax.swing.JButton();
         jButtonLimparCamposPessoaFisica = new javax.swing.JButton();
+        jLabelAlertaPessoaFisica = new javax.swing.JLabel();
         jPanelPessoaJuridica = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldRazaoSocial = new javax.swing.JTextField();
@@ -215,6 +325,7 @@ public class ClienteApp extends javax.swing.JDialog {
         jLabel15 = new javax.swing.JLabel();
         jTextFieldNomeFantasia = new javax.swing.JTextField();
         jButtonIrParaTabEndereco = new javax.swing.JButton();
+        jLabelAlertaPessoaJuridica = new javax.swing.JLabel();
         jPanelEndereco = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jComboBoxTipoEndereco = new javax.swing.JComboBox<>();
@@ -276,12 +387,17 @@ public class ClienteApp extends javax.swing.JDialog {
             }
         });
 
+        jButtonLimparCamposPessoaFisica.setMnemonic('l');
         jButtonLimparCamposPessoaFisica.setText("Limpar Campos");
         jButtonLimparCamposPessoaFisica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonLimparCamposPessoaFisicaActionPerformed(evt);
             }
         });
+
+        jLabelAlertaPessoaFisica.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabelAlertaPessoaFisica.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelAlertaPessoaFisica.setText("**Para habilitar os campos de PESSOA FÍSICA, deve LIMPAR os campos da aba de pessoa jurídca.");
 
         javax.swing.GroupLayout jPanelPessoaFisicaLayout = new javax.swing.GroupLayout(jPanelPessoaFisica);
         jPanelPessoaFisica.setLayout(jPanelPessoaFisicaLayout);
@@ -292,28 +408,35 @@ public class ClienteApp extends javax.swing.JDialog {
                 .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelPessoaFisicaLayout.createSequentialGroup()
                         .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelOrgaoEmissor)
-                            .addComponent(jLabelRgOuRazaoSocial))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldRg, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldOrgaoEmissor, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanelPessoaFisicaLayout.createSequentialGroup()
+                                .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelOrgaoEmissor)
+                                    .addComponent(jLabelRgOuRazaoSocial))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldRg, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextFieldOrgaoEmissor, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanelPessoaFisicaLayout.createSequentialGroup()
+                                .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelCpjCnpj)
+                                    .addComponent(jLabelNome))
+                                .addGap(59, 59, 59)
+                                .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanelPessoaFisicaLayout.createSequentialGroup()
+                                .addGap(98, 98, 98)
+                                .addComponent(jTextFieldCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 305, Short.MAX_VALUE))
                     .addGroup(jPanelPessoaFisicaLayout.createSequentialGroup()
                         .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelCpjCnpj)
-                            .addComponent(jLabelNome))
-                        .addGap(59, 59, 59)
-                        .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelPessoaFisicaLayout.createSequentialGroup()
-                        .addGap(98, 98, 98)
-                        .addComponent(jTextFieldCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 305, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPessoaFisicaLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonLimparCamposPessoaFisica)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonIrPFisicaParaTabEndereco)
-                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPessoaFisicaLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButtonLimparCamposPessoaFisica)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonIrPFisicaParaTabEndereco))
+                            .addGroup(jPanelPessoaFisicaLayout.createSequentialGroup()
+                                .addComponent(jLabelAlertaPessoaFisica)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         jPanelPessoaFisicaLayout.setVerticalGroup(
             jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -334,7 +457,9 @@ public class ClienteApp extends javax.swing.JDialog {
                 .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldOrgaoEmissor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelOrgaoEmissor))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
+                .addGap(61, 61, 61)
+                .addComponent(jLabelAlertaPessoaFisica)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
                 .addGroup(jPanelPessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonLimparCamposPessoaFisica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonIrPFisicaParaTabEndereco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -360,10 +485,18 @@ public class ClienteApp extends javax.swing.JDialog {
             }
         });
 
+        jLabelAlertaPessoaJuridica.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabelAlertaPessoaJuridica.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelAlertaPessoaJuridica.setText("**Para habilitar os campos de PESSOA JURÍDICA, deve LIMPAR os campos da aba de pessoa física.");
+
         javax.swing.GroupLayout jPanelPessoaJuridicaLayout = new javax.swing.GroupLayout(jPanelPessoaJuridica);
         jPanelPessoaJuridica.setLayout(jPanelPessoaJuridicaLayout);
         jPanelPessoaJuridicaLayout.setHorizontalGroup(
             jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPessoaJuridicaLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButtonIrParaTabEndereco)
+                .addContainerGap())
             .addGroup(jPanelPessoaJuridicaLayout.createSequentialGroup()
                 .addGroup(jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelPessoaJuridicaLayout.createSequentialGroup()
@@ -379,12 +512,11 @@ public class ClienteApp extends javax.swing.JDialog {
                         .addComponent(jTextFieldRazaoSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelPessoaJuridicaLayout.createSequentialGroup()
                         .addGap(110, 110, 110)
-                        .addComponent(jTextFieldCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 299, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPessoaJuridicaLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButtonIrParaTabEndereco)
-                .addContainerGap())
+                        .addComponent(jTextFieldCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelPessoaJuridicaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabelAlertaPessoaJuridica)))
+                .addGap(20, 169, Short.MAX_VALUE))
         );
         jPanelPessoaJuridicaLayout.setVerticalGroup(
             jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -401,7 +533,9 @@ public class ClienteApp extends javax.swing.JDialog {
                 .addGroup(jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, Short.MAX_VALUE)
+                .addGap(103, 103, 103)
+                .addComponent(jLabelAlertaPessoaJuridica)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
                 .addComponent(jButtonIrParaTabEndereco)
                 .addContainerGap())
         );
@@ -751,6 +885,11 @@ public class ClienteApp extends javax.swing.JDialog {
 
     private void jButtonConcluirCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConcluirCadastroActionPerformed
         try {
+            
+            if (validarContatoEnderecoVazio()) {
+                return;
+            }            
+            
     //      Pessoa Física        
             String nome         = jTextFieldNome.getText();
             String cpf          = jTextFieldCpf.getText();
@@ -794,6 +933,18 @@ public class ClienteApp extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_jButtonConcluirCadastroActionPerformed
+
+    private boolean validarContatoEnderecoVazio() throws HeadlessException {
+        if (UtilObjetos.ehNuloOuVazio(this.contatos)) {
+            JOptionPane.showMessageDialog(null, "Deve ser inserido pelo menos 1(um) contato para o cliente.");
+            return true;
+        }
+        if (UtilObjetos.ehNuloOuVazio(this.enderecos)) {
+            JOptionPane.showMessageDialog(null, "Deve ser inserido pelo menos 1(um) endereco para o cliente.");
+            return true;
+        }
+        return false;
+    }
 
     private void preencherEnderecoComCliente(List<Endereco> enderecos, Cliente cliente) {
         for (Endereco end: enderecos) {
@@ -998,7 +1149,7 @@ public class ClienteApp extends javax.swing.JDialog {
             
             if (temCamposVazios) {
                 JOptionPane.showMessageDialog(null, "Campos obrigatórios devem ser preenchidos.");
-                jTextField1Email.setFocusable(true);
+                jTextField1Email.requestFocus();
                 return;
             }
             
@@ -1006,7 +1157,7 @@ public class ClienteApp extends javax.swing.JDialog {
             
             if (!emailValido) {
                 JOptionPane.showMessageDialog(null, "Preencha com um email validdo.");
-                jTextField1Email.setFocusable(true);
+                jTextField1Email.requestFocus();
                 return;                
             }
             
@@ -1033,7 +1184,7 @@ public class ClienteApp extends javax.swing.JDialog {
             
             UtilComponentes.limparCampos(jTextFieldNumeroTelefone, jTextField1Email);
             
-            jTextField1Email.setFocusable(true);
+            jTextField1Email.requestFocus();
             
         } catch (Exception ex) {
             Logger.getLogger(ClienteApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -1183,6 +1334,8 @@ public class ClienteApp extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelAlertaPessoaFisica;
+    private javax.swing.JLabel jLabelAlertaPessoaJuridica;
     private javax.swing.JLabel jLabelCpjCnpj;
     private javax.swing.JLabel jLabelNome;
     private javax.swing.JLabel jLabelOrgaoEmissor;
