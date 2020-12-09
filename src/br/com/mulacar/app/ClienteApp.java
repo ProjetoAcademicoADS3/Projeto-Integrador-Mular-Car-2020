@@ -152,11 +152,6 @@ public class ClienteApp extends javax.swing.JDialog {
         
         jLabelAlertaPessoaFisica.setVisible(false);
         
-        UtilComponentes.habilitarComponentes(false,
-                                            jTextFieldRazaoSocial,
-                                            jTextFieldCnpj,
-                                            jTextFieldNomeFantasia);         
-        
         UtilTabela.limparTabelas(jTableContatos, jTableEnderecos);
         
     }   
