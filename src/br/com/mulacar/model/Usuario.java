@@ -27,6 +27,10 @@ public class Usuario {
     public Usuario() {
     }
 
+    public Usuario(int id) {
+        this.id = id;
+    }
+    
     public Usuario(String nome, String cpf, String email, String senha, EnumStatus status, EnumPerfil perfil) {
         this.nome   = nome;
         this.cpf    = cpf;

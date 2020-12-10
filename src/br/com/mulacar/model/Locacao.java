@@ -26,9 +26,10 @@ public class Locacao {
     private Date dataDevolucaoPrevista;
     private String kmInicial;
     private String observacoes;
-    private BigDecimal valorAcessorios;
-    private BigDecimal valorLocacao;
+    private BigDecimal valorTotalAcessorios;
+    private BigDecimal valorTotalLocacao;
     private BigDecimal valorSeguro;
+    private BigDecimal valorCaucao;
     private EnumStatus status;
     private boolean reserva;
 
@@ -120,20 +121,20 @@ public class Locacao {
         this.observacoes = observacoes;
     }
 
-    public BigDecimal getValorAcessorios() {
-        return valorAcessorios;
+    public BigDecimal getValorTotalAcessorios() {
+        return valorTotalAcessorios;
     }
 
-    public void setValorAcessorios(BigDecimal valorAcessorios) {
-        this.valorAcessorios = valorAcessorios;
+    public void setValorTotalAcessorios(BigDecimal valorTotalAcessorios) {
+        this.valorTotalAcessorios = valorTotalAcessorios;
     }
 
-    public BigDecimal getValorLocacao() {
-        return valorLocacao;
+    public BigDecimal getValorTotalLocacao() {
+        return valorTotalLocacao;
     }
 
-    public void setValorLocacao(BigDecimal valorLocacao) {
-        this.valorLocacao = valorLocacao;
+    public void setValorTotalLocacao(BigDecimal valorTotalLocacao) {
+        this.valorTotalLocacao = valorTotalLocacao;
     }
 
     public BigDecimal getValorSeguro() {
@@ -142,6 +143,14 @@ public class Locacao {
 
     public void setValorSeguro(BigDecimal valorSeguro) {
         this.valorSeguro = valorSeguro;
+    }
+
+    public BigDecimal getValorCaucao() {
+        return valorCaucao;
+    }
+
+    public void setValorCaucao(BigDecimal valorCaucao) {
+        this.valorCaucao = valorCaucao;
     }
 
     public EnumStatus getStatus() {
@@ -162,7 +171,7 @@ public class Locacao {
 
     @Override
     public String toString() {
-        return "Locacao{" + "id=" + id + ", cliente=" + cliente + ", motorista=" + motorista + ", veiculo=" + veiculo + ", usuario=" + usuario + ", valorMulta=" + valorMulta + ", tanqueCheio=" + tanqueCheio + ", dataRetirada=" + dataRetirada + ", dataDevolucaoPrevista=" + dataDevolucaoPrevista + ", kmInicial=" + kmInicial + ", observacoes=" + observacoes + ", valorAcessorios=" + valorAcessorios + ", valorLocacao=" + valorLocacao + ", valorSeguro=" + valorSeguro + ", status=" + status + ", reserva=" + reserva + '}';
+        return "Locacao{" + "id=" + id + ", cliente=" + cliente + ", motorista=" + motorista + ", veiculo=" + veiculo + ", usuario=" + usuario + ", valorMulta=" + valorMulta + ", tanqueCheio=" + tanqueCheio + ", dataRetirada=" + dataRetirada + ", dataDevolucaoPrevista=" + dataDevolucaoPrevista + ", kmInicial=" + kmInicial + ", observacoes=" + observacoes + ", valorAcessorios=" + valorTotalAcessorios + ", valorLocacao=" + valorTotalLocacao + ", valorSeguro=" + valorSeguro + ", valorCaucao=" + valorCaucao + ", status=" + status + ", reserva=" + reserva + '}';
     }
 
     @Override
@@ -189,7 +198,4 @@ public class Locacao {
         }
         return true;
     }
-    
-    
-    
 }

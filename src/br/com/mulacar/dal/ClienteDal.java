@@ -11,7 +11,6 @@ package br.com.mulacar.dal;
 import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.enumeration.EnumTipoCliente;
 import br.com.mulacar.model.Cliente;
-import br.com.mulacar.model.Endereco;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,7 +66,7 @@ public class ClienteDal {
             conexao.commit();
 
             if (idCliente == 0) {
-                throw new SQLException("Falha ao inserir usuario no banco, nenhum registro criado.");
+                throw new SQLException("Falha ao inserir cliente no banco, nenhum registro criado.");
             }
             
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
@@ -86,7 +85,7 @@ public class ClienteDal {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, "ClienteDal - ", e );
             throw e;
         } catch (Exception ex) {
-            Logger.getLogger(Endereco.class.getName()).log(Level.SEVERE, "EnderecoDal - ", ex );
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, "ClienteDal - ", ex );
             throw ex;            
         }      
     }

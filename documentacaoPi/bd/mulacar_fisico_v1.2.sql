@@ -19,7 +19,7 @@ CREATE TABLE categoria (
     cat_id serial PRIMARY KEY,
     cat_nome varchar(60)NOT NULL,
     cat_valor numeric(7,2) NOT NULL,
-    cat_status varchar(20) NOT null,
+    cat_status varchar(20) NOT NULL,
     CONSTRAINT cat_nome_unico UNIQUE (cat_nome),
     CONSTRAINT cat_valor_valido CHECK (cat_valor > 0)
 );
@@ -127,7 +127,7 @@ CREATE TABLE contato (
 CREATE TABLE locacao (
     loc_id SERIAL PRIMARY KEY,
     loc_cliente_id INTEGER NOT NULL,
-    loc_motorista_id INTEGER NULL,
+    loc_motorista_id INTEGER NOT NULL,
     loc_veiculo_id INTEGER NOT NULL,
     loc_usuario_cadastro_id INTEGER NOT NULL,
     loc_valor_multa numeric(7,2) NULL,
@@ -136,8 +136,8 @@ CREATE TABLE locacao (
     loc_data_devolucao_prevista TIMESTAMP NULL,
     loc_km_inicial varchar(20) NULL,
     loc_observacoes text NULL,
-    loc_valores_acessorios NUMERIC(7,2) NULL,
-    loc_valor_locacao NUMERIC(7,2) NOT NULL,
+    loc_valor_total_acessorios NUMERIC(7,2) NULL,
+    loc_valor_total_locacao NUMERIC(7,2) NOT NULL,
     loc_valor_caucao NUMERIC(7,2) NULL,
     loc_valor_seguro NUMERIC(7,2) NOT NULL,
     loc_status VARCHAR(20) NOT NULL,
