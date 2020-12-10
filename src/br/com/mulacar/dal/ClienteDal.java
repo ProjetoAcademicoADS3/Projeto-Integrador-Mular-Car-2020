@@ -143,7 +143,7 @@ public class ClienteDal {
     }
 
     public Cliente getClienteById(Cliente cliente) throws Exception {
-        Cliente clienteRetorno = null;
+        Cliente clienteRetorno = new Cliente ();
 
         String sql = "SELECT * FROM cliente WHERE cli_id = ?";
 
@@ -161,7 +161,7 @@ public class ClienteDal {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, "ClienteDal - ", e );
             throw e;
         }
-        return cliente;
+        return clienteRetorno;
     }
 
     public Cliente getClienteByCpfCnpj(Cliente cliente) throws Exception {
@@ -234,7 +234,7 @@ public class ClienteDal {
         clienteRetorno.setRg(rs.getString("cli_rg"));
         clienteRetorno.setOrgaoEmissor(rs.getString("cli_rg_orgao_emissor"));
         clienteRetorno.setStatus(EnumStatus.valueOf(rs.getString("cli_status")));
-        clienteRetorno.setStatus(EnumStatus.valueOf(rs.getString("cli_tipo")));
+        clienteRetorno.setTipoCliente(EnumTipoCliente.valueOf(rs.getString("cli_tipo")));
     }    
 
 }

@@ -26,12 +26,13 @@ public class Motorista {
 
     public Motorista() {
     }
-
+    
     public Motorista(int id) {
         this.id = id;
     }
 
     public Motorista(String string) {
+        this.nome = string;
     }
 
     public int getId() {

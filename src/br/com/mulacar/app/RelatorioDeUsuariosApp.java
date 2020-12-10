@@ -12,7 +12,9 @@ package br.com.mulacar.app;
 import br.com.mulacar.bll.UsuarioBll;
 import br.com.mulacar.model.Usuario;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,6 +28,16 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
     public RelatorioDeUsuariosApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    public static String convertDate(Date dtConsulta) {
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy", new Locale("pt", "BR"));
+            return formato.format(dtConsulta);
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            return null;
+        }
     }
     
     public void imprimirRelatorioDeUsuarios(Iterator listaDeUsuarios) throws Exception {
@@ -42,8 +54,7 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
             linha[4] = usu.getSenha();
             linha[5] = usu.getPerfil().toString();
             linha[6] = usu.getStatus().toString();
-            SimpleDateFormat dataForm = new SimpleDateFormat("dd/MM/yyyy");
-            linha[7] = dataForm.format(usu.getDataCadastro());
+            linha[7] = convertDate(usu.getDataCadastro());
             model.addRow(linha);
             cont++;
         }

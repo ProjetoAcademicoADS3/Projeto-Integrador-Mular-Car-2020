@@ -205,7 +205,44 @@ public class VeiculoDal {
         }
         return veic;
     }
+    
+    public Veiculo getVeiculoById(Veiculo veiculo) throws Exception {
+        Veiculo veic = new Veiculo();
+        String sql = "SELECT * from veiculo WHERE vei_id=?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, veiculo.getId());
+            ResultSet rs = preparedStatement.executeQuery();
 
+            if (rs.next()) {
+
+                veic.setId(rs.getInt("vei_id"));
+                veic.setPlaca(rs.getString("vei_placa"));
+                veic.setAnoFabricacao(rs.getInt("vei_ano_fabricacao"));
+                veic.setAnoModelo(rs.getInt("vei_ano_modelo"));
+                veic.setTipoCombustivel(EnumTipoCombustivel.valueOf(rs.getString("vei_tipo_combustivel")));
+                veic.setRenavan(rs.getString("vei_renavan"));
+                veic.setPrecoCompra(rs.getBigDecimal("vei_preco_compra"));
+                veic.setPrecoVenda(rs.getBigDecimal("vei_preco_venda"));
+                veic.setTipo(EnumTipoVeiculo.valueOf(rs.getString("vei_tipo")));
+                veic.setStatus(EnumStatus.valueOf(rs.getString("vei_status")));
+                veic.setNumPassageiros(rs.getInt("vei_num_passageiro"));
+                veic.setKm(rs.getLong("vei_km"));
+                CategoriaDal catDal = new CategoriaDal();
+                veic.setCategoria(catDal.getCategoriaById(new Categoria(rs.getInt("vei_categoria_id"))));
+                ModeloDal modDal = new ModeloDal();
+                veic.setModelo(modDal.getModeloById(rs.getInt("vei_modelo_id")));
+                veic.setSituacao(EnumSituacaoVeiculo.valueOf(rs.getString("vei_situacao")));
+
+            }
+        } catch (Exception erro) {
+            throw new Exception("Ocorreu um erro ao buscar este registro de contratos\n"
+                    + erro.getMessage());
+        }
+        return veic;
+    }
+
+    
     public List<Veiculo> getVeiculoByCategoria(int categoria, String situacao) throws Exception {
         List<Veiculo> lista = new ArrayList<Veiculo>();
         String sql = "SELECT * from veiculo WHERE vei_categoria_id = ? AND vei_situacao = ?";

@@ -17,6 +17,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 import br.com.mulacar.enumeration.EnumPerfil;
 import br.com.mulacar.enumeration.EnumStatus;
+import java.util.Locale;
 
 public class UsuarioApp extends javax.swing.JDialog {
 
@@ -49,8 +50,7 @@ public class UsuarioApp extends javax.swing.JDialog {
             jComboBoxStatusUsuario.addItem(status.toString());
         }
 
-        dataForm = new SimpleDateFormat("dd/MM/yyyy");
-        jTextFieldDataAtual.setText(dataForm.format(new Date()));
+        jTextFieldDataAtual.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
     }
 
     private void imprimirDadosUsuarioNosCampos(ArrayList<Usuario> lista) throws Exception {
@@ -66,6 +66,7 @@ public class UsuarioApp extends javax.swing.JDialog {
             jComboBoxPerfilDoUsuario.setSelectedItem(usu.getPerfil().toString());
             SimpleDateFormat dataForm = new SimpleDateFormat("dd/MM/yyyy");
             jTextFieldDataAtual.setText(dataForm.format(usu.getDataCadastro()));
+            jTextFieldDataAtual.setText(convertDate(usu.getDataCadastro()));
             jButtonSalvar.setLabel("Editar");
 
         }
@@ -82,7 +83,27 @@ public class UsuarioApp extends javax.swing.JDialog {
         jComboBoxPerfilDoUsuario.setSelectedIndex(0);
         jButtonSalvar.setLabel("Salvar");
     }
-
+    
+    private static Date createNewDate(String data) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            return formato.parse(data);
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            return null;
+        }
+    }
+    
+    public static String convertDate(Date dtConsulta) {
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy", new Locale("pt", "BR"));
+            return formato.format(dtConsulta);
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            return null;
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -374,7 +395,7 @@ public class UsuarioApp extends javax.swing.JDialog {
             String cpf = jTextFieldCpf.getText();
             String email = jTextFieldEmail.getText();
             String senha = jPasswordFieldSenha.getText();
-            Date data = dataForm.parse(jTextFieldDataAtual.getText());
+            Date data = createNewDate(jTextFieldDataAtual.getText());
             EnumStatus status = EnumStatus.valueOf(jComboBoxStatusUsuario.getSelectedItem().toString());
             EnumPerfil perfil = EnumPerfil.valueOf(jComboBoxPerfilDoUsuario.getSelectedItem().toString());
 

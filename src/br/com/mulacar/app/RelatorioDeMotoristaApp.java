@@ -64,18 +64,13 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
 
             Motorista motorista = new Motorista(codigo);
             Motorista mot = motoristaBll.getMotoristaPorId(motorista);
+            //jLabelExibirFotoDaCNH.setIcon(motoristaBll.exibirImagem(mot));
 
-//            jLabelExibirFotoDaCNH.setIcon(motoristaBll.exibirImagem(mot));
-            
             Interface_ExibirImagem exibir_Adapter = new Imagem_Adapter();
             jLabelExibirFotoDaCNH.setIcon(exibir_Adapter.exibirImagem(mot));
-            
-            
-
         } else {
             JOptionPane.showMessageDialog(null, "Nenhum Registro Encontrado!\nVerifique !");
         }
-
     }
 
     /**

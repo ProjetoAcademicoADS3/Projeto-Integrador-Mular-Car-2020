@@ -6,7 +6,6 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.model;
 
 import br.com.mulacar.enumeration.EnumPerfil;
@@ -15,23 +14,31 @@ import java.util.Date;
 
 public class Usuario {
 
-    private int         id;
-    private String      nome;
-    private String      cpf;
-    private String      email;
-    private String      senha;
-    private EnumPerfil  perfil;
-    private EnumStatus  status;
+    private int id;
+    private String nome;
+    private String cpf;
+    private String email;
+    private String senha;
+    private EnumPerfil perfil;
+    private EnumStatus status;
     private Date dataCadastro;
 
     public Usuario() {
     }
 
+    public Usuario(String nome) {
+        this.nome = nome;
+    }
+
+    public Usuario(int id) {
+        this.id = id;
+    }
+
     public Usuario(String nome, String cpf, String email, String senha, EnumPerfil perfil, EnumStatus status, Date dataCadastro) {
-        this.nome   = nome;
-        this.cpf    = cpf;
-        this.email  = email;
-        this.senha  = senha;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.senha = senha;
         this.perfil = perfil;
         this.status = status;
         this.dataCadastro = dataCadastro;
@@ -116,5 +123,5 @@ public class Usuario {
     public String toString() {
         return "Usuario{" + "id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", email=" + email + ", senha=" + senha + ", perfil=" + perfil + ", status=" + status + ", dataCadastro=" + dataCadastro + '}';
     }
-    
+
 }
