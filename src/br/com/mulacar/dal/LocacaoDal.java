@@ -58,7 +58,7 @@ public class LocacaoDal {
             preparedStatement.setString(9, locacao.getKmInicial());
             preparedStatement.setString(10, locacao.getObservacoes());
             preparedStatement.setBigDecimal(11, locacao.getValorTotalAcessorios());
-            preparedStatement.setBigDecimal(12, locacao.getValorTotalLocacao());
+            preparedStatement.setBigDecimal(12, locacao.getValorLocacao());
             preparedStatement.setBigDecimal(13, locacao.getValorCaucao());
             preparedStatement.setBigDecimal(14, locacao.getValorSeguro());
             preparedStatement.setString(15, locacao.getStatus().name());
@@ -127,7 +127,7 @@ public class LocacaoDal {
             preparedStatement.setString(9, locacao.getKmInicial());
             preparedStatement.setString(10, locacao.getObservacoes());
             preparedStatement.setBigDecimal(11, locacao.getValorTotalAcessorios());
-            preparedStatement.setBigDecimal(12, locacao.getValorTotalLocacao());
+            preparedStatement.setBigDecimal(12, locacao.getValorLocacao());
             preparedStatement.setBigDecimal(13, locacao.getValorCaucao());
             preparedStatement.setBigDecimal(14, locacao.getValorSeguro());
             preparedStatement.setString(15, locacao.getStatus().name());
@@ -196,7 +196,7 @@ public class LocacaoDal {
             Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );
             throw e;
         } 
-        return locacao;
+        return locacaoRetorno;
     }
 
     public Locacao getLocacaoByCliente(Locacao locacao) throws Exception {
@@ -273,7 +273,7 @@ public class LocacaoDal {
         locacaoRetorno.setKmInicial(rs.getString("loc_km_inicial"));
         locacaoRetorno.setObservacoes(rs.getString("loc_observacoes"));
         locacaoRetorno.setValorTotalAcessorios(rs.getBigDecimal("loc_valor_total_acessorios"));
-        locacaoRetorno.setValorTotalLocacao(rs.getBigDecimal("loc_valor_total_locacao"));
+        locacaoRetorno.setValorLocacao(rs.getBigDecimal("loc_valor_total_locacao"));
         locacaoRetorno.setValorCaucao(rs.getBigDecimal("loc_valor_caucao"));
         locacaoRetorno.setValorSeguro(rs.getBigDecimal("loc_valor_seguro"));
         locacaoRetorno.setStatus(EnumStatus.valueOf(rs.getString("loc_status")));

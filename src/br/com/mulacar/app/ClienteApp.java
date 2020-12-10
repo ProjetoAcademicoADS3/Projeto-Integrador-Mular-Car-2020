@@ -79,18 +79,18 @@ public class ClienteApp extends javax.swing.JDialog {
     
     private void inicializar() {
         
+        this.reiniciarTodosCampos();
+        
         /**
          * DESTINADO A AMBIENTE DE DESENVOLVIMENTO
          * PARA PRODUÇÃO ATRIBUIR FALSE PARA A VARIAVEL  ambienteDesenvolvimento 
          */ 
-        this.ambienteDesenvolvimento = false;
+        this.ambienteDesenvolvimento = true;
         
         if (ambienteDesenvolvimento) {
             this.preecherDadosTesteCliente();
             this.jButtonIncluirEnderecoTeste.setVisible(true);
         }        
-  
-        
         
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -101,8 +101,6 @@ public class ClienteApp extends javax.swing.JDialog {
         jButtonRemoverEnderecoTabela.setEnabled(false);
         
         jButtonRemoverContatoTabela.setEnabled(false);
-        
-        jButtonIncluirEnderecoTeste.setVisible(false);
         
         this.mensagemErroPadrao = "Entre em contato com suporte";
 
@@ -120,7 +118,6 @@ public class ClienteApp extends javax.swing.JDialog {
         
         this.adicionarMouseListenerTabelaEnderecos();
 
-        this.reiniciarTodosCampos();
         
         UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldCpf, LIMITE_CARACTERES_CPF);
         
@@ -130,8 +127,6 @@ public class ClienteApp extends javax.swing.JDialog {
                                                         jTextFieldOrgaoEmissor,
                                                         jTextFieldRazaoSocial,
                                                         jTextFieldNomeFantasia,
-                                                        jTextFieldRua,
-                                                        jTextFieldComplemento,
                                                         jTextFieldCidade,
                                                         jTextFieldBairro);
         
@@ -321,6 +316,7 @@ public class ClienteApp extends javax.swing.JDialog {
         jTextFieldNomeFantasia = new javax.swing.JTextField();
         jButtonIrParaTabEndereco = new javax.swing.JButton();
         jLabelAlertaPessoaJuridica = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jPanelEndereco = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jComboBoxTipoEndereco = new javax.swing.JComboBox<>();
@@ -484,12 +480,21 @@ public class ClienteApp extends javax.swing.JDialog {
         jLabelAlertaPessoaJuridica.setForeground(new java.awt.Color(255, 0, 0));
         jLabelAlertaPessoaJuridica.setText("**Para habilitar os campos de PESSOA JURÍDICA, deve LIMPAR os campos da aba de pessoa física.");
 
+        jButton1.setText("Limpar Campos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelPessoaJuridicaLayout = new javax.swing.GroupLayout(jPanelPessoaJuridica);
         jPanelPessoaJuridica.setLayout(jPanelPessoaJuridicaLayout);
         jPanelPessoaJuridicaLayout.setHorizontalGroup(
             jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPessoaJuridicaLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonIrParaTabEndereco)
                 .addContainerGap())
             .addGroup(jPanelPessoaJuridicaLayout.createSequentialGroup()
@@ -531,7 +536,9 @@ public class ClienteApp extends javax.swing.JDialog {
                 .addGap(103, 103, 103)
                 .addComponent(jLabelAlertaPessoaJuridica)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
-                .addComponent(jButtonIrParaTabEndereco)
+                .addGroup(jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonIrParaTabEndereco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -751,11 +758,11 @@ public class ClienteApp extends javax.swing.JDialog {
 
             },
             new String [] {
-                "E-mail", "Tipo Telefone", "Número"
+                "id", "E-mail", "Tipo Telefone", "Número"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false
+                true, true, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -765,8 +772,15 @@ public class ClienteApp extends javax.swing.JDialog {
         jTableContatos.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTableContatos);
         if (jTableContatos.getColumnModel().getColumnCount() > 0) {
-            jTableContatos.getColumnModel().getColumn(1).setPreferredWidth(10);
-            jTableContatos.getColumnModel().getColumn(2).setPreferredWidth(60);
+            jTableContatos.getColumnModel().getColumn(0).setMinWidth(40);
+            jTableContatos.getColumnModel().getColumn(0).setPreferredWidth(40);
+            jTableContatos.getColumnModel().getColumn(0).setMaxWidth(40);
+            jTableContatos.getColumnModel().getColumn(2).setMinWidth(120);
+            jTableContatos.getColumnModel().getColumn(2).setPreferredWidth(120);
+            jTableContatos.getColumnModel().getColumn(2).setMaxWidth(120);
+            jTableContatos.getColumnModel().getColumn(3).setMinWidth(120);
+            jTableContatos.getColumnModel().getColumn(3).setPreferredWidth(120);
+            jTableContatos.getColumnModel().getColumn(3).setMaxWidth(120);
         }
 
         jButtonAdicionarContatoTabela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Apps-File-New-icon-24px.png"))); // NOI18N
@@ -1234,7 +1248,25 @@ public class ClienteApp extends javax.swing.JDialog {
                                     jTextFieldCpf,
                                     jTextFieldRg,
                                     jTextFieldOrgaoEmissor);
+        
+        UtilComponentes.habilitarComponentes(true,
+                                    jTextFieldNome,
+                                    jTextFieldCpf,
+                                    jTextFieldRg,
+                                    jTextFieldOrgaoEmissor);
     }//GEN-LAST:event_jButtonLimparCamposPessoaFisicaActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        UtilComponentes.limparCampos(jTextFieldRazaoSocial,
+                                    jTextFieldNomeFantasia,
+                                    jTextFieldCnpj);
+        
+        UtilComponentes.habilitarComponentes(true,
+                                    jTextFieldRazaoSocial,
+                                    jTextFieldCnpj,
+                                    jTextFieldNomeFantasia);          
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void preencherTabelaContato(List<Contato> contatos) throws Exception {
         
@@ -1301,6 +1333,7 @@ public class ClienteApp extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAdicionarContatoTabela;
     private javax.swing.JButton jButtonAdicionarEnderecoTabela;
     private javax.swing.JButton jButtonConcluirCadastro;

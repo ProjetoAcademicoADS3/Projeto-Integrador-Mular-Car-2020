@@ -131,7 +131,7 @@ public class LocacaoBll {
                                 || UtilObjetos.ehNuloOuVazio(locacao.getUsuario())
                                 || UtilObjetos.ehNuloOuVazio(locacao.getUsuario().getId())
                                 || UtilObjetos.ehNuloOuVazio(locacao.getDataRetirada())
-                                || UtilObjetos.ehNuloOuVazio(locacao.getValorTotalLocacao())
+                                || UtilObjetos.ehNuloOuVazio(locacao.getValorLocacao())
                                 || UtilObjetos.ehNuloOuVazio(locacao.getValorSeguro())
                                 || UtilObjetos.ehNuloOuVazio(locacao.getStatus())
                                 || UtilObjetos.ehNuloOuVazio(locacao.isReserva());

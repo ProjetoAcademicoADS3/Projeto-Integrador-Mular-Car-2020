@@ -233,6 +233,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jButtonIrParaTabEndereco" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -286,7 +288,10 @@
                       <EmptySpace min="-2" pref="103" max="-2" attributes="0"/>
                       <Component id="jLabelAlertaPessoaJuridica" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="149" max="32767" attributes="0"/>
-                      <Component id="jButtonIrParaTabEndereco" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jButtonIrParaTabEndereco" max="32767" attributes="0"/>
+                          <Component id="jButton1" max="32767" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -336,6 +341,14 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="**Para habilitar os campos de PESSOA JUR&#xcd;DICA, deve LIMPAR os campos da aba de pessoa f&#xed;sica."/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Limpar Campos"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -824,7 +837,8 @@
                 <Component class="javax.swing.JTable" name="jTableContatos">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="3" rowCount="0">
+                      <Table columnCount="4" rowCount="0">
+                        <Column editable="true" title="id" type="java.lang.Object"/>
                         <Column editable="true" title="E-mail" type="java.lang.Object"/>
                         <Column editable="false" title="Tipo Telefone" type="java.lang.Object"/>
                         <Column editable="false" title="N&#xfa;mero" type="java.lang.Object"/>
@@ -832,17 +846,22 @@
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
+                        <Column maxWidth="40" minWidth="40" prefWidth="40" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="true">
+                        <Column maxWidth="120" minWidth="120" prefWidth="120" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="60" resizable="true">
+                        <Column maxWidth="120" minWidth="120" prefWidth="120" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>

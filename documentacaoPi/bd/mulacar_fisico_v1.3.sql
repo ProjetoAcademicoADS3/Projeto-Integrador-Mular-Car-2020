@@ -137,7 +137,7 @@ CREATE TABLE locacao (
     loc_km_inicial varchar(20) NULL,
     loc_observacoes text NULL,
     loc_valor_total_acessorios NUMERIC(7,2) NULL,
-    loc_valor_total_locacao NUMERIC(7,2) NOT NULL,
+    loc_valor_locacao NUMERIC(7,2) NOT NULL,
     loc_valor_caucao NUMERIC(7,2) NULL,
     loc_valor_seguro NUMERIC(7,2) NOT NULL,
     loc_status VARCHAR(20) NOT NULL,
