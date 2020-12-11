@@ -51,6 +51,10 @@ public class ClienteApp extends javax.swing.JDialog {
     
     private static final int LIMITE_CARACTERES_CEP = 8;
     
+    private static final int LIMITE_CARACTERES_CNPJ = 14;
+    
+    private static final int LIMITE_CARACTERES_TELEFONE = 12;
+    
     private List<Contato> contatos;
 
     private ClienteBll clienteBll;
@@ -118,10 +122,13 @@ public class ClienteApp extends javax.swing.JDialog {
         
         this.adicionarMouseListenerTabelaEnderecos();
 
-        
         UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldCpf, LIMITE_CARACTERES_CPF);
         
         UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldCEP, LIMITE_CARACTERES_CEP);
+        
+        UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldCnpj, LIMITE_CARACTERES_CNPJ);
+        
+        UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldNumeroTelefone, LIMITE_CARACTERES_TELEFONE);
         
         UtilComponentes.adicionarKeyListenerSomenteLetras(jTextFieldNome, 
                                                         jTextFieldOrgaoEmissor,
@@ -316,7 +323,7 @@ public class ClienteApp extends javax.swing.JDialog {
         jTextFieldNomeFantasia = new javax.swing.JTextField();
         jButtonIrParaTabEndereco = new javax.swing.JButton();
         jLabelAlertaPessoaJuridica = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButtonLimparCamposJuridica = new javax.swing.JButton();
         jPanelEndereco = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jComboBoxTipoEndereco = new javax.swing.JComboBox<>();
@@ -480,10 +487,11 @@ public class ClienteApp extends javax.swing.JDialog {
         jLabelAlertaPessoaJuridica.setForeground(new java.awt.Color(255, 0, 0));
         jLabelAlertaPessoaJuridica.setText("**Para habilitar os campos de PESSOA JURÍDICA, deve LIMPAR os campos da aba de pessoa física.");
 
-        jButton1.setText("Limpar Campos");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonLimparCamposJuridica.setMnemonic('l');
+        jButtonLimparCamposJuridica.setText("Limpar Campos");
+        jButtonLimparCamposJuridica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonLimparCamposJuridicaActionPerformed(evt);
             }
         });
 
@@ -493,7 +501,7 @@ public class ClienteApp extends javax.swing.JDialog {
             jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPessoaJuridicaLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(jButtonLimparCamposJuridica)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonIrParaTabEndereco)
                 .addContainerGap())
@@ -538,7 +546,7 @@ public class ClienteApp extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
                 .addGroup(jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonIrParaTabEndereco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonLimparCamposJuridica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -983,7 +991,7 @@ public class ClienteApp extends javax.swing.JDialog {
             cliente.setTipoCliente(EnumTipoCliente.PESSOA_JURIDICA);
             cliente.setRazaoSocial(razaoSocial);
             cliente.setCpfCnpj(cnpj);
-            cliente.setNome(nomeFantasia);
+            cliente.setNomeFantasia(nomeFantasia);
         }
         
         return cliente;
@@ -1250,23 +1258,31 @@ public class ClienteApp extends javax.swing.JDialog {
                                     jTextFieldOrgaoEmissor);
         
         UtilComponentes.habilitarComponentes(true,
-                                    jTextFieldNome,
-                                    jTextFieldCpf,
-                                    jTextFieldRg,
-                                    jTextFieldOrgaoEmissor);
+                                    jTextFieldRazaoSocial,
+                                    jTextFieldCnpj,
+                                    jTextFieldNomeFantasia); 
+        
+        jLabelAlertaPessoaJuridica.setVisible(false); 
+        
+        jLabelAlertaPessoaFisica.setVisible(false);        
     }//GEN-LAST:event_jButtonLimparCamposPessoaFisicaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonLimparCamposJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimparCamposJuridicaActionPerformed
         UtilComponentes.limparCampos(jTextFieldRazaoSocial,
                                     jTextFieldNomeFantasia,
                                     jTextFieldCnpj);
         
         UtilComponentes.habilitarComponentes(true,
-                                    jTextFieldRazaoSocial,
-                                    jTextFieldCnpj,
-                                    jTextFieldNomeFantasia);          
+                                    jTextFieldNome,
+                                    jTextFieldCpf,
+                                    jTextFieldRg,
+                                    jTextFieldOrgaoEmissor); 
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+        jLabelAlertaPessoaJuridica.setVisible(false); 
+        
+        jLabelAlertaPessoaFisica.setVisible(false);        
+        
+    }//GEN-LAST:event_jButtonLimparCamposJuridicaActionPerformed
 
     private void preencherTabelaContato(List<Contato> contatos) throws Exception {
         
@@ -1333,7 +1349,6 @@ public class ClienteApp extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAdicionarContatoTabela;
     private javax.swing.JButton jButtonAdicionarEnderecoTabela;
     private javax.swing.JButton jButtonConcluirCadastro;
@@ -1342,6 +1357,7 @@ public class ClienteApp extends javax.swing.JDialog {
     private javax.swing.JButton jButtonIrPFisicaParaTabEndereco;
     private javax.swing.JButton jButtonIrParaTabContato;
     private javax.swing.JButton jButtonIrParaTabEndereco;
+    private javax.swing.JButton jButtonLimparCamposJuridica;
     private javax.swing.JButton jButtonLimparCamposPessoaFisica;
     private javax.swing.JButton jButtonRemoverContatoTabela;
     private javax.swing.JButton jButtonRemoverEnderecoTabela;
@@ -1410,15 +1426,15 @@ public class ClienteApp extends javax.swing.JDialog {
             jTextFieldNumeroTelefone.setText("62981903202");
 
     //      Pessoa Física        
-            jTextFieldNome.setText("Fulano da Silva");
-            jTextFieldCpf.setText("00535650023");
-            jTextFieldRg.setText("406735");
-            jTextFieldOrgaoEmissor.setText("SSP");
+//            jTextFieldNome.setText("Fulano da Silva");
+//            jTextFieldCpf.setText("00535650023");
+//            jTextFieldRg.setText("406735");
+//            jTextFieldOrgaoEmissor.setText("SSP");
 
     //      Pessoa Jurídica
-//            jTextFieldCnpj.getText();
-//            jTextFieldRazaoSocial.getText();
-//            jTextFieldNomeFantasia.getText();  
+            jTextFieldCnpj.setText("12345678901234");
+            jTextFieldRazaoSocial.setText("RAZAO TESTE");
+            jTextFieldNomeFantasia.setText("FANTASIA TESTE");  
     }
 
     private void reiniciarTodosCampos() {

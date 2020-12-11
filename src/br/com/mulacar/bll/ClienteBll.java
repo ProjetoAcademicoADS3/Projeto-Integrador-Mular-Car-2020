@@ -60,7 +60,7 @@ public class ClienteBll {
         Cliente clienteRetorno = clienteDal.getClienteById(cliente);
         
         if (UtilObjetos.ehNuloOuVazio(clienteRetorno)) {
-            throw new Exception("Cliente NÂO possui cadastro e não pode ser atualizado.");
+            throw new MulaCarException("Cliente NÂO possui cadastro e não pode ser atualizado.");
         }
     }
 
@@ -81,7 +81,7 @@ public class ClienteBll {
         this.validarCliente(cliente);
         
         if (UtilObjetos.ehNuloOuVazio(cliente.getNome()) && UtilObjetos.ehNuloOuVazio(cliente.getNomeFantasia())) {
-            throw new Exception("Digite nome ou nome Fantasia para pesquisa.");
+            throw new MulaCarException("Digite nome ou nome Fantasia para pesquisa.");
         }
         
         return clienteDal.getClienteByNomeOuFantasia(cliente);
@@ -116,7 +116,7 @@ public class ClienteBll {
     
     private void validarIdNulo(Cliente cliente) throws Exception {
         if (UtilObjetos.ehNuloOuVazio(cliente.getId())) {
-            throw new Exception("ID do Cliente não pode ser nulo ou vazio.");
+            throw new MulaCarException("ID do Cliente não pode ser nulo ou vazio.");
         }
     }    
 
@@ -126,18 +126,18 @@ public class ClienteBll {
                 || UtilObjetos.ehNuloOuVazio(cliente.getTipoCliente());
         
         if (temCamposNulos) {
-            throw new Exception("Campos obrigatórios não foram preenchidos!\n");
+            throw new MulaCarException("Campos obrigatórios não foram preenchidos!\n");
         }
     }
 
     private void validarTamanhoMinimoNomeOuFantasia(Cliente cliente, int tamanhoMinimo) throws Exception {
         if (cliente.getTipoCliente().equals(EnumTipoCliente.PESSOA_FISICA)) {
             if (cliente.getNome().length() < tamanhoMinimo) {
-                throw new Exception("O nome cliente deve ter no mínimo 3 letras!\n");
+                throw new MulaCarException("O nome cliente deve ter no mínimo 3 letras!\n");
             }
         } else {
             if (cliente.getNomeFantasia().length() < tamanhoMinimo) {
-                throw new Exception("O nome fantasia do cliente deve ter no mínimo 3 letras!\n");
+                throw new MulaCarException("O nome fantasia do cliente deve ter no mínimo 3 letras!\n");
             }            
         }
     }
@@ -147,12 +147,12 @@ public class ClienteBll {
         
         for (int i = 0; i < invalidos.length(); i++) {
             if (cliente.getCpfCnpj().contains("" + invalidos.charAt(i))) {
-                throw new Exception("Cpf/Cnpj inválido para o cliente!\n");
+                throw new MulaCarException("Cpf/Cnpj inválido para o cliente!\n");
             }
             
             if (cliente.getTipoCliente().equals(EnumTipoCliente.PESSOA_FISICA)) {
                 if (cliente.getCpfCnpj().contains("" + invalidos.charAt(i))) {
-                    throw new Exception("Cpf/Cnpj inválido para o cliente!\n");
+                    throw new MulaCarException("Cpf/Cnpj inválido para o cliente!\n");
                 }                
             }
         }
@@ -184,7 +184,7 @@ public class ClienteBll {
 
     private void validarClienteNulo(Cliente cliente) throws Exception {
         if (UtilObjetos.ehNuloOuVazio(cliente)) {
-            throw new Exception("Cliente não pode ser nulo ou vazio.");
+            throw new MulaCarException("Cliente não pode ser nulo ou vazio.");
         }
     }       
 }
