@@ -1,24 +1,25 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Novembro/Dezembro 2020.
+ * Senai Fatesg Faculdade de Tecnologia
+ * ADS - Análise e Desenvolvimento de Sistemas
+ * Projeto Integrador - ADS3
+ * Projeto Mula Car - aluguel de Veículos
+ * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
+
 package br.com.mulacar.bll;
 
-import br.com.mulacar.dal.EnderecoDal;
+import br.com.mulacar.dal.EnderecoDal;   
 import br.com.mulacar.model.Cliente;
 import br.com.mulacar.model.Endereco;
 import br.com.mulacar.model.Motorista;
 import br.com.mulacar.util.UtilObjetos;
 import java.util.List;
 
-/**
- *
- * @author roger
- */
+
 public class EnderecoBll {
-    
-     private static final long sderialVersionUID = 1L;
+
+    private static final long sderialVersionUID = 1L;
     
     private EnderecoDal enderecoDal;
 
@@ -32,6 +33,15 @@ public class EnderecoBll {
         
         enderecoDal.addEndereco(endereco);
     }
+    
+    public void adicionarEnderecos(List<Endereco> enderecos) throws Exception {
+
+        for (Endereco end : enderecos) {
+            this.validarEndereco(end);
+        }
+        
+        enderecoDal.addEnderecos(enderecos);
+    }    
 
     public void excluirEndereco(Endereco endereco) throws Exception {
         this.validarObjetoNulo(endereco);
@@ -188,6 +198,4 @@ public class EnderecoBll {
             throw new Exception("Objeto não pode ser nulo ou vazio.");
         }
     }       
-
-    
 }

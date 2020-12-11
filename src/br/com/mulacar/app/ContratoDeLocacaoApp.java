@@ -32,7 +32,7 @@ public class ContratoDeLocacaoApp extends javax.swing.JDialog {
         locacaoBll = new LocacaoBll();
         locacao = new Locacao();
 
-        locacao = locacaoBll.getConsultaLocacaoPorId(new Locacao(3));
+        locacao = locacaoBll.getLocacaoPorId(new Locacao(8));
         jTextAreaContratoDeLocacao.append(locacao.toString());
 
     }

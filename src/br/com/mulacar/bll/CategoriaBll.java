@@ -15,6 +15,8 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
+
 
 public class CategoriaBll {
 
@@ -25,7 +27,7 @@ public class CategoriaBll {
         super();
         catDal = new CategoriaDal();
     }
-    
+
     public void adicionarCategoria(Categoria categoria) throws Exception {
         validarCategoria(categoria);
         catDal.addCategoria(categoria);
@@ -33,7 +35,7 @@ public class CategoriaBll {
 
     public void excluirCategoria(Categoria categoria) throws Exception {
         try {
-            catDal.deleteCategoria(categoria);
+            catDal.deleteCategoria(categoria.getId());
         } catch (Exception erro) {
             String mensagem = erro.getMessage();
             if (mensagem.toLowerCase().contains("violates foreign")) {
@@ -48,7 +50,7 @@ public class CategoriaBll {
             catDal.updateCategoria(categoria);
         } catch (Exception erro) {
             String mensagem = erro.getMessage();
-            if (mensagem.toLowerCase().contains("descricao_unica")) {
+            if (mensagem.toLowerCase().contains("categoria_unica")) {
                 throw new Exception("Este registro não pode ser duplicado!\n"
                         + " já existe uma categoria com esta descrição\n");
             }

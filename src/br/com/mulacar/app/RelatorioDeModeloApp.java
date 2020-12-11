@@ -1,8 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Novembro/Dezembro 2020.
+ * Senai Fatesg Faculdade de Tecnologia
+ * ADS - Análise e Desenvolvimento de Sistemas
+ * Projeto Integrador - ADS3
+ * Projeto Mula Car - aluguel de Veículos
+ * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
+
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.ModeloBll;
@@ -11,10 +15,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author roger
- */
+
 public class RelatorioDeModeloApp extends javax.swing.JDialog {
 
     ModeloBll modeloBll;
@@ -211,6 +212,7 @@ public class RelatorioDeModeloApp extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(RelatorioDeModeloApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */

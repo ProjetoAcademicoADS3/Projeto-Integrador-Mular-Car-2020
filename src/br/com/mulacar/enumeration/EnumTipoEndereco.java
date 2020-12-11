@@ -6,30 +6,31 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
+
 package br.com.mulacar.enumeration;
 
 import java.util.Arrays;
 import java.util.Vector;
 
 public enum EnumTipoEndereco {
-
-    COMERCIAL("Comercial"),
-    RESIDENCIAL("Residencial");
-
+    
+    RESIDENCIAL("Residencial"),
+    COMERCIAL("Comercial"); 
+    
     private final String tipo;
-
+    
     EnumTipoEndereco(final String tipo) {
         this.tipo = tipo;
     }
-
+        
     public static Vector<EnumTipoEndereco> carregarTiposEndereco() {
-
+        
         Vector<EnumTipoEndereco> tipos = new Vector();
-
-        tipos.addAll(Arrays.asList(EnumTipoEndereco.values()));
-
+        
+        tipos.addAll(Arrays.asList(EnumTipoEndereco.values()));   
+        
         return tipos;
-    }
+    }     
 
     public String getTipo() {
         return tipo;
@@ -39,5 +40,6 @@ public enum EnumTipoEndereco {
     public String toString() {
         return this.tipo;
     }
-
+    
+    
 }

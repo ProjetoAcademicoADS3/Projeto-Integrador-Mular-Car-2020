@@ -13,7 +13,7 @@ import java.util.Locale;
 
 /**
  *
- * @author roger
+ * @author Gabriel Cunha <gabrielcunhadev@gmail.com>
  */
 public class Locacao {
 
@@ -28,11 +28,11 @@ public class Locacao {
     private Date dataDevolucaoPrevista;
     private String kmInicial;
     private String observacoes;
-    private BigDecimal valorAcessorios;
-    private BigDecimal valorLocacao;
-    private BigDecimal valorCaucao;
+    private BigDecimal valorTotalAcessorios;
+    private BigDecimal valorTotalLocacao;
     private BigDecimal valorSeguro;
-    private EnumStatus Status;
+    private BigDecimal valorCaucao;
+    private EnumStatus status;
     private boolean reserva;
 
     public Locacao() {
@@ -40,45 +40,6 @@ public class Locacao {
 
     public Locacao(int id) {
         this.id = id;
-    }
-
-    public Locacao(int id, Cliente cliente, Motorista motorista, Veiculo veiculo, Usuario usuario, BigDecimal valorMulta, boolean tanqueCheio, Date dataRetirada, Date dataDevolucaoPrevista, String kmInicial, String observacoes, BigDecimal valorAcessorios, BigDecimal valorLocacao, BigDecimal valorCaucao, BigDecimal valorSeguro, EnumStatus Status, boolean reserva) {
-        this.id = id;
-        this.cliente = cliente;
-        this.motorista = motorista;
-        this.veiculo = veiculo;
-        this.usuario = usuario;
-        this.valorMulta = valorMulta;
-        this.tanqueCheio = tanqueCheio;
-        this.dataRetirada = dataRetirada;
-        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
-        this.kmInicial = kmInicial;
-        this.observacoes = observacoes;
-        this.valorAcessorios = valorAcessorios;
-        this.valorLocacao = valorLocacao;
-        this.valorCaucao = valorCaucao;
-        this.valorSeguro = valorSeguro;
-        this.Status = Status;
-        this.reserva = reserva;
-    }
-
-    public Locacao(Cliente cliente, Motorista motorista, Veiculo veiculo, Usuario usuario, BigDecimal valorMulta, boolean tanqueCheio, Date dataRetirada, Date dataDevolucaoPrevista, String kmInicial, String observacoes, BigDecimal valorAcessorios, BigDecimal valorLocacao, BigDecimal valorCaucao, BigDecimal valorSeguro, EnumStatus Status, boolean reserva) {
-        this.cliente = cliente;
-        this.motorista = motorista;
-        this.veiculo = veiculo;
-        this.usuario = usuario;
-        this.valorMulta = valorMulta;
-        this.tanqueCheio = tanqueCheio;
-        this.dataRetirada = dataRetirada;
-        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
-        this.kmInicial = kmInicial;
-        this.observacoes = observacoes;
-        this.valorAcessorios = valorAcessorios;
-        this.valorLocacao = valorLocacao;
-        this.valorCaucao = valorCaucao;
-        this.valorSeguro = valorSeguro;
-        this.Status = Status;
-        this.reserva = reserva;
     }
 
     public int getId() {
@@ -169,28 +130,20 @@ public class Locacao {
         this.observacoes = observacoes;
     }
 
-    public BigDecimal getValorAcessorios() {
-        return valorAcessorios;
+    public BigDecimal getValorTotalAcessorios() {
+        return valorTotalAcessorios;
     }
 
-    public void setValorAcessorios(BigDecimal valorAcessorios) {
-        this.valorAcessorios = valorAcessorios;
+    public void setValorTotalAcessorios(BigDecimal valorTotalAcessorios) {
+        this.valorTotalAcessorios = valorTotalAcessorios;
     }
 
-    public BigDecimal getValorLocacao() {
-        return valorLocacao;
+    public BigDecimal getValorTotalLocacao() {
+        return valorTotalLocacao;
     }
 
-    public void setValorLocacao(BigDecimal valorLocacao) {
-        this.valorLocacao = valorLocacao;
-    }
-
-    public BigDecimal getValorCaucao() {
-        return valorCaucao;
-    }
-
-    public void setValorCaucao(BigDecimal valorCaucao) {
-        this.valorCaucao = valorCaucao;
+    public void setValorTotalLocacao(BigDecimal valorTotalLocacao) {
+        this.valorTotalLocacao = valorTotalLocacao;
     }
 
     public BigDecimal getValorSeguro() {
@@ -201,12 +154,20 @@ public class Locacao {
         this.valorSeguro = valorSeguro;
     }
 
-    public EnumStatus getStatus() {
-        return Status;
+    public BigDecimal getValorCaucao() {
+        return valorCaucao;
     }
 
-    public void setStatus(EnumStatus Status) {
-        this.Status = Status;
+    public void setValorCaucao(BigDecimal valorCaucao) {
+        this.valorCaucao = valorCaucao;
+    }
+
+    public EnumStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EnumStatus status) {
+        this.status = status;
     }
 
     public boolean isReserva() {
@@ -219,7 +180,7 @@ public class Locacao {
 
     @Override
     public String toString() {
-        String contrato = "\t\t\t\tCONTRATO DE LOCAÇÃO DE VEÍCULO\n"
+         String contrato = "\t\t\t\tCONTRATO DE LOCAÇÃO DE VEÍCULO\n"
                 + "\n\t1. Partes Contratantes\n\n"
                 + "\t1.1 LOCADORA DE VEICULOS\n\n\tMULACAR, sediada na cidade de Goiânia,"
                 + "estado de Goiás, inscrita no CNPJ sob o nº 62.566.006/0001-88, "
@@ -244,11 +205,11 @@ public class Locacao {
                 + ", CNH de número " + getMotorista().getNumeroCnh() + ", com data de validade " + getMotorista().getDataValidadeCnh()
                 + ", categoria " + getMotorista().getCategoriaCnh() + ".\n\n"
                 + "\t4 Do valor da locação\n\n"
-                + "\t4.1 O valor da locação é de R$ " + getValorLocacao() + " a diária, tarifa pública da LOCADORA,"
+                + "\t4.1 O valor da locação é de R$ " + getValorTotalLocacao() + " a diária, tarifa pública da LOCADORA,"
                 + " da qual o LOCATÁRIO é concordante, a ser pago somente na devolução do veículo\n"
                 + "\t4.2 O valor do caução é de R$ " + getValorCaucao() + ", a ser pago ao adquirir este contrato.\n"
                 + "\t4.3 O valor do seguro é de R$ " + getValorSeguro() + ", conforme regido no contrato, a ser pago junto com a locação.\n"
-                + "\t4.4 O valor de acessórios é de R$ " + getValorAcessorios() + ", conforme solicitado pelo locatário, a ser pago junto com a locação.\n"
+                + "\t4.4 O valor de acessórios é de R$ " + getValorTotalAcessorios() + ", conforme solicitado pelo locatário, a ser pago junto com a locação.\n"
                 + "\t4.5 O valor da multa é de R$ " + getValorMulta() + ", conforme ocorrência da mesma, a ser paga conforme regido"
                 + "neste contrato. Lembra-se que o valor da multa é de inteira responsabilidade do locatário/cliente e não do"
                 + "motorista, porém os pontos na CNH, será na CNH do motorista.\n\n"
@@ -279,6 +240,7 @@ public class Locacao {
                 + "______________________________		_______________________________\n\n";
         return contrato;
     }
+    
     public static String convertDate(Date dtConsulta) {
         try {
             SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy", new Locale("pt", "BR"));
@@ -289,4 +251,28 @@ public class Locacao {
         }
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 37 * hash + this.id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Locacao other = (Locacao) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
 }

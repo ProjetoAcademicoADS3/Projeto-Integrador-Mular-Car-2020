@@ -43,7 +43,7 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
         model.setNumRows(0);
         motoristaBll.ordenaListaMotoristas(lista);
         for (int pos = 0; pos < lista.size(); pos++) {
-            String[] linha = new String[8];
+            String[] linha = new String[9];
             Motorista motorista = lista.get(pos);
             linha[0] = "" + motorista.getId();
             linha[1] = motorista.getNome().toUpperCase();
@@ -53,6 +53,7 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
             linha[5] = motorista.getNumeroCnh();
             linha[6] = dataFormt.format(motorista.getDataValidadeCnh());
             linha[7] = motorista.getCategoriaCnh().toString();
+            linha[8] = motorista.getStatus().toString();
 
             model.addRow(linha);
         }
@@ -63,8 +64,8 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
         if (codigo > 0) {
 
             Motorista motorista = new Motorista(codigo);
-            Motorista mot = motoristaBll.getMotoristaPorId(motorista);
-            //jLabelExibirFotoDaCNH.setIcon(motoristaBll.exibirImagem(mot));
+           Motorista mot = motoristaBll.getMotoristaPorId(motorista);
+//            jLabelExibirFotoDaCNH.setIcon(motoristaBll.exibirImagem(mot));
 
             Interface_ExibirImagem exibir_Adapter = new Imagem_Adapter();
             jLabelExibirFotoDaCNH.setIcon(exibir_Adapter.exibirImagem(mot));
@@ -113,11 +114,11 @@ public class RelatorioDeMotoristaApp extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Cód.", "Nome", "CPF", "RG", "Orgão Emissor", "Núm. CNH", "Validade CNH", "Categoria CNH"
+                "Cód.", "Nome", "CPF", "RG", "Orgão Emissor", "Núm. CNH", "Validade CNH", "Categoria CNH", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, false, false, false
+                false, false, false, false, true, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

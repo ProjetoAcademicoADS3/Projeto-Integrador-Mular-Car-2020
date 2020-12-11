@@ -16,12 +16,26 @@ public enum EnumTipoTelefone {
     
     CELULAR("Celular"), 
     FIXO("Fixo");
-    
- private final String tipo;
-    
-    EnumTipoTelefone(final String tipo) {
-        this.tipo = tipo;
+
+    public static EnumTipoTelefone valueOf(Object selectedItem) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+ private final String descricao;
+    
+    EnumTipoTelefone(final String descricao) {
+        this.descricao = descricao;
+    }
+    
+    public static EnumTipoTelefone fromDescricao(final String tipoDescricao) {
+      for (final EnumTipoTelefone desc : EnumTipoTelefone.values()) {
+        if (desc.descricao.equalsIgnoreCase(tipoDescricao)) {
+          return desc;
+        }
+      }
+
+      throw new IllegalArgumentException(tipoDescricao);
+    }    
         
     public static Vector<EnumTipoTelefone> carregarTiposTelefones() {
         
@@ -33,13 +47,12 @@ public enum EnumTipoTelefone {
     }     
 
     public String getTipo() {
-        return tipo;
+        return descricao;
     }
 
     @Override
     public String toString() {
-        return this.tipo;
+        return this.descricao;
     }    
-
     
 }

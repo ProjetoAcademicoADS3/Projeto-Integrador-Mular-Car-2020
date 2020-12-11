@@ -21,12 +21,12 @@ public class Categoria {
     public Categoria() {
     }
 
-    public Categoria(int id) {
-        this.id = id;
-    }
-
     public Categoria(String descricao) {
         this.descricao = descricao;
+    }
+    
+        public Categoria(int id) {
+        this.id = id;
     }
 
     public Categoria(int id, String descricao, EnumStatus status, BigDecimal valor) {
@@ -41,6 +41,7 @@ public class Categoria {
         this.status = status;
         this.valor = valor;
     }
+
 
     public void splitCategoria(String combo) throws Exception {
         String[] str = combo.split(" - ");

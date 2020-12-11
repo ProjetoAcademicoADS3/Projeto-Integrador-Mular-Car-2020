@@ -6,24 +6,19 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
+
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.CategoriaBll;
-import br.com.mulacar.dal.CategoriaDalOrdena;
-import br.com.mulacar.dal.CategoriaDalOrdenaNome;
-import br.com.mulacar.dal.CategoriaDalOrdenaStatus;
-import br.com.mulacar.dal.CategoriaDalOrdenaValor;
 import br.com.mulacar.model.Categoria;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+
 public class RelatorioDeCategoriaApp extends javax.swing.JDialog {
 
-    private CategoriaBll categoriaBll = new CategoriaBll();
-    private CategoriaDalOrdena categoriaOrdenaNome;
-    private CategoriaDalOrdena categoriaOrdenaValor;
-    private CategoriaDalOrdena categoriaOrdenaStatus;
+    CategoriaBll categoriaBll = new CategoriaBll();
 
     /**
      * Creates new form RelatorioCategoriaApp
@@ -32,29 +27,12 @@ public class RelatorioDeCategoriaApp extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        categoriaOrdenaNome = new CategoriaDalOrdenaNome();
-        categoriaOrdenaValor = new CategoriaDalOrdenaValor();
-        categoriaOrdenaStatus = new CategoriaDalOrdenaStatus();
-
-        jComboBoxOrdenarPor.removeAllItems();
-        String[] ordenarPor = {" ", "Categoria", "Valor", "Status"};
-        for (int i = 0; i < ordenarPor.length; i++) {
-            jComboBoxOrdenarPor.addItem(ordenarPor[i]);
-        }
-
     }
 
     private void imprimirDadosCategoria(List<Categoria> listaDeCategorias) throws Exception {
         DefaultTableModel model = (DefaultTableModel) jTablePesquisaCategoria.getModel();
         model.setNumRows(0);
-        if (jComboBoxOrdenarPor.getSelectedIndex() == 1) {
-            categoriaOrdenaNome.ordenaCategorias(listaDeCategorias);
-        } else if (jComboBoxOrdenarPor.getSelectedIndex() == 2) {
-            categoriaOrdenaValor.ordenaCategorias(listaDeCategorias);
-        } else if (jComboBoxOrdenarPor.getSelectedIndex() == 3) {
-            categoriaOrdenaStatus.ordenaCategorias(listaDeCategorias);
-        }
-
+        categoriaBll.ordenaListaCategorias(listaDeCategorias);
         for (int pos = 0; pos < listaDeCategorias.size(); pos++) {
             String[] linha = new String[4];
             Categoria cat = listaDeCategorias.get(pos);
@@ -83,8 +61,6 @@ public class RelatorioDeCategoriaApp extends javax.swing.JDialog {
         jButtonFechar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldQuantRegistros = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jComboBoxOrdenarPor = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Relatório de categorias");
@@ -137,39 +113,31 @@ public class RelatorioDeCategoriaApp extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
         jLabel1.setText("Quant. de Registros:");
 
         jTextFieldQuantRegistros.setEditable(false);
-
-        jLabel2.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
-        jLabel2.setText("Ordenar por:");
-
-        jComboBoxOrdenarPor.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
-        jComboBoxOrdenarPor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanelRelatorioCategoriaLayout = new javax.swing.GroupLayout(jPanelRelatorioCategoria);
         jPanelRelatorioCategoria.setLayout(jPanelRelatorioCategoriaLayout);
         jPanelRelatorioCategoriaLayout.setHorizontalGroup(
             jPanelRelatorioCategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelRelatorioCategoriaLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanelRelatorioCategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
+                    .addGroup(jPanelRelatorioCategoriaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRelatorioCategoriaLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonListar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonFechar))
-                    .addGroup(jPanelRelatorioCategoriaLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jButtonFechar)))
                 .addContainerGap())
+            .addGroup(jPanelRelatorioCategoriaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelRelatorioCategoriaLayout.setVerticalGroup(
             jPanelRelatorioCategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,9 +145,7 @@ public class RelatorioDeCategoriaApp extends javax.swing.JDialog {
                 .addContainerGap(11, Short.MAX_VALUE)
                 .addGroup(jPanelRelatorioCategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonFechar)
-                    .addComponent(jButtonListar)
-                    .addComponent(jLabel2)
-                    .addComponent(jComboBoxOrdenarPor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonListar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -258,6 +224,14 @@ public class RelatorioDeCategoriaApp extends javax.swing.JDialog {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -277,9 +251,7 @@ public class RelatorioDeCategoriaApp extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonListar;
-    private javax.swing.JComboBox<String> jComboBoxOrdenarPor;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanelRelatorioCategoria;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTablePesquisaCategoria;

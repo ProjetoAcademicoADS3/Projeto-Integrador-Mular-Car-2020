@@ -41,11 +41,11 @@ public class CategoriaDal {
         }
     }
 
-    public void deleteCategoria(Categoria categoria) throws Exception {
+    public void deleteCategoria(int id) throws Exception {
         String sql = "DELETE FROM categoria WHERE cat_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-            preparedStatement.setInt(1, categoria.getId());
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (Exception erro) {
             throw erro;
@@ -150,7 +150,7 @@ public class CategoriaDal {
     public ResultSet sourceInteligente(String nome) {
         ResultSet rs = null;
 
-        String sql = "SELECT * FROM categoria where cat_descricao like ?";
+        String sql = "SELECT * FROM categoria where cat_nome like ?";
         PreparedStatement pst;
 
         try {

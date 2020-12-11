@@ -1,49 +1,46 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Novembro/Dezembro 2020.
+ * Senai Fatesg Faculdade de Tecnologia
+ * ADS - Análise e Desenvolvimento de Sistemas
+ * Projeto Integrador - ADS3
+ * Projeto Mula Car - aluguel de Veículos
+ * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
 package br.com.mulacar.dal;
 
 import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.enumeration.EnumTipoCliente;
 import br.com.mulacar.model.Cliente;
-import br.com.mulacar.util.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import br.com.mulacar.util.Conexao;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author roger
- */
 public class ClienteDal {
-    
-     private Connection conexao;
+
+    private Connection conexao;
 
     public ClienteDal() {
         conexao = Conexao.getConexao();
     }
     
-    public void addCliente(Cliente cliente) throws Exception {
+    public Cliente addCliente(Cliente cliente) throws Exception {
+        Cliente clienteBanco = new Cliente();
+        
         String sql = "INSERT INTO cliente (cli_razao_social, cli_nome_fantasia, "
                 + "cli_nome, cli_status, cli_cpf_cnpj, cli_rg, cli_rg_orgao_emissor, cli_tipo) "
-                + "VALUES (?,?,?,?,?,?,?,?,?)";
+                + "VALUES (?,?,?,?,?,?,?,?)";
         
         try {
             conexao.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        try {
-            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             
             preparedStatement.setString(4, cliente.getStatus().toString());
             preparedStatement.setString(8, cliente.getTipoCliente().toString());
@@ -52,21 +49,45 @@ public class ClienteDal {
             if (cliente.getTipoCliente().equals(EnumTipoCliente.PESSOA_JURIDICA)) {
                 preparedStatement.setString(1, cliente.getRazaoSocial().trim());
                 preparedStatement.setString(2, cliente.getNomeFantasia());
+                preparedStatement.setString(3, null);
+                preparedStatement.setString(6, null);
+                preparedStatement.setString(7, null);                
                 
             } else {
+                preparedStatement.setString(1, null);
+                preparedStatement.setString(2, null);                
                 preparedStatement.setString(3, cliente.getNome());
                 preparedStatement.setString(6, cliente.getRg());
                 preparedStatement.setString(7, cliente.getOrgaoEmissor());
             }
             
-            preparedStatement.executeUpdate();
+            int idCliente = preparedStatement.executeUpdate();
+            
             conexao.commit();
+
+            if (idCliente == 0) {
+                throw new SQLException("Falha ao inserir cliente no banco, nenhum registro criado.");
+            }
+            
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    clienteBanco.setId(generatedKeys.getInt(1));
+                }
+                else {
+                    throw new SQLException("Falha ao criar o cliente. Não obteve o id da inserção.");
+                }
+            }
+            
+            return clienteBanco;
 
         } catch (SQLException e) {
             conexao.rollback();
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, "ClienteDal - ", e );
             throw e;
-        }
+        } catch (Exception ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, "ClienteDal - ", ex );
+            throw ex;            
+        }      
     }
     
     public void updateCliente(Cliente cliente) throws Exception {
@@ -81,7 +102,7 @@ public class ClienteDal {
                 + "cli_rg_orgao_emissor = ? "
                 + "cli_tipo = ? "
                 + "WHERE cli_id = ? ";
-          try {
+        try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             
             preparedStatement.setString(4, cliente.getStatus().toString());
@@ -131,7 +152,7 @@ public class ClienteDal {
             while (rs.next()) {
                 Cliente cliente = new Cliente();
                 
-                preencherClienteRetornoBanco(cliente, rs);
+                cliente = preencherClienteRetornoBanco(rs);
 
                 listaClientes.add(cliente);
             }
@@ -143,8 +164,8 @@ public class ClienteDal {
     }
 
     public Cliente getClienteById(Cliente cliente) throws Exception {
-        Cliente clienteRetorno = new Cliente ();
-
+        Cliente clienteRetorno = null;
+        
         String sql = "SELECT * FROM cliente WHERE cli_id = ?";
 
         try {
@@ -155,12 +176,12 @@ public class ClienteDal {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                preencherClienteRetornoBanco(clienteRetorno, rs);
+                clienteRetorno = preencherClienteRetornoBanco(rs);
             }
         } catch (Exception e) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, "ClienteDal - ", e );
             throw e;
-        }
+        } 
         return clienteRetorno;
     }
 
@@ -175,7 +196,7 @@ public class ClienteDal {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                preencherClienteRetornoBanco(clienteRetorno, rs);
+                clienteRetorno = preencherClienteRetornoBanco(rs);
             }
         } catch (Exception e) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, "ClienteDal - ", e );
@@ -195,7 +216,7 @@ public class ClienteDal {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                preencherClienteRetornoBanco(clienteRetorno, rs);
+                preencherClienteRetornoBanco(rs);
             }
         } catch (Exception e) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, "ClienteDal - ", e );
@@ -216,7 +237,7 @@ public class ClienteDal {
             ResultSet rs = preparedStatement.executeQuery();
             
             if (rs.next()) {
-                preencherClienteRetornoBanco(clienteRetorno, rs);
+                clienteRetorno = preencherClienteRetornoBanco(rs);
             }            
 
         } catch (Exception e) {
@@ -226,7 +247,8 @@ public class ClienteDal {
         return clienteRetorno;
     }
     
-    private void preencherClienteRetornoBanco(Cliente clienteRetorno, ResultSet rs) throws SQLException {
+    private Cliente preencherClienteRetornoBanco(ResultSet rs) throws SQLException {
+        Cliente clienteRetorno = new Cliente();
         clienteRetorno.setId(rs.getInt("cli_id"));
         clienteRetorno.setNomeFantasia(rs.getString("cli_nome_fantasia"));
         clienteRetorno.setNome(rs.getString("cli_nome"));
@@ -235,6 +257,8 @@ public class ClienteDal {
         clienteRetorno.setOrgaoEmissor(rs.getString("cli_rg_orgao_emissor"));
         clienteRetorno.setStatus(EnumStatus.valueOf(rs.getString("cli_status")));
         clienteRetorno.setTipoCliente(EnumTipoCliente.valueOf(rs.getString("cli_tipo")));
+        
+        return clienteRetorno;
     }    
-
+    
 }

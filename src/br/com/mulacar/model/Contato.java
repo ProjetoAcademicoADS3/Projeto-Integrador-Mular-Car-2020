@@ -1,7 +1,6 @@
 package br.com.mulacar.model;
 
 import br.com.mulacar.enumeration.EnumTipoTelefone;
-import java.util.Objects;
 
 /**
  *
@@ -11,10 +10,28 @@ public class Contato {
     
     private int id;
     private EnumTipoTelefone tipoTelefone;
-    private String telefone;
+    private String numero;
     private String email;
     private Cliente cliente;
     private Motorista motorista;
+
+    public Contato() {
+    }
+
+    public Contato(int id, String email, EnumTipoTelefone tipoTelefone, String numero) {
+        this.id     = id;
+        this.email  = email;
+        this.tipoTelefone = tipoTelefone;
+        this.numero = numero;
+    }
+    
+    public Contato(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Contato(Motorista motorista) {
+        this.motorista = motorista;
+    }
 
     public int getId() {
         return id;
@@ -32,12 +49,12 @@ public class Contato {
         this.tipoTelefone = tipoTelefone;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getNumero() {
+        return numero;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
     public String getEmail() {
@@ -66,13 +83,13 @@ public class Contato {
 
     @Override
     public String toString() {
-        return "Contato{" + "id=" + id + ", tipoTelefone=" + tipoTelefone + ", telefone=" + telefone + ", email=" + email + ", cliente=" + cliente + ", motorista=" + motorista + '}';
+        return "Contato{" + "id=" + id + ", tipoTelefone=" + tipoTelefone + ", numero=" + numero + ", email=" + email + ", cliente=" + cliente + ", motorista=" + motorista + '}';
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 53 * hash + Objects.hashCode(this.id);
+        int hash = 7;
+        hash = 83 * hash + this.id;
         return hash;
     }
 
@@ -88,11 +105,10 @@ public class Contato {
             return false;
         }
         final Contato other = (Contato) obj;
-        if (!Objects.equals(this.id, other.id)) {
+        if (this.id != other.id) {
             return false;
         }
         return true;
     }
-    
-    
+
 }

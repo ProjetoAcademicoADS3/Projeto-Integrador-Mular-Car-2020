@@ -9,6 +9,7 @@
 package br.com.mulacar.model;
 
 import br.com.mulacar.enumeration.EnumCategoriaCnh;
+import br.com.mulacar.enumeration.EnumStatus;
 import java.util.Date;
 import java.util.Objects;
 
@@ -23,9 +24,45 @@ public class Motorista {
     private Date dataValidadeCnh;
     private String pathImagemCnh;
     private EnumCategoriaCnh categoriaCnh;
+    private EnumStatus status;
+    
+
+    public EnumStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EnumStatus status) {
+        this.status = status;
+    }
 
     public Motorista() {
     }
+
+    public Motorista(int id, String nome, String cpf, String rg, String orgaoEmissor, String numeroCnh, Date dataValidadeCnh, String pathImagemCnh, EnumCategoriaCnh categoriaCnh, EnumStatus status) {
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.rg = rg;
+        this.orgaoEmissor = orgaoEmissor;
+        this.numeroCnh = numeroCnh;
+        this.dataValidadeCnh = dataValidadeCnh;
+        this.pathImagemCnh = pathImagemCnh;
+        this.categoriaCnh = categoriaCnh;
+        this.status = status;
+    }
+
+    public Motorista(String nome, String cpf, String rg, String orgaoEmissor, String numeroCnh, Date dataValidadeCnh, String pathImagemCnh, EnumCategoriaCnh categoriaCnh, EnumStatus status) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.rg = rg;
+        this.orgaoEmissor = orgaoEmissor;
+        this.numeroCnh = numeroCnh;
+        this.dataValidadeCnh = dataValidadeCnh;
+        this.pathImagemCnh = pathImagemCnh;
+        this.categoriaCnh = categoriaCnh;
+        this.status = status;
+    }
+    
     
     public Motorista(int id) {
         this.id = id;
@@ -109,8 +146,19 @@ public class Motorista {
 
     @Override
     public String toString() {
-        return "Motorista{" + "id=" + id + ", razaoSocial=" + ", nome=" + nome + ", cpf=" + cpf + ", rg=" + rg + ", orgaoEmissor=" + orgaoEmissor + ", numeroCnh=" + numeroCnh + ", dataValidadeCnh=" + dataValidadeCnh + ", categoriaCnh=" + categoriaCnh + ", pathImagemCnh=" + pathImagemCnh + ", tipoCliente=";
+        return "Motorista{" + "id=" + id 
+                + ", nome=" + nome 
+                + ", cpf=" + cpf 
+                + ", rg=" + rg 
+                + ", orgaoEmissor=" + orgaoEmissor 
+                + ", numeroCnh=" + numeroCnh 
+                + ", dataValidadeCnh=" + dataValidadeCnh 
+                + ", pathImagemCnh=" + pathImagemCnh 
+                + ", categoriaCnh=" + categoriaCnh 
+                + ", status=" + status + '}';
     }
+
+    
 
     @Override
     public int hashCode() {

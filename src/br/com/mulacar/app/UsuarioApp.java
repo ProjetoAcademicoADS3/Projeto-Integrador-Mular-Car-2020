@@ -32,9 +32,7 @@ public class UsuarioApp extends javax.swing.JDialog {
     public UsuarioApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        
-        
+
         usuBll = new UsuarioBll();
         rd = new Random();
 
@@ -83,7 +81,7 @@ public class UsuarioApp extends javax.swing.JDialog {
         jComboBoxPerfilDoUsuario.setSelectedIndex(0);
         jButtonSalvar.setLabel("Salvar");
     }
-    
+
     private static Date createNewDate(String data) {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         try {
@@ -93,7 +91,7 @@ public class UsuarioApp extends javax.swing.JDialog {
             return null;
         }
     }
-    
+
     public static String convertDate(Date dtConsulta) {
         try {
             SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy", new Locale("pt", "BR"));
@@ -103,7 +101,7 @@ public class UsuarioApp extends javax.swing.JDialog {
             return null;
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -395,9 +393,9 @@ public class UsuarioApp extends javax.swing.JDialog {
             String cpf = jTextFieldCpf.getText();
             String email = jTextFieldEmail.getText();
             String senha = jPasswordFieldSenha.getText();
-            Date data = createNewDate(jTextFieldDataAtual.getText());
-            EnumStatus status = EnumStatus.valueOf(jComboBoxStatusUsuario.getSelectedItem().toString());
             EnumPerfil perfil = EnumPerfil.valueOf(jComboBoxPerfilDoUsuario.getSelectedItem().toString());
+            EnumStatus status = EnumStatus.valueOf(jComboBoxStatusUsuario.getSelectedItem().toString());
+            Date data = createNewDate(jTextFieldDataAtual.getText());
 
             if (jButtonSalvar.getLabel().equalsIgnoreCase("Salvar")) {
                 usuario = new Usuario(nome, cpf, email, senha, perfil, status, data);

@@ -133,8 +133,8 @@ public class ModeloApp extends javax.swing.JDialog {
         jTextFieldQuantRegistros = new javax.swing.JTextField();
         jButtonFechar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jComboBoxStatus = new javax.swing.JComboBox<>();
-        jComboBoxMarcas = new javax.swing.JComboBox<>();
+        jComboBoxStatus = new javax.swing.JComboBox<String>();
+        jComboBoxMarcas = new javax.swing.JComboBox<String>();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -228,9 +228,9 @@ public class ModeloApp extends javax.swing.JDialog {
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel5.setText("Status");
 
-        jComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jComboBoxMarcas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxMarcas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel4.setText("Marca");
@@ -443,6 +443,14 @@ public class ModeloApp extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ModeloApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

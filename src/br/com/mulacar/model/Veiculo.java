@@ -38,15 +38,11 @@ public class Veiculo {
 
     public Veiculo() {
     }
-    
-    public Veiculo(String placa) {
-        this.placa = placa;
-    }
-    
+
     public Veiculo(int id) {
         this.id = id;
     }
-
+    
     public Veiculo(int id, String placa, int anoFabricacao, int anoModelo,
             EnumTipoCombustivel tipoCombustivel, String renavan,
             BigDecimal precoCompra, BigDecimal precoVenda,

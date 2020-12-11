@@ -9,7 +9,6 @@ import br.com.mulacar.model.Locacao;
 import java.io.InputStream;
 import java.util.List;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;

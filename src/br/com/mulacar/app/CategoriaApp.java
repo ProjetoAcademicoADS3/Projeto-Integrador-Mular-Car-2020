@@ -9,8 +9,6 @@
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.CategoriaBll;
-import br.com.mulacar.dal.CategoriaDalOrdena;
-import br.com.mulacar.dal.CategoriaDalOrdenaNome;
 import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.model.Categoria;
 import java.math.BigDecimal;
@@ -20,10 +18,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class CategoriaApp extends javax.swing.JDialog {
 
-    private DefaultTableModel model;
-    private CategoriaBll catBll = new CategoriaBll();
-    private Categoria categoria;
-    private CategoriaDalOrdena categoriaOrdena;
+    DefaultTableModel model;
+    CategoriaBll catBll = new CategoriaBll();
+    Categoria categoria;
 
     /**
      * Creates new form CategoriaApp
@@ -31,8 +28,6 @@ public class CategoriaApp extends javax.swing.JDialog {
     public CategoriaApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        categoriaOrdena = new CategoriaDalOrdenaNome();
         
         jTextFieldValor.setDocument(new LimiteDeDigitos(8));
 
@@ -51,7 +46,7 @@ public class CategoriaApp extends javax.swing.JDialog {
     private void imprimirDadosCategoria(List<Categoria> listaDeCategorias) throws Exception {
         model = (DefaultTableModel) jTableCategoria.getModel();
         model.setNumRows(0);
-        categoriaOrdena.ordenaCategorias(listaDeCategorias);
+        catBll.ordenaListaCategorias(listaDeCategorias);
         for (int pos = 0; pos < listaDeCategorias.size(); pos++) {
             String[] linha = new String[4];
             Categoria cat = listaDeCategorias.get(pos);
@@ -80,8 +75,7 @@ public class CategoriaApp extends javax.swing.JDialog {
     public void preencherCampos(int id) {
         try {
             if (id > 0) {
-                
-                this.categoria = catBll.getCategoriaPorId(new Categoria(id));
+                categoria = catBll.getCategoriaPorId(new Categoria(id));
                 jTextFieldCodigo.setText(id + "");
                 jTextFieldDescCategoria.setText(categoria.getDescricao());
                 jTextFieldValor.setText(String.format("%.2f", categoria.getValor()));
@@ -361,7 +355,7 @@ public class CategoriaApp extends javax.swing.JDialog {
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
         try {
-            catBll.excluirCategoria(this.categoria);
+            catBll.excluirCategoria(catBll.getCategoriaPorId(this.categoria));
             imprimirDadosCategoria(catBll.getConsultaCategorias());
             limpaCampos();
 
@@ -449,6 +443,8 @@ public class CategoriaApp extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CategoriaApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 

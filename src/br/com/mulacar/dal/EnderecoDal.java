@@ -22,6 +22,7 @@ import java.util.List;
 import br.com.mulacar.util.Conexao;
 import br.com.mulacar.util.UtilObjetos;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,7 +38,9 @@ public class EnderecoDal {
         String sql = "INSERT INTO endereco (end_tipo, end_cep, end_rua, end_numero "
                 + "end_complemento, end_bairro, end_cidade, end_uf, end_endereco_id, end_motorista_id) "
                 + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+        
         try {
+            conexao.setAutoCommit(false);
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             
             preparedStatement.setString(1, endereco.getTipoEndereco().toString());
@@ -51,32 +54,93 @@ public class EnderecoDal {
             
             if (!UtilObjetos.ehNuloOuVazio(endereco.getCliente())) {
                 preparedStatement.setInt(9, endereco.getCliente().getId());
+                preparedStatement.setNull(10, Types.INTEGER);
             } 
 
             if (!UtilObjetos.ehNuloOuVazio(endereco.getMotorista())) {
+                preparedStatement.setNull(9, Types.INTEGER);
                 preparedStatement.setInt(10, endereco.getMotorista().getId());
             } 
             
             preparedStatement.executeUpdate();
+          
+            conexao.commit();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            conexao.rollback();            
             Logger.getLogger(Endereco.class.getName()).log(Level.SEVERE, "EnderecoDal - ", e );
             throw e;
+        } catch (Exception ex) {
+            Logger.getLogger(Endereco.class.getName()).log(Level.SEVERE, "EnderecoDal - ", ex );
+            throw ex;            
         }
     }
+    
+    public void addEnderecos(List<Endereco> enderecos) throws Exception {
+        
+        conexao.setAutoCommit(false);
+        
+        String sql = "INSERT INTO endereco (end_tipo, end_cep, end_rua, end_numero, "
+                + "end_complemento, end_bairro, end_cidade, end_uf, end_cliente_id, end_motorista_id) "
+                + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+        
+        try {
+            conexao.setAutoCommit(false);
+            
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            
+            for (Endereco endereco : enderecos) {
+                preparedStatement.setString(1, endereco.getTipoEndereco().toString());
+                preparedStatement.setString(2, endereco.getCep());
+                preparedStatement.setString(3, endereco.getRua());
+                preparedStatement.setString(4, endereco.getNumero());
+                preparedStatement.setString(5, endereco.getComplemento());
+                preparedStatement.setString(6, endereco.getBairro());
+                preparedStatement.setString(7, endereco.getCidade());
+                preparedStatement.setString(8, endereco.getUf().sigla().toString());
+
+                if (!UtilObjetos.ehNuloOuVazio(endereco.getCliente())) {
+                    preparedStatement.setInt(9, endereco.getCliente().getId());
+                    preparedStatement.setNull(10, Types.INTEGER);
+                } 
+
+                if (!UtilObjetos.ehNuloOuVazio(endereco.getMotorista())) {
+                    preparedStatement.setNull(9, Types.INTEGER);
+                    preparedStatement.setInt(10, endereco.getMotorista().getId());
+                } 
+
+                preparedStatement.addBatch();
+            }
+            
+            int[] count = preparedStatement.executeBatch();
+
+            conexao.commit();
+
+        } catch (SQLException e) {
+            conexao.rollback();   
+            
+            Logger.getLogger(Endereco.class.getName()).log(Level.SEVERE, "EnderecoDal - ", e );
+            Logger.getLogger(Endereco.class.getName()).log(Level.SEVERE, "EnderecoDal - ", e.getNextException());
+            
+            throw e;
+        } catch (Exception ex) {
+            Logger.getLogger(Endereco.class.getName()).log(Level.SEVERE, "EnderecoDal - ", ex );
+            throw ex;            
+        }
+    }    
     
     public void updateEndereco(Endereco endereco) throws Exception {
         
         String sql = "UPDATE endereco "
-                + "SET end_razao_social = ?, "
-                + "end_nome_fantasia = ?, "
-                + "end_nome = ? "
-                + "end_status = ? "
-                + "end_cpf_cnpj = ? "
-                + "end_rg = ? "
-                + "end_rg_orgao_emissor = ? "
-                + "end_tipo = ? "
-                + "WHERE end_id = ? ";
+                    + "SET end_razao_social = ?, "
+                    + "end_nome_fantasia = ?, "
+                    + "end_nome = ? "
+                    + "end_status = ? "
+                    + "end_cpf_cnpj = ? "
+                    + "end_rg = ? "
+                    + "end_rg_orgao_emissor = ? "
+                    + "end_tipo = ? "
+                    + "WHERE end_id = ? ";
           try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             
@@ -215,5 +279,5 @@ public class EnderecoDal {
         enderecoRetorno.setCliente(new Cliente(rs.getInt("end_cliente_id")));
         enderecoRetorno.setMotorista(new Motorista(rs.getInt("end_motorista_id")));
     }    
-
+    
 }
