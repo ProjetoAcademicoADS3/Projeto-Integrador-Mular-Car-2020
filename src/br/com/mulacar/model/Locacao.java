@@ -205,7 +205,7 @@ public class Locacao {
                 + ", CNH de número " + getMotorista().getNumeroCnh() + ", com data de validade " + getMotorista().getDataValidadeCnh()
                 + ", categoria " + getMotorista().getCategoriaCnh() + ".\n\n"
                 + "\t4 Do valor da locação\n\n"
-                + "\t4.1 O valor da locação é de R$ " + getValorTotalLocacao() + " a diária, tarifa pública da LOCADORA,"
+                + "\t4.1 O valor da locação é de R$ " + getValorLocacao() + " a diária, tarifa pública da LOCADORA,"
                 + " da qual o LOCATÁRIO é concordante, a ser pago somente na devolução do veículo\n"
                 + "\t4.2 O valor do caução é de R$ " + getValorCaucao() + ", a ser pago ao adquirir este contrato.\n"
                 + "\t4.3 O valor do seguro é de R$ " + getValorSeguro() + ", conforme regido no contrato, a ser pago junto com a locação.\n"

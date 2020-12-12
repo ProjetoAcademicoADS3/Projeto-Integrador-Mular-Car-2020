@@ -63,7 +63,7 @@ public class LocacaoBll {
         }
     }
 
-    public List<Locacao> getConsultaLocacaos() throws Exception {
+    public List<Locacao> getConsultaLocacoes() throws Exception {
         return locacaoDal.getAllLocacao();
     }
 
@@ -87,7 +87,7 @@ public class LocacaoBll {
     }
     
 
-    public void ordenaListaLocacaos(List<Locacao> lista) throws Exception {
+    public void ordenaListaLocacoes(List<Locacao> lista) throws Exception {
         for (int i = 0; i < lista.size(); i++) {
             for (int j = i; j < lista.size(); j++) {
                 
