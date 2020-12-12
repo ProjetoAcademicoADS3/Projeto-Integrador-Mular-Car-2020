@@ -59,20 +59,20 @@ public class LocacaoDal {
             preparedStatement.setString(9, locacao.getKmInicial());
             preparedStatement.setString(10, locacao.getObservacoes());
             preparedStatement.setBigDecimal(11, locacao.getValorTotalAcessorios());
-            preparedStatement.setBigDecimal(12, locacao.getValorTotalLocacao());
+            preparedStatement.setBigDecimal(12, locacao.getValorLocacao());
             preparedStatement.setBigDecimal(13, locacao.getValorCaucao());
             preparedStatement.setBigDecimal(14, locacao.getValorSeguro());
             preparedStatement.setString(15, locacao.getStatus().name());
             preparedStatement.setBoolean(16, locacao.isReserva());
 
             int idLocacao = preparedStatement.executeUpdate();
-
+            
             conexao.commit();
 
             if (idLocacao == 0) {
                 throw new SQLException("Falha ao inserir a locacao no banco, nenhum registro criado.");
             }
-
+            
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     locacaoBanco.setId(generatedKeys.getInt(1));
@@ -80,21 +80,21 @@ public class LocacaoDal {
                     throw new SQLException("Falha ao criar o locacao. Não obteve o id da inserção.");
                 }
             }
-
+            
             return locacaoBanco;
 
         } catch (SQLException e) {
             conexao.rollback();
-            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e);
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );
             throw e;
         } catch (Exception ex) {
-            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", ex);
-            throw ex;
-        }
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", ex );
+            throw ex;            
+        }      
     }
-
+    
     public void updateLocacao(Locacao locacao) throws Exception {
-
+        
         String sql = "UPDATE locacao "
                 + "SET loc_cliente_id = ?, "
                 + "loc_motorista_id = ?, "
@@ -115,7 +115,7 @@ public class LocacaoDal {
                 + "WHERE loc_id = ? ";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-
+            
             preparedStatement.setInt(1, locacao.getCliente().getId());
             preparedStatement.setInt(2, locacao.getMotorista().getId());
             preparedStatement.setInt(3, locacao.getVeiculo().getId());
@@ -127,36 +127,38 @@ public class LocacaoDal {
             preparedStatement.setString(9, locacao.getKmInicial());
             preparedStatement.setString(10, locacao.getObservacoes());
             preparedStatement.setBigDecimal(11, locacao.getValorTotalAcessorios());
-            preparedStatement.setBigDecimal(12, locacao.getValorTotalLocacao());
+            preparedStatement.setBigDecimal(12, locacao.getValorLocacao());
             preparedStatement.setBigDecimal(13, locacao.getValorCaucao());
             preparedStatement.setBigDecimal(14, locacao.getValorSeguro());
             preparedStatement.setString(15, locacao.getStatus().name());
             preparedStatement.setBoolean(16, locacao.isReserva());
-
+            
             preparedStatement.executeUpdate();
 
         } catch (SQLException erro) {
             throw erro;
         }
-    }
+    }    
 
     public void deleteLocacao(Locacao locacao) throws Exception {
         String sql = "DELETE FROM locacao WHERE loc_id = ?";
-
+        
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, locacao.getId());
             preparedStatement.executeUpdate();
-
+            
         } catch (Exception e) {
-            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e);
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );            
             throw e;
         }
     }
 
-    public List<Locacao> getAllLocations() throws Exception {
-        List<Locacao> listaLocacao = new ArrayList<Locacao>();
+    public List<Locacao> getAllLocacao() throws Exception {
+        List<Locacao> listaLocacao = new ArrayList<>();
+        
         String sql = "SELECT * FROM locacao";
+        
         try {
             Statement statement = conexao.createStatement();
             ResultSet rs = statement.executeQuery(sql);
@@ -168,18 +170,15 @@ public class LocacaoDal {
 
                 listaLocacao.add(locacaoRetorno);
             }
-
-        } catch (Exception erro) {
-            throw new Exception("Ocorreu um erro ao consultar "
-                    + "os registros de locações\n"
-                    + erro.getMessage());
+        } catch (Exception e) {
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );            
+            throw new Exception("Erro ao listar locacoes" + e.getMessage());
         }
         return listaLocacao;
     }
 
-    public Locacao getLocationById(Locacao locacao) throws Exception {
-
-        Locacao locacaoRetorno = new Locacao();
+    public Locacao getLocacaoById(Locacao locacao) throws Exception {
+        Locacao locacaoRetorno = null;
 
         String sql = "SELECT * FROM locacao WHERE loc_id = ?";
 
@@ -281,8 +280,8 @@ public class LocacaoDal {
         locacaoRetorno.setDataDevolucaoPrevista(rs.getDate("loc_data_devolucao_prevista"));
         locacaoRetorno.setKmInicial(rs.getString("loc_km_inicial"));
         locacaoRetorno.setObservacoes(rs.getString("loc_observacoes"));
-        locacaoRetorno.setValorTotalAcessorios(rs.getBigDecimal("loc_valores_acessorios"));
-        locacaoRetorno.setValorTotalLocacao(rs.getBigDecimal("loc_valor_locacao"));
+        locacaoRetorno.setValorTotalAcessorios(rs.getBigDecimal("loc_valor_total_acessorios"));
+        locacaoRetorno.setValorLocacao(rs.getBigDecimal("loc_valor_locacao"));
         locacaoRetorno.setValorCaucao(rs.getBigDecimal("loc_valor_caucao"));
         locacaoRetorno.setValorSeguro(rs.getBigDecimal("loc_valor_seguro"));
         locacaoRetorno.setStatus(EnumStatus.valueOf(rs.getString("loc_status")));

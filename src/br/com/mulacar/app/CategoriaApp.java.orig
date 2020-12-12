@@ -16,16 +16,22 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-public class ClienteListaApp extends javax.swing.JDialog {
+public class CategoriaApp extends javax.swing.JDialog {
 
+<<<<<<< .merge_file_a02324
     DefaultTableModel model;
     CategoriaBll catBll = new CategoriaBll();
     Categoria categoria;
+=======
+    private DefaultTableModel model;
+    private CategoriaBll catBll = new CategoriaBll();
+    private Categoria categoria;
+>>>>>>> .merge_file_a10604
 
     /**
      * Creates new form CategoriaApp
      */
-    public ClienteListaApp(java.awt.Frame parent, boolean modal) {
+    public CategoriaApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         
@@ -75,7 +81,12 @@ public class ClienteListaApp extends javax.swing.JDialog {
     public void preencherCampos(int id) {
         try {
             if (id > 0) {
-                categoria = catBll.getCategoriaPorId(new Categoria(id));
+<<<<<<< .merge_file_a02324
+                categoria = catBll.getCategoriaPorId(id);
+=======
+                
+                this.categoria = catBll.getCategoriaPorId(new Categoria(id));
+>>>>>>> .merge_file_a10604
                 jTextFieldCodigo.setText(id + "");
                 jTextFieldDescCategoria.setText(categoria.getDescricao());
                 jTextFieldValor.setText(String.format("%.2f", categoria.getValor()));
@@ -355,7 +366,11 @@ public class ClienteListaApp extends javax.swing.JDialog {
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
         try {
-            catBll.excluirCategoria(catBll.getCategoriaPorId(this.categoria));
+<<<<<<< .merge_file_a02324
+            catBll.excluirCategoria(catBll.getCategoriaPorId(categoria.getId()));
+=======
+            catBll.excluirCategoria(this.categoria);
+>>>>>>> .merge_file_a10604
             imprimirDadosCategoria(catBll.getConsultaCategorias());
             limpaCampos();
 
@@ -435,20 +450,21 @@ public class ClienteListaApp extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ClienteListaApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CategoriaApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ClienteListaApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CategoriaApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ClienteListaApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CategoriaApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ClienteListaApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CategoriaApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ClienteListaApp dialog = new ClienteListaApp(new javax.swing.JFrame(), true);
+                CategoriaApp dialog = new CategoriaApp(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

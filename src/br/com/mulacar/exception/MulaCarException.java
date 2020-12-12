@@ -1,14 +1,14 @@
 /*
- * Novembro/Dezembro 2020.
- * Senai Fatesg Faculdade de Tecnologia
- * ADS - Análise e Desenvolvimento de Sistemas
- * Projeto Integrador - ADS3
- * Projeto Mula Car - aluguel de Veículos
- * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-
 package br.com.mulacar.exception;
 
+/**
+ *
+ * @author Gabriel Cunha <gabrielcunhadev@gmail.com>
+ */
 public class MulaCarException extends Exception{
     
     public MulaCarException() {

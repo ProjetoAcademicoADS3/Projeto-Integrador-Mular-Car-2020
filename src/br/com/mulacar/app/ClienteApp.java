@@ -45,16 +45,16 @@ import javax.swing.table.DefaultTableModel;
 public class ClienteApp extends javax.swing.JDialog {
 
     private static final Logger LOG = Logger.getLogger(ClienteApp.class.getName());
-
+    
     private static final int LIMITE_CARACTERES_CPF = 11;
-
+    
     private static final int LIMITE_CARACTERES_CEP = 8;
-
+    
     private static final int LIMITE_CARACTERES_CNPJ = 14;
-
+    
+    private static final int LIMITE_CARACTERES_TELEFONE = 12;
+    
     private List<Contato> contatos;
-
-    private ClienteBll clienteBll;
 
     private EnderecoBll enderecoBll;
 
@@ -69,6 +69,8 @@ public class ClienteApp extends javax.swing.JDialog {
     private int idEnderecoSelecinadoTabela;
 
     private int idContatoSelecinadoTabela;
+    
+    private int idContatoSelecinadoTabela;
 
     public ClienteApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -81,24 +83,24 @@ public class ClienteApp extends javax.swing.JDialog {
     private void inicializar() {
 
         this.reiniciarTodosCampos();
-
+        
         /**
-         * DESTINADO A AMBIENTE DE DESENVOLVIMENTO PARA PRODUÇÃO ATRIBUIR FALSE
-         * PARA A VARIAVEL ambienteDesenvolvimento
-         */
+         * DESTINADO A AMBIENTE DE DESENVOLVIMENTO
+         * PARA PRODUCAO ATRIBUIR FALSE PARA A VARIAVEL  ambienteDesenvolvimento 
+         */ 
         this.ambienteDesenvolvimento = true;
-
+        
         if (ambienteDesenvolvimento) {
             this.preecherDadosTesteCliente();
             this.jButtonIncluirEnderecoTeste.setVisible(true);
-        }
-
+        }        
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         setTitle("Manutenção de Clientes");
 
         setResizable(false);
-
+        
         jButtonRemoverEnderecoTabela.setEnabled(false);
 
         jButtonRemoverContatoTabela.setEnabled(false);
@@ -108,18 +110,58 @@ public class ClienteApp extends javax.swing.JDialog {
         this.clienteBll = new ClienteBll();
 
         this.enderecoBll = new EnderecoBll();
-
+        
         this.contatoBll = new ContatoBll();
-
+        
         this.contatos = new ArrayList();
-
+        
         this.enderecos = new ArrayList();
-
+        
         this.adicionarMouseListenerTabelaContatos();
-
+        
         this.adicionarMouseListenerTabelaEnderecos();
 
         UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldCpf, LIMITE_CARACTERES_CPF);
+        
+        UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldCEP, LIMITE_CARACTERES_CEP);
+        
+        UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldCnpj, LIMITE_CARACTERES_CNPJ);
+        
+        UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldNumeroTelefone, LIMITE_CARACTERES_TELEFONE);
+        
+        UtilComponentes.adicionarKeyListenerSomenteLetras(jTextFieldNome, 
+                                                        jTextFieldOrgaoEmissor,
+                                                        jTextFieldRazaoSocial,
+                                                        jTextFieldNomeFantasia,
+                                                        jTextFieldCidade,
+                                                        jTextFieldBairro);
+        
+        UtilComponentes.adicionarKeyListenerSomenteNumeros(jTextFieldCpf, 
+                                                        jTextFieldRg,
+                                                        jTextFieldCnpj,
+                                                        jTextFieldCEP,
+                                                        jTextFieldNumero,
+                                                        jTextFieldNumeroTelefone);
+        
+        UtilString.ehEmailValido(jTextField1Email.getText());
+        
+        adicionarListenersCamposPessoaFisica();
+        
+        adicionarListenersCamposPessoaJuridica();
+        
+        jLabelAlertaPessoaJuridica.setVisible(false); 
+        
+        jLabelAlertaPessoaFisica.setVisible(false);
+        
+        UtilTabela.limparTabelas(jTableContatos, jTableEnderecos);
+
+    }   
+
+    private void adicionarListenersCamposPessoaFisica() {
+        jTextFieldNome.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                bloquearCamposPessoaJuridica();
 
         UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldCEP, LIMITE_CARACTERES_CEP);
 
@@ -167,45 +209,45 @@ public class ClienteApp extends javax.swing.JDialog {
                 bloquearCamposPessoaJuridica();
             }
         });
-
+        
         jTextFieldRg.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 bloquearCamposPessoaJuridica();
             }
         });
-
+         
         jTextFieldOrgaoEmissor.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 bloquearCamposPessoaJuridica();
             }
         });
-    }
-
+    }   
+    
     public void bloquearCamposPessoaJuridica() {
         boolean temCamposPessoaFisicaPreenchidos = jTextFieldNome.getText().length() > 0
-                || jTextFieldCpf.getText().length() > 0
-                || jTextFieldRg.getText().length() > 0
-                || jTextFieldOrgaoEmissor.getText().length() > 0;
+                                                || jTextFieldCpf.getText().length() > 0
+                                                || jTextFieldRg.getText().length() > 0
+                                                || jTextFieldOrgaoEmissor.getText().length() > 0;
 
         if (temCamposPessoaFisicaPreenchidos) {
             UtilComponentes.habilitarComponentes(false,
-                    jTextFieldRazaoSocial,
-                    jTextFieldCnpj,
-                    jTextFieldNomeFantasia);
-
+                                                jTextFieldRazaoSocial,
+                                                jTextFieldCnpj,
+                                                jTextFieldNomeFantasia);  
+            
             jLabelAlertaPessoaJuridica.setVisible(true);
         } else {
             UtilComponentes.habilitarComponentes(true,
-                    jTextFieldRazaoSocial,
-                    jTextFieldCnpj,
-                    jTextFieldNomeFantasia);
-
+                                                jTextFieldRazaoSocial,
+                                                jTextFieldCnpj,
+                                                jTextFieldNomeFantasia);  
+            
             jLabelAlertaPessoaJuridica.setVisible(false);
         }
-    }
-
+    }    
+    
     private void adicionarListenersCamposPessoaJuridica() {
         jTextFieldRazaoSocial.addKeyListener(new KeyAdapter() {
             @Override
@@ -213,45 +255,83 @@ public class ClienteApp extends javax.swing.JDialog {
                 bloquearCamposPessoaFisica();
             }
         });
-
+        
         jTextFieldNomeFantasia.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 bloquearCamposPessoaFisica();
             }
         });
-
+         
         jTextFieldCnpj.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 bloquearCamposPessoaFisica();
             }
         });
-    }
-
+    }      
+    
     public void bloquearCamposPessoaFisica() {
-        boolean temCamposPessoaJuridicaPreenchidos = jTextFieldNomeFantasia.getText().length() > 0
-                || jTextFieldRazaoSocial.getText().length() > 0
-                || jTextFieldRg.getText().length() > 0;
+        boolean temCamposPessoaJuridicaPreenchidos =    jTextFieldNomeFantasia.getText().length() > 0
+                                                     || jTextFieldRazaoSocial.getText().length() > 0
+                                                     || jTextFieldRg.getText().length() > 0;
 
         if (temCamposPessoaJuridicaPreenchidos) {
             UtilComponentes.habilitarComponentes(false,
-                    jTextFieldNome,
-                    jTextFieldCpf,
-                    jTextFieldRg,
-                    jTextFieldOrgaoEmissor);
-
+                                                jTextFieldNome,
+                                                jTextFieldCpf,
+                                                jTextFieldRg,
+                                                jTextFieldOrgaoEmissor); 
+            
             jLabelAlertaPessoaFisica.setVisible(true);
-
+            
         } else {
             UtilComponentes.habilitarComponentes(true,
-                    jTextFieldNome,
-                    jTextFieldCpf,
-                    jTextFieldRg,
-                    jTextFieldOrgaoEmissor);
-
+                                                jTextFieldNome,
+                                                jTextFieldCpf,
+                                                jTextFieldRg,
+                                                jTextFieldOrgaoEmissor);  
+            
             jLabelAlertaPessoaFisica.setVisible(false);
         }
+    }     
+    
+    private void adicionarMouseListenerTabelaEnderecos() {
+        jTableEnderecos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                int linha = jTableEnderecos.getSelectedRow();
+                
+                idEnderecoSelecinadoTabela = Integer.parseInt(jTableEnderecos.getValueAt(linha, 0).toString());
+                
+                habilitarDesabilitarBotaoRemoverItemTabela(jTableEnderecos, jButtonRemoverEnderecoTabela);
+            }
+        });
+    }
+    
+    private void adicionarMouseListenerTabelaContatos() {
+        jTableContatos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                int linha = jTableContatos.getSelectedRow();
+                
+                idContatoSelecinadoTabela = Integer.parseInt(jTableContatos.getValueAt(linha, 0).toString());
+                
+                habilitarDesabilitarBotaoRemoverItemTabela(jTableContatos, jButtonRemoverContatoTabela);
+            }
+        });
+    }    
+
+    private void carregarComboBoxes() {
+        Vector<EnumUF> ufs = EnumUF.carregarUnidadesFederativas();
+        jComboBoxUf.setModel(new DefaultComboBoxModel(ufs));
+        jComboBoxUf.setSelectedItem(EnumUF.ACRE);
+        
+        Vector<EnumTipoEndereco> tiposEndereco = EnumTipoEndereco.carregarTiposEndereco();
+        jComboBoxTipoEndereco.setModel(new DefaultComboBoxModel(tiposEndereco));
+        
+        Vector<EnumTipoTelefone> tiposTelefone = EnumTipoTelefone.carregarTiposTelefones();
+        jComboBoxTipoTelefone.setModel(new DefaultComboBoxModel(tiposTelefone));
     }
 
     private void adicionarMouseListenerTabelaEnderecos() {
@@ -318,7 +398,7 @@ public class ClienteApp extends javax.swing.JDialog {
         jTextFieldNomeFantasia = new javax.swing.JTextField();
         jButtonIrParaTabEndereco = new javax.swing.JButton();
         jLabelAlertaPessoaJuridica = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButtonLimparCamposJuridica = new javax.swing.JButton();
         jPanelEndereco = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jComboBoxTipoEndereco = new javax.swing.JComboBox<>();
@@ -482,10 +562,11 @@ public class ClienteApp extends javax.swing.JDialog {
         jLabelAlertaPessoaJuridica.setForeground(new java.awt.Color(255, 0, 0));
         jLabelAlertaPessoaJuridica.setText("**Para habilitar os campos de PESSOA JURÍDICA, deve LIMPAR os campos da aba de pessoa física.");
 
-        jButton1.setText("Limpar Campos");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonLimparCamposJuridica.setMnemonic('l');
+        jButtonLimparCamposJuridica.setText("Limpar Campos");
+        jButtonLimparCamposJuridica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonLimparCamposJuridicaActionPerformed(evt);
             }
         });
 
@@ -495,7 +576,7 @@ public class ClienteApp extends javax.swing.JDialog {
             jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPessoaJuridicaLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(jButtonLimparCamposJuridica)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonIrParaTabEndereco)
                 .addContainerGap())
@@ -540,7 +621,7 @@ public class ClienteApp extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
                 .addGroup(jPanelPessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonIrParaTabEndereco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonLimparCamposJuridica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -896,20 +977,20 @@ public class ClienteApp extends javax.swing.JDialog {
 
     private void jButtonConcluirCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConcluirCadastroActionPerformed
         try {
-
+            
             if (validarContatoEnderecoVazio()) {
                 return;
-            }
-
-            //      Pessoa Física        
-            String nome = jTextFieldNome.getText();
-            String cpf = jTextFieldCpf.getText();
-            String rg = jTextFieldRg.getText();
+            }            
+            
+    //      Pessoa fi�sica        
+            String nome         = jTextFieldNome.getText();
+            String cpf          = jTextFieldCpf.getText();
+            String rg           = jTextFieldRg.getText();
             String orgaoEmissor = jTextFieldOrgaoEmissor.getText();
 
-            //      Pessoa Jurídica
-            String cnpj = jTextFieldCnpj.getText();
-            String razaoSocial = jTextFieldRazaoSocial.getText();
+    //      Pessoa Juri�dica
+            String cnpj         = jTextFieldCnpj.getText();
+            String razaoSocial  = jTextFieldRazaoSocial.getText();
             String nomeFantasia = jTextFieldNomeFantasia.getText();
 
             Cliente cliente = preencherCliente(cpf, nome, rg, orgaoEmissor, razaoSocial, cnpj, nomeFantasia);
@@ -917,30 +998,30 @@ public class ClienteApp extends javax.swing.JDialog {
             Cliente clienteBanco = clienteBll.adicionarCliente(cliente);
 
             preencherEnderecoComCliente(this.enderecos, clienteBanco);
-
+            
             enderecoBll.adicionarEnderecos(this.enderecos);
-
+            
             preencherContatosComCliente(this.contatos, clienteBanco);
 
             contatoBll.adicionarContatos(this.contatos);
-
+            
             UtilTabela.limparTabelas(jTableContatos);
-
+            
             this.contatos = new ArrayList<>();
-
+            
             UtilTabela.limparTabelas(jTableEnderecos);
-
+            
             this.enderecos = new ArrayList();
-
+            
             reiniciarTodosCampos();
-
+            
             JOptionPane.showMessageDialog(null, "Cliente Salvo com sucesso!!");
-
+            
         } catch (Exception e) {
             if (!(e instanceof MulaCarException)) {
                 JOptionPane.showMessageDialog(null, "Ocorreu um erro ao salvar o cliente. Entre em contato com suporte!");
             } else {
-                JOptionPane.showMessageDialog(null, e.getMessage());
+                JOptionPane.showMessageDialog(null, e.getMessage());            
             }
         }
     }//GEN-LAST:event_jButtonConcluirCadastroActionPerformed
@@ -958,23 +1039,23 @@ public class ClienteApp extends javax.swing.JDialog {
     }
 
     private void preencherEnderecoComCliente(List<Endereco> enderecos, Cliente cliente) {
-        for (Endereco end : enderecos) {
+        for (Endereco end: enderecos) {
             end.setCliente(cliente);
         }
     }
-
+    
     private void preencherContatosComCliente(List<Contato> contatos, Cliente cliente) {
-        for (Contato cont : contatos) {
+        for (Contato cont: contatos) {
             cont.setCliente(cliente);
         }
-    }
+    }    
 
     private Cliente preencherCliente(String cpf, String nome, String rg, String orgaoEmissor, String razaoSocial, String cnpj, String nomeFantasia) {
-
+        
         Cliente cliente = new Cliente();
-
+        
         cliente.setStatus(EnumStatus.ATIVO);
-
+        
         if (!UtilObjetos.ehNuloOuVazio(cpf)) {
             cliente.setTipoCliente(EnumTipoCliente.PESSOA_FISICA);
             cliente.setNome(nome);
@@ -987,7 +1068,7 @@ public class ClienteApp extends javax.swing.JDialog {
             cliente.setCpfCnpj(cnpj);
             cliente.setNomeFantasia(nomeFantasia);
         }
-
+        
         return cliente;
     }
 
@@ -1005,50 +1086,50 @@ public class ClienteApp extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonIrParaTabContatoActionPerformed
 
     private void jButtonIncluirEnderecoTesteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirEnderecoTesteActionPerformed
-        jComboBoxTipoEndereco.setSelectedItem(EnumTipoEndereco.RESIDENCIAL);
-        jTextFieldCEP.setText("74356400");
-        jTextFieldRua.setText("Rua teste 2");
-        jTextFieldNumero.setText("543");
-        jTextFieldComplemento.setText("Complemento Teste 2");
-        jTextFieldBairro.setText("Bairro teste 2");
-        jTextFieldCidade.setText("Cidade Teste 2");
-        jComboBoxUf.setSelectedItem(EnumUF.ESPIRITO_SANTO);
+            jComboBoxTipoEndereco.setSelectedItem(EnumTipoEndereco.RESIDENCIAL);
+            jTextFieldCEP.setText("74356400");
+            jTextFieldRua.setText("Rua teste 2");
+            jTextFieldNumero.setText("543");
+            jTextFieldComplemento.setText("Complemento Teste 2");
+            jTextFieldBairro.setText("Bairro teste 2");
+            jTextFieldCidade.setText("Cidade Teste 2");
+            jComboBoxUf.setSelectedItem(EnumUF.ESPIRITO_SANTO);        
     }//GEN-LAST:event_jButtonIncluirEnderecoTesteActionPerformed
 
     private void jButtonRemoverEnderecoTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoverEnderecoTabelaActionPerformed
         try {
             String pergunta = "Remover o endereço da tabela?";
             String tituloJanela = "Endereço";
-            Icon icone = new ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Delete-icon - x - 24 x 24px.png"));
+            Icon icone =new ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Delete-icon - x - 24 x 24px.png"));
             String[] botaoOpcoes = {"Sim", "Não"};
             String label = botaoOpcoes[0];
-
-            int opcao = JOptionPane.showOptionDialog(this,
-                    pergunta,
-                    tituloJanela,
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.WARNING_MESSAGE,
-                    null,
-                    botaoOpcoes,
-                    label);
+            
+            int opcao = JOptionPane.showOptionDialog(this, 
+                                                    pergunta,
+                                                    tituloJanela,
+                                                    JOptionPane.YES_NO_OPTION, 
+                                                    JOptionPane.WARNING_MESSAGE,
+                                                    null,
+                                                    botaoOpcoes,
+                                                    label);
             if (opcao == JOptionPane.YES_OPTION) {
-
+                
                 UtilTabela.limparTabelas(jTableEnderecos);
-
+                
                 int indiceEnderecoParaRemover = this.idEnderecoSelecinadoTabela - 1;
-
+                
                 this.enderecos.remove(indiceEnderecoParaRemover);
-
+                
                 this.recriarIdsTemporariosEnderecosTabela();
-
+                
                 this.preencherTabelaEndereco(this.enderecos);
-
+                
                 this.habilitarDesabilitarBotaoRemoverItemTabela(jTableEnderecos, jButtonRemoverEnderecoTabela);
-
+                
                 jButtonRemoverEnderecoTabela.setEnabled(false);
-
+                
                 JOptionPane.showMessageDialog(this, "Endereço Removido.");
-            }
+            } 
         } catch (Exception erro) {
             LOG.log(Level.SEVERE, null, erro);
             JOptionPane.showMessageDialog(null, "Erro ao remover o endereço da tabela. " + mensagemErroPadrao);
@@ -1056,9 +1137,9 @@ public class ClienteApp extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonRemoverEnderecoTabelaActionPerformed
 
     private void habilitarDesabilitarBotaoRemoverItemTabela(JTable tabela, JButton botao) {
-
+        
         DefaultTableModel model = (DefaultTableModel) tabela.getModel();
-
+        
         if (model.getRowCount() > 0) {
             botao.setEnabled(true);
         } else {
@@ -1067,52 +1148,52 @@ public class ClienteApp extends javax.swing.JDialog {
     }
 
     private void recriarIdsTemporariosEnderecosTabela() {
-
+       
         for (int i = 0; i < this.enderecos.size(); i++) {
-            this.enderecos.get(i).setId(i + 1);
+                this.enderecos.get(i).setId(i + 1);
         }
 //        this.enderecos
 //                .stream()
 //                .filter((end) -> (end.getId() != 1))
 //                .forEachOrdered((end) -> {end.setId(end.getId() - 1);        
     }
-
+    
     private void recriarIdsTemporariosContatosTabela() {
         for (Contato cont : this.contatos) {
             if (cont.getId() != 1) {
                 cont.setId(cont.getId() - 1);
             }
         }
-    }
+    }    
 
 
     private void jButtonAdicionarEnderecoTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarEnderecoTabelaActionPerformed
         try {
             EnumTipoEndereco tipoEndereco = (EnumTipoEndereco) jComboBoxTipoEndereco.getSelectedItem();
-            String cep = jTextFieldCEP.getText();
-            String rua = jTextFieldRua.getText();
-            String numero = jTextFieldNumero.getText();
-            String complemento = jTextFieldComplemento.getText();
-            String bairro = jTextFieldBairro.getText();
-            String cidade = jTextFieldCidade.getText();
-            EnumUF uf = (EnumUF) jComboBoxUf.getSelectedItem();
+            String cep          = jTextFieldCEP.getText();
+            String rua          = jTextFieldRua.getText();
+            String numero       = jTextFieldNumero.getText();
+            String complemento  = jTextFieldComplemento.getText();
+            String bairro       = jTextFieldBairro.getText();
+            String cidade       = jTextFieldCidade.getText();
+            EnumUF uf           = (EnumUF) jComboBoxUf.getSelectedItem();  
 
             boolean temCamposVazios = UtilObjetos.ehNuloOuVazio(cep)
-                    || UtilObjetos.ehNuloOuVazio(tipoEndereco)
-                    || UtilObjetos.ehNuloOuVazio(rua)
-                    || UtilObjetos.ehNuloOuVazio(numero)
-                    || UtilObjetos.ehNuloOuVazio(complemento)
-                    || UtilObjetos.ehNuloOuVazio(bairro)
-                    || UtilObjetos.ehNuloOuVazio(cidade)
-                    || UtilObjetos.ehNuloOuVazio(uf);
-
+                                      || UtilObjetos.ehNuloOuVazio(tipoEndereco)
+                                      || UtilObjetos.ehNuloOuVazio(rua)
+                                      || UtilObjetos.ehNuloOuVazio(numero)           
+                                      || UtilObjetos.ehNuloOuVazio(complemento)           
+                                      || UtilObjetos.ehNuloOuVazio(bairro)            
+                                      || UtilObjetos.ehNuloOuVazio(cidade)            
+                                      || UtilObjetos.ehNuloOuVazio(uf);  
+            
             if (temCamposVazios) {
                 JOptionPane.showMessageDialog(null, "Campos obrigatórios devem ser preenchidos.");
                 return;
-            }
-
+            }         
+            
             int idTemporario = this.enderecos.size() + 1;
-
+            
             Endereco endereco = new Endereco(idTemporario);
             endereco.setCep(cep);
             endereco.setTipoEndereco(tipoEndereco);
@@ -1122,81 +1203,81 @@ public class ClienteApp extends javax.swing.JDialog {
             endereco.setBairro(bairro);
             endereco.setCidade(cidade);
             endereco.setUf(uf);
-
+            
             this.enderecos.add(endereco);
 
             UtilTabela.limparTabelas(jTableEnderecos);
-
+        
             preencherTabelaEndereco(enderecos);
-
+            
             UtilComponentes.limparCampos(jTextFieldCEP,
-                    jTextFieldRua,
-                    jTextFieldNumero,
-                    jTextFieldComplemento,
-                    jTextFieldBairro,
-                    jTextFieldCidade);
-
+                                        jTextFieldRua,
+                                        jTextFieldNumero,
+                                        jTextFieldComplemento,
+                                        jTextFieldBairro,
+                                        jTextFieldCidade);
+            
             this.carregarComboBoxes();
-
+            
         } catch (Exception e) {
             Logger.getLogger(ClienteApp.class.getName()).log(Level.SEVERE, null, e);
-            JOptionPane.showMessageDialog(null, "Problema ao adicionar endereco. Entre em contato com suporte.");
+            JOptionPane.showMessageDialog(null, "Problema ao adicionar endereco. Entre em contato com suporte.");            
         }
-
+        
     }//GEN-LAST:event_jButtonAdicionarEnderecoTabelaActionPerformed
 
     private void jButtonAdicionarContatoTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarContatoTabelaActionPerformed
 
         try {
             String email = jTextField1Email.getText();
-
+            
             EnumTipoTelefone tipoTelefone = EnumTipoTelefone.fromDescricao(jComboBoxTipoTelefone.getSelectedItem().toString());
-
+           
             String numeroTelefone = jTextFieldNumeroTelefone.getText();
-
+            
             boolean temCamposVazios = UtilObjetos.ehNuloOuVazio(email)
-                    || UtilObjetos.ehNuloOuVazio(tipoTelefone)
-                    || UtilObjetos.ehNuloOuVazio(numeroTelefone);
-
+                                      || UtilObjetos.ehNuloOuVazio(tipoTelefone)
+                                      || UtilObjetos.ehNuloOuVazio(numeroTelefone);
+            
             if (temCamposVazios) {
                 JOptionPane.showMessageDialog(null, "Campos obrigatórios devem ser preenchidos.");
                 jTextField1Email.requestFocus();
                 return;
             }
-
+            
             boolean emailValido = UtilString.ehEmailValido(email);
-
+            
             if (!emailValido) {
                 JOptionPane.showMessageDialog(null, "Preencha com um email validdo.");
                 jTextField1Email.requestFocus();
-                return;
+                return;                
             }
-
+            
             boolean jaExisteEmailNaTabela = this.contatos.stream()
-                    .map(Contato::getEmail)
-                    .filter(email::equals)
-                    .findFirst()
-                    .isPresent();
-
+                                            .map(Contato::getEmail)
+                                            .filter(email::equals)
+                                            .findFirst()
+                                            .isPresent();
+            
             if (jaExisteEmailNaTabela) {
                 JOptionPane.showMessageDialog(null, "Já existe um contato cadastrado com esse email.");
                 return;
             }
-
+            
             int idTemporario = this.contatos.size() + 1;
-
+            
             Contato contato = new Contato(idTemporario, email, tipoTelefone, numeroTelefone);
 
             this.contatos.add(contato);
 
             UtilTabela.limparTabelas(jTableContatos);
-
+        
             preencherTabelaContato(this.contatos);
-
+            
             UtilComponentes.limparCampos(jTextFieldNumeroTelefone, jTextField1Email);
-
+            
             jTextField1Email.requestFocus();
-
+            
         } catch (Exception ex) {
             Logger.getLogger(ClienteApp.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Problema ao adicionar telefone. Entre em contato com suporte.");
@@ -1211,33 +1292,33 @@ public class ClienteApp extends javax.swing.JDialog {
             Icon icone = new ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Delete-icon - x - 24 x 24px.png"));
             String[] botaoOpcoes = {"Sim", "Não"};
             String label = botaoOpcoes[0];
-
-            int opcao = JOptionPane.showOptionDialog(this,
-                    pergunta,
-                    tituloJanela,
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.WARNING_MESSAGE,
-                    null,
-                    botaoOpcoes,
-                    label);
+            
+            int opcao = JOptionPane.showOptionDialog(this, 
+                                                    pergunta,
+                                                    tituloJanela,
+                                                    JOptionPane.YES_NO_OPTION, 
+                                                    JOptionPane.WARNING_MESSAGE,
+                                                    null,
+                                                    botaoOpcoes,
+                                                    label);
             if (opcao == JOptionPane.YES_OPTION) {
-
+                
                 UtilTabela.limparTabelas(jTableContatos);
-
+                
                 int indiceContatoParaRemover = this.idContatoSelecinadoTabela - 1;
-
+                
                 this.contatos.remove(indiceContatoParaRemover);
-
+                
                 this.recriarIdsTemporariosContatosTabela();
-
+                
                 this.preencherTabelaContato(this.contatos);
-
+                
                 habilitarDesabilitarBotaoRemoverItemTabela(jTableContatos, jButtonRemoverContatoTabela);
-
+                
                 jButtonRemoverContatoTabela.setEnabled(false);
-
+                
                 JOptionPane.showMessageDialog(this, "Contato Removido.");
-            }
+            } 
         } catch (Exception erro) {
             LOG.log(Level.SEVERE, null, erro);
             JOptionPane.showMessageDialog(null, "Erro ao remover o contato da tabela. " + mensagemErroPadrao);
@@ -1247,59 +1328,70 @@ public class ClienteApp extends javax.swing.JDialog {
 
     private void jButtonLimparCamposPessoaFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimparCamposPessoaFisicaActionPerformed
         UtilComponentes.limparCampos(jTextFieldNome,
-                jTextFieldCpf,
-                jTextFieldRg,
-                jTextFieldOrgaoEmissor);
-
+                                    jTextFieldCpf,
+                                    jTextFieldRg,
+                                    jTextFieldOrgaoEmissor);
+        
         UtilComponentes.habilitarComponentes(true,
-                jTextFieldNome,
-                jTextFieldCpf,
-                jTextFieldRg,
-                jTextFieldOrgaoEmissor);
+                                    jTextFieldRazaoSocial,
+                                    jTextFieldCnpj,
+                                    jTextFieldNomeFantasia); 
+        
+        jLabelAlertaPessoaJuridica.setVisible(false); 
+        
+        jLabelAlertaPessoaFisica.setVisible(false);        
     }//GEN-LAST:event_jButtonLimparCamposPessoaFisicaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonLimparCamposJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimparCamposJuridicaActionPerformed
         UtilComponentes.limparCampos(jTextFieldRazaoSocial,
-                jTextFieldNomeFantasia,
-                jTextFieldCnpj);
-
+                                    jTextFieldNomeFantasia,
+                                    jTextFieldCnpj);
+        
         UtilComponentes.habilitarComponentes(true,
-                jTextFieldRazaoSocial,
-                jTextFieldCnpj,
-                jTextFieldNomeFantasia);
-
-    }//GEN-LAST:event_jButton1ActionPerformed
+                                    jTextFieldNome,
+                                    jTextFieldCpf,
+                                    jTextFieldRg,
+                                    jTextFieldOrgaoEmissor); 
+        
+        jLabelAlertaPessoaJuridica.setVisible(false); 
+        
+        jLabelAlertaPessoaFisica.setVisible(false);        
+        
+    }//GEN-LAST:event_jButtonLimparCamposJuridicaActionPerformed
 
     private void preencherTabelaContato(List<Contato> contatos) throws Exception {
-
+        
         DefaultTableModel model = (DefaultTableModel) jTableContatos.getModel();
-
+        
         model.setNumRows(0);
-
+        
 //        contatoBll.ordenaListaContatos(this.telefones);
+        
         for (int i = 0; i < contatos.size(); i++) {
             String[] linha = new String[4];
-
+            
             linha[0] = String.valueOf(contatos.get(i).getId());
             linha[1] = contatos.get(i).getEmail();
             linha[2] = contatos.get(i).getTipoTelefone().name();
             linha[3] = String.valueOf(contatos.get(i).getNumero());
-
+            
             model.addRow(linha);
         }
     }
-
+    
     private void preencherTabelaEndereco(List<Endereco> enderecos) throws Exception {
-
+        
         DefaultTableModel model = (DefaultTableModel) jTableEnderecos.getModel();
-
+        
         model.setNumRows(0);
-
+        
 //        contatoBll.ordenaListaContatos(this.telefones);
+        
         for (int i = 0; i < enderecos.size(); i++) {
-
             String[] linha = new String[9];
-
+            
+            String[] linha = new String[9];
+            
             linha[0] = String.valueOf(enderecos.get(i).getId());
             linha[1] = enderecos.get(i).getTipoEndereco().name();
             linha[2] = enderecos.get(i).getCep();
@@ -1309,11 +1401,13 @@ public class ClienteApp extends javax.swing.JDialog {
             linha[6] = enderecos.get(i).getBairro();
             linha[7] = enderecos.get(i).getCidade();
             linha[8] = enderecos.get(i).getUf().sigla();
-
+            
             model.addRow(linha);
         }
-    }
+    }    
+    
 
+    
     public static void main(String args[]) {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1331,15 +1425,16 @@ public class ClienteApp extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAdicionarContatoTabela;
     private javax.swing.JButton jButtonAdicionarEnderecoTabela;
+    private javax.swing.JButton jButtonConcluirCadastro;
     private javax.swing.JButton jButtonConcluirCadastro;
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonIncluirEnderecoTeste;
     private javax.swing.JButton jButtonIrPFisicaParaTabEndereco;
     private javax.swing.JButton jButtonIrParaTabContato;
     private javax.swing.JButton jButtonIrParaTabEndereco;
+    private javax.swing.JButton jButtonLimparCamposJuridica;
     private javax.swing.JButton jButtonLimparCamposPessoaFisica;
     private javax.swing.JButton jButtonRemoverContatoTabela;
     private javax.swing.JButton jButtonRemoverEnderecoTabela;
@@ -1393,53 +1488,53 @@ public class ClienteApp extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void preecherDadosTesteCliente() {
-        jComboBoxTipoEndereco.setSelectedItem(EnumTipoEndereco.RESIDENCIAL);
-        jTextFieldCEP.setText("74000000");
-        jTextFieldRua.setText("Rua teste");
-        jTextFieldNumero.setText("12354");
-        jTextFieldComplemento.setText("Complemento Teste");
-        jTextFieldBairro.setText("Bairro teste");
-        jTextFieldCidade.setText("Cidade Teste");
-        jComboBoxUf.setSelectedItem(EnumUF.GOIAS);
+            jComboBoxTipoEndereco.setSelectedItem(EnumTipoEndereco.RESIDENCIAL);
+            jTextFieldCEP.setText("74000000");
+            jTextFieldRua.setText("Rua teste");
+            jTextFieldNumero.setText("12354");
+            jTextFieldComplemento.setText("Complemento Teste");
+            jTextFieldBairro.setText("Bairro teste");
+            jTextFieldCidade.setText("Cidade Teste");
+            jComboBoxUf.setSelectedItem(EnumUF.GOIAS);
 
-        //      Contato
-        jTextField1Email.setText("teste@gmail.com");
-        jComboBoxTipoTelefone.setSelectedItem(EnumTipoTelefone.CELULAR);
-        jTextFieldNumeroTelefone.setText("62981903202");
+    //      Contato
+            jTextField1Email.setText("teste@gmail.com");
+            jComboBoxTipoTelefone.setSelectedItem(EnumTipoTelefone.CELULAR);
+            jTextFieldNumeroTelefone.setText("62981903202");
 
-        //      Pessoa Física        
-        jTextFieldNome.setText("Fulano da Silva");
-        jTextFieldCpf.setText("00535650023");
-        jTextFieldRg.setText("406735");
-        jTextFieldOrgaoEmissor.setText("SSP");
+    //      Pessoa Física        
+//            jTextFieldNome.setText("Fulano da Silva");
+//            jTextFieldCpf.setText("00535650023");
+//            jTextFieldRg.setText("406735");
+//            jTextFieldOrgaoEmissor.setText("SSP");
 
-        //      Pessoa Jurídica
-//            jTextFieldCnpj.getText();
-//            jTextFieldRazaoSocial.getText();
-//            jTextFieldNomeFantasia.getText();  
+    //      Pessoa Jurídica
+            jTextFieldCnpj.setText("12345678901234");
+            jTextFieldRazaoSocial.setText("RAZAO TESTE");
+            jTextFieldNomeFantasia.setText("FANTASIA TESTE");  
     }
 
     private void reiniciarTodosCampos() {
         UtilComponentes.limparCampos(jTextFieldNome,
-                jTextFieldCpf,
-                jTextFieldRg,
-                jTextFieldOrgaoEmissor,
-                jTextFieldCnpj,
-                jTextFieldRazaoSocial,
-                jTextFieldNomeFantasia,
-                jTextFieldCEP,
-                jTextFieldRua,
-                jTextFieldNumero,
-                jTextFieldComplemento,
-                jTextFieldBairro,
-                jTextFieldCidade,
-                jTextField1Email,
-                jTextFieldNumeroTelefone);
-
+                                    jTextFieldCpf,
+                                    jTextFieldRg,
+                                    jTextFieldOrgaoEmissor,
+                                    jTextFieldCnpj,
+                                    jTextFieldRazaoSocial,
+                                    jTextFieldNomeFantasia,
+                                    jTextFieldCEP,
+                                    jTextFieldRua,
+                                    jTextFieldNumero,
+                                    jTextFieldComplemento,
+                                    jTextFieldBairro,
+                                    jTextFieldCidade,
+                                    jTextField1Email,
+                                    jTextFieldNumeroTelefone);
+        
         UtilTabela.limparTabelas(jTableContatos, jTableEnderecos);
-
+    
         this.carregarComboBoxes();
-
+        
     }
 
 }

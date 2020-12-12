@@ -29,7 +29,7 @@ public class Locacao {
     private String kmInicial;
     private String observacoes;
     private BigDecimal valorTotalAcessorios;
-    private BigDecimal valorTotalLocacao;
+    private BigDecimal valorLocacao;
     private BigDecimal valorSeguro;
     private BigDecimal valorCaucao;
     private EnumStatus status;
@@ -138,12 +138,12 @@ public class Locacao {
         this.valorTotalAcessorios = valorTotalAcessorios;
     }
 
-    public BigDecimal getValorTotalLocacao() {
-        return valorTotalLocacao;
+    public BigDecimal getValorLocacao() {
+        return valorLocacao;
     }
 
-    public void setValorTotalLocacao(BigDecimal valorTotalLocacao) {
-        this.valorTotalLocacao = valorTotalLocacao;
+    public void setValorLocacao(BigDecimal valorLocacao) {
+        this.valorLocacao = valorLocacao;
     }
 
     public BigDecimal getValorSeguro() {

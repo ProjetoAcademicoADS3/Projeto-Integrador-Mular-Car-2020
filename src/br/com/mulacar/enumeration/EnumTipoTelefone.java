@@ -17,10 +17,6 @@ public enum EnumTipoTelefone {
     CELULAR("Celular"), 
     FIXO("Fixo");
 
-    public static EnumTipoTelefone valueOf(Object selectedItem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
  private final String descricao;
     
     EnumTipoTelefone(final String descricao) {

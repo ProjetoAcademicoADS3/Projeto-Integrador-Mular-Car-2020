@@ -54,9 +54,11 @@ public class ContatoDal {
             
             if (!UtilObjetos.ehNuloOuVazio(contato.getCliente())) {
                 preparedStatement.setInt(4, contato.getCliente().getId());
+                preparedStatement.setNull(5, Types.INTEGER);
             } 
 
             if (!UtilObjetos.ehNuloOuVazio(contato.getMotorista())) {
+                preparedStatement.setNull(4, Types.INTEGER);
                 preparedStatement.setInt(5, contato.getMotorista().getId());
             } 
             
@@ -102,6 +104,10 @@ public class ContatoDal {
 
             conexao.commit();
         
+        } catch (SQLException e) {
+            Logger.getLogger(Contato.class.getName()).log(Level.SEVERE, "ContatoDal - ", e );
+            Logger.getLogger(Contato.class.getName()).log(Level.SEVERE, "ContatoDal - ", e.getNextException());
+            throw e;
         } catch (Exception e) {
             Logger.getLogger(Contato.class.getName()).log(Level.SEVERE, "ContatoDal - ", e );
             throw e;

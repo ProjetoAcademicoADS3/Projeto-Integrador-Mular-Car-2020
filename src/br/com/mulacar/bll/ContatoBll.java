@@ -10,6 +10,7 @@
 package br.com.mulacar.bll;
 
 import br.com.mulacar.dal.ContatoDal;
+import br.com.mulacar.exception.MulaCarException;
 import br.com.mulacar.model.Contato;
 import br.com.mulacar.util.UtilObjetos;
 import java.util.List;
@@ -64,7 +65,7 @@ public class ContatoBll {
         Contato contatoRetorno = contatoDal.getContatoById(contato);
         
         if (UtilObjetos.ehNuloOuVazio(contatoRetorno)) {
-            throw new Exception("Contato NÂO possui cadastro para ser atualizado.");
+            throw new MulaCarException("Contato NÂO possui cadastro para ser atualizado.");
         }
     }
 
@@ -85,7 +86,7 @@ public class ContatoBll {
         this.validarContato(contato);
         
         if (UtilObjetos.ehNuloOuVazio(contato.getEmail())) {
-            throw new Exception("Emial inválido para pesquisa.");
+            throw new MulaCarException("Emial inválido para pesquisa.");
         }
         
         return contatoDal.getContatoByEmail(contato);
@@ -129,7 +130,7 @@ public class ContatoBll {
     
     private void validarIdNulo(Contato contato) throws Exception {
         if (UtilObjetos.ehNuloOuVazio(contato.getId())) {
-            throw new Exception("ID do Contato não pode ser nulo ou vazio.");
+            throw new MulaCarException("ID do Contato não pode ser nulo ou vazio.");
         }
     }    
 
@@ -139,7 +140,7 @@ public class ContatoBll {
                                 || UtilObjetos.ehNuloOuVazio(contato.getEmail());
         
         if (temCamposNulos) {
-            throw new Exception("Campos obrigatórios devem ser preenchidos!\n");
+            throw new MulaCarException("Campos obrigatórios devem ser preenchidos!\n");
         }
     }
     
@@ -166,14 +167,14 @@ public class ContatoBll {
             contatoBanco = contatoDal.getContatoByEmail(contato);
 
             if (!UtilObjetos.ehNuloOuVazio(contatoBanco)) {
-                throw new Exception("Já existe contato com esse email cadatrado.");
+                throw new MulaCarException("Já existe contato com esse email cadatrado.");
             }
         }
     }
     
     private void validarObjetoNulo(Object objeto) throws Exception {
         if (UtilObjetos.ehNuloOuVazio(objeto)) {
-            throw new Exception("Objeto não pode ser nulo ou vazio.");
+            throw new MulaCarException("Objeto não pode ser nulo ou vazio.");
         }
     }       
 }
