@@ -94,7 +94,7 @@ public class UsuarioDal {
         }
     }
 
-    public Iterator getAllUsuarios() throws Exception {
+    public Iterator getAllUsuariosIterator() throws Exception {
         List<Usuario> listaUsuarios = new ArrayList<Usuario>();
         usuarioBll = new UsuarioBll();
         String sql = "SELECT * FROM usuario";
@@ -121,6 +121,35 @@ public class UsuarioDal {
         }
         usuarioBll.ordenaListaUsuarioa(listaUsuarios);
         return listaUsuarios.iterator();
+    }
+
+    public ArrayList<Usuario> getAllUsuarios() throws Exception {
+        ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+        usuarioBll = new UsuarioBll();
+        String sql = "SELECT * FROM usuario";
+        try {
+            Statement statement = conexao.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                Usuario usu = new Usuario();
+                usu.setId(rs.getInt("usu_id"));
+                usu.setNome(rs.getString("usu_nome"));
+                usu.setCpf(rs.getString("usu_cpf"));
+                usu.setEmail(rs.getString("usu_email"));
+                usu.setSenha(rs.getString("usu_senha"));
+                usu.setStatus(EnumStatus.valueOf(rs.getString("usu_status")));
+                usu.setPerfil(EnumPerfil.valueOf(rs.getString("usu_perfil")));
+                usu.setDataCadastro(rs.getDate("usu_data_cadastro"));
+
+                listaUsuarios.add(usu);
+            }
+        } catch (Exception erro) {
+            throw new Exception("Ocorreu um erro ao consultar "
+                    + "os registros de usuários\n"
+                    + erro.getMessage());
+        }
+        usuarioBll.ordenaListaUsuarioa(listaUsuarios);
+        return listaUsuarios;
     }
 
     public Usuario getUsuarioById(int id) throws Exception {
@@ -154,14 +183,13 @@ public class UsuarioDal {
 
     public ArrayList sourceUsuario(String dados) throws Exception {
 
-        String textoDigitado = dados;
+        String textoDigitado = dados.trim().toLowerCase();
 
         ArrayList<Usuario> resultadoDaPesquisa = new ArrayList<>();
 
-        boolean vdd = false;
+        boolean existe = false;
 
-        for (int i= 0; i < resultadoDaPesquisa.size(); i++) {
-            Usuario usu = resultadoDaPesquisa.get(i);
+        for (Usuario usu : getAllUsuarios()) {
 
             if (usu.getNome().toLowerCase().trim().contains(textoDigitado)
                     || usu.getCpf().toLowerCase().trim().contains(textoDigitado)
@@ -169,10 +197,10 @@ public class UsuarioDal {
 
                 resultadoDaPesquisa.add(usu);
 
-                vdd = true;
+                existe = true;
             }
         }
-        if (!vdd) {
+        if (!existe) {
             throw new Exception("Registro não encontrado!\n");
         }
         return resultadoDaPesquisa;

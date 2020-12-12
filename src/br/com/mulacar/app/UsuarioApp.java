@@ -368,9 +368,15 @@ public class UsuarioApp extends javax.swing.JDialog {
 
     private void jButtonPesquisarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarUsuarioActionPerformed
         // TODO add your handling code here:
+        String dados = jTextFieldNome.getText();
         try {
-            jButtonSalvar.setLabel("Editar");
-            imprimirDadosUsuarioNosCampos(usuBll.pesquisarUsuario(jTextFieldNome.getText()));
+            if (jTextFieldNome.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Informe um dado para a pesquisa!\n");
+            } else {
+                imprimirDadosUsuarioNosCampos(usuBll.pesquisarUsuario(dados));
+                jButtonSalvar.setLabel("Editar");
+            }
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }

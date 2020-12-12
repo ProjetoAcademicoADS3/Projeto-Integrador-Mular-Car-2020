@@ -209,7 +209,7 @@ public class RelatorioDeUsuariosApp extends javax.swing.JDialog {
     private void jButtonListarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarUsuarioActionPerformed
         // TODO add your handling code here:
         try {
-            imprimirRelatorioDeUsuarios(usuBll.getConsultaUsuarios());
+            imprimirRelatorioDeUsuarios(usuBll.getConsultaUsuariosIterator());
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }

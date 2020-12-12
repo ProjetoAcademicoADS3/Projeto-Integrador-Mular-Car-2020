@@ -45,8 +45,8 @@ public class UsuarioBll {
         
     }
 
-    public Iterator getConsultaUsuarios() throws Exception {
-        return usuDal.getAllUsuarios();
+    public Iterator getConsultaUsuariosIterator() throws Exception {
+        return usuDal.getAllUsuariosIterator();
     }
 
     public Usuario getConsultaUsuarioPorId(int id) throws Exception {
@@ -75,7 +75,7 @@ public class UsuarioBll {
             throw new Exception("CPF inválido!Verifique\n");
         }
 
-        Iterator<Usuario> lista = usuDal.getAllUsuarios();
+        Iterator<Usuario> lista = usuDal.getAllUsuariosIterator();
         for (int pos = 0; pos < lista.hashCode(); pos++) {
 //            Usuario usu = lista.next();
             while (lista.hasNext()) {
