@@ -77,13 +77,16 @@ public class UsuarioBll {
 
         Iterator<Usuario> lista = usuDal.getAllUsuarios();
         for (int pos = 0; pos < lista.hashCode(); pos++) {
-            Usuario usu = lista.next();
-            if (usuario.getCpf().equals(usu.getCpf()) && !usuario.getEmail().equals("usuario.admin@gmail.com")) {
-                throw new Exception("Já existe um usuário com este CPF\nVerifique\n");
-            }
-            if (usuario.getEmail().equalsIgnoreCase(usu.getEmail())) {
-                throw new Exception("O email informado já existe para outro"
-                        + " usuário\nVerifique\n");
+//            Usuario usu = lista.next();
+            while (lista.hasNext()) {
+                Usuario usu = lista.next();
+                if (usuario.getCpf().equals(usu.getCpf()) && !usuario.getEmail().equals("usuario.admin@gmail.com")) {
+                    throw new Exception("Já existe um usuário com este CPF\nVerifique\n");
+                }
+                if (usuario.getEmail().equalsIgnoreCase(usu.getEmail())) {
+                    throw new Exception("O email informado já existe para outro"
+                            + " usuário\nVerifique\n");
+                }
             }
         }
     }

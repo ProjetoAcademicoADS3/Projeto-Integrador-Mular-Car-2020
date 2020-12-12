@@ -74,8 +74,8 @@ public class LoginApp extends javax.swing.JFrame {
             Usuario usuarioBanco = usuBll.getUsuarioByEmail("usuario.admin@gmail.com");
 
             boolean existeUsuarioAdmin = usuarioBanco != null
-                    && usuarioBanco.getEmail() != null
-                    && usuarioBanco.getEmail().equals("usuario.admin@gmail.com");
+                                        && usuarioBanco.getEmail() != null
+                                        && usuarioBanco.getEmail().equals("usuario.admin@gmail.com");
 
             if (!existeUsuarioAdmin) {
                 usuario.setNome("Super usuario");
