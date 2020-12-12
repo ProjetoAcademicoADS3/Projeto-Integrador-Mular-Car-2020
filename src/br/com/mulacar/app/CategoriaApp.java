@@ -75,7 +75,7 @@ public class CategoriaApp extends javax.swing.JDialog {
     public void preencherCampos(int id) {
         try {
             if (id > 0) {
-                categoria = catBll.getCategoriaPorId(categoria);
+                categoria = catBll.getCategoriaPorId(new Categoria(id));
                 jTextFieldCodigo.setText(id + "");
                 jTextFieldDescCategoria.setText(categoria.getDescricao());
                 jTextFieldValor.setText(String.format("%.2f", categoria.getValor()));
