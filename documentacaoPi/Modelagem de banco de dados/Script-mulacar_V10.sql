@@ -265,13 +265,13 @@ mot_nome, mot_cpf, mot_rg, mot_rg_orgao_emissor, mot_cnh_numero, mot_cnh_data_va
 mot_cnh_categoria, mot_status)
 VALUES
 ('Rogerio','64066522076','21244108','ssp_sp','12345678901','28/11/2024',
- 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC','status'),
+ 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','CAT_A','ATIVO'),
  ('Gabriel','82916982019','11222333','ssp_rs','12345678902','28/11/2024',
- 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC','status'),
+ 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','CAT_B','ATIVO'),
  ('Aires','10464305055','11333444','ssp_rs','12345678903','28/11/2024',
- 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC','status'),
+ 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','CAT_C','ATIVO'),
 ('Lucas','20860026027','11444555','ssp_rs','12345678904','28/11/2024',
- 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC','status');
+ 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','CAT_D','ATIVO');
 
 
 CREATE TABLE endereco (
