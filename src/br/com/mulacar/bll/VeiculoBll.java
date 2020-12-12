@@ -21,22 +21,22 @@ import java.util.List;
  */
 public class VeiculoBll {
 
-    private VeiculoDal veicDal;
+    private VeiculoDal veiculoDal;
     private Calendar cal;
 
     public VeiculoBll() {
-        veicDal = new VeiculoDal();
+        veiculoDal = new VeiculoDal();
         cal = Calendar.getInstance();
     }
 
     public void adicionarVeiculo(Veiculo veiculo) throws Exception {
         validarVeiculo(veiculo);
-        veicDal.addVeiculo(veiculo);
+        veiculoDal.addVeiculo(veiculo);
     }
 
     public void excluirVeiculo(int id) throws Exception {
         try {
-            veicDal.deleteVeiculo(id);
+            veiculoDal.deleteVeiculo(id);
         } catch (Exception erro) {
             String mensagem = erro.getMessage();
             if (mensagem.toLowerCase().contains("violates foreign")) {
@@ -47,19 +47,35 @@ public class VeiculoBll {
     }
 
     public void atualizarVeiculo(Veiculo veic) throws Exception {
-        veicDal.updateVeiculo(veic);
+        veiculoDal.updateVeiculo(veic);
     }
 
     public List<Veiculo> getConsultarVeiculos() throws Exception {
-        return veicDal.getAllVeiculo();
+        return veiculoDal.getAllVeiculo();
     }
 
     public Veiculo getConsultarVeiculoByPlaca(String placa) throws Exception {
-        return veicDal.getVeiculoByPlaca(placa);
+        return veiculoDal.getVeiculoByPlaca(placa);
+    }
+
+    public Veiculo getConsultarVeiculoPorId(Veiculo veiculo) throws Exception {
+        return veiculoDal.getVeiculoById(veiculo);
+    }
+
+    public List<Veiculo> getConsultarVeiculoByCategoria(int categoria, String situacao) throws Exception {
+        return veiculoDal.getVeiculoByCategoria(categoria, situacao);
+    }
+
+    public List<Veiculo> getConsultarVeiculoByCategoria(int categoria) throws Exception {
+        return veiculoDal.getVeiculoByCategoria(categoria);
+    }
+
+    public List<Veiculo> getConsultarVeiculoBySituacao(String situacao) throws Exception {
+        return veiculoDal.getVeiculoBySituacao(situacao);
     }
 
     public ArrayList sourceVeiculo(String dados) throws Exception {
-        return veicDal.sourceVeiculo(dados);
+        return veiculoDal.sourceVeiculo(dados);
     }
 
     public void validarVeiculo(Veiculo objeto) throws Exception {
@@ -69,7 +85,7 @@ public class VeiculoBll {
         String renavan = objeto.getRenavan().toLowerCase().trim();
         String placa = objeto.getPlaca().toLowerCase().trim();
 
-        List<Veiculo> listaVeiculos = veicDal.getAllVeiculo();
+        List<Veiculo> listaVeiculos = veiculoDal.getAllVeiculo();
         for (int pos = 0; pos < listaVeiculos.size(); pos++) {
             Veiculo veiculo = listaVeiculos.get(pos);
             if (renavan.equals(veiculo.getRenavan().trim())) {
@@ -139,8 +155,7 @@ public class VeiculoBll {
     public void ordenaListaModelos(List<Veiculo> lista) throws Exception {
         for (int i = 0; i < lista.size(); i++) {
             for (int j = i; j < lista.size(); j++) {
-                if (lista.get(i).getModelo().getDescricao().compareToIgnoreCase
-        (lista.get(j).getModelo().getDescricao()) >= 0) {
+                if (lista.get(i).getModelo().getDescricao().compareToIgnoreCase(lista.get(j).getModelo().getDescricao()) >= 0) {
                     Veiculo temp = lista.get(j);
                     lista.set(j, lista.get(i));
                     lista.set(i, temp);

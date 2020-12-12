@@ -182,7 +182,7 @@ public class ClienteDal {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, "ClienteDal - ", e );
             throw e;
         } 
-        return cliente;
+        return clienteRetorno;
     }
 
     public Cliente getClienteByCpfCnpj(Cliente cliente) throws Exception {

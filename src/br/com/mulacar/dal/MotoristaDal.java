@@ -9,7 +9,10 @@
 package br.com.mulacar.dal;
 
 import br.com.mulacar.enumeration.EnumCategoriaCnh;
+import br.com.mulacar.enumeration.EnumStatus;
+import br.com.mulacar.interfaces.Interface_ExibirImagem;
 import br.com.mulacar.model.Motorista;
+import br.com.mulacar.model.Endereco;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,12 +20,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import br.com.mulacar.util.Conexao;
+import java.awt.Image;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
-public class MotoristaDal {
+public class MotoristaDal implements  Interface_ExibirImagem{
 
     private Connection conexao;
 
@@ -30,62 +35,83 @@ public class MotoristaDal {
         conexao = Conexao.getConexao();
     }
     
-    public void addMotorista(Motorista motorista) throws Exception {
-        String sql = "INSERT INTO motorista (mot_nome, mot_cpf, mot_rg, mot_rg_orgao_emissor "
-                + "mot_cnh_numero, mot_cnh_data_validade, mot_cnh_imagem, mot_cnh_categoria) "
-                + "VALUES (?,?,?,?,?,?,?,?)";
+    public Motorista addMotorista(Motorista motorista) throws Exception {
+        Motorista motoristaBanco = new Motorista();
+        
+        String sql = "INSERT INTO motorista (mot_nome, mot_cpf, mot_rg, mot_rg_orgao_emissor, mot_status "
+                + "mot_cnh_numero, mot_cnh_data_validade, mot_cnh_imagem, mot_cnh_categoria,) "
+                + "VALUES (?,?,?,?,?,?,?,?,?,)";
         
         try {
             conexao.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        try {
-            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             
-            preparedStatement.setString(1, motorista.getNome());
-            preparedStatement.setString(2, motorista.getCpf());
-            preparedStatement.setString(3, motorista.getRg());
-            preparedStatement.setString(4, motorista.getOrgaoEmissor());
-            preparedStatement.setString(5, motorista.getNumeroCnh());
-            preparedStatement.setDate(6, new java.sql.Date(motorista.getDataValidadeCnh().getTime()));
-            preparedStatement.setString(7, motorista.getPathImagemCnh());
-            preparedStatement.setString(8, motorista.getCategoriaCnh().name());
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             
-            preparedStatement.executeUpdate();
+                preparedStatement.setString(1, motorista.getNome());
+                preparedStatement.setString(2, motorista.getCpf());
+                preparedStatement.setString(3, motorista.getRg());
+                preparedStatement.setString(4, motorista.getOrgaoEmissor());
+                preparedStatement.setString(5, motorista.getStatus().toString());
+                preparedStatement.setString(6, motorista.getNumeroCnh());
+                preparedStatement.setDate(7, new java.sql.Date(motorista.getDataValidadeCnh().getTime()));
+                preparedStatement.setString(8, motorista.getPathImagemCnh());
+                preparedStatement.setString(9, motorista.getCategoriaCnh().name());
+            
+            int idMotorista = preparedStatement.executeUpdate();
+            
             conexao.commit();
+
+            if (idMotorista == 0) {
+                throw new SQLException("Falha ao inserir usuario no banco, nenhum registro criado.");
+            }
+            
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    motoristaBanco.setId(generatedKeys.getInt(1));
+                }
+                else {
+                    throw new SQLException("Falha ao criar o motorista. Não obteve o id da inserção.");
+                }
+            }
+            
+            return motoristaBanco;
 
         } catch (SQLException e) {
             conexao.rollback();
             Logger.getLogger(Motorista.class.getName()).log(Level.SEVERE, "MotoristaDal - ", e );
             throw e;
-        }
+        } catch (Exception ex) {
+            Logger.getLogger(Endereco.class.getName()).log(Level.SEVERE, "EnderecoDal - ", ex );
+            throw ex;            
+        }      
     }
     
     public void updateMotorista(Motorista motorista) throws Exception {
         
         String sql = "UPDATE motorista "
-                + "SET mot_nome = ?, "
-                + "mot_cpf      = ?, "
-                + "mot_rg       = ? "
+                + "SET mot_nome = ? "
+                + "mot_cpf = ? "
+                + "mot_rg = ? "
                 + "mot_rg_orgao_emissor = ? "
+                + "mot_status = ? "
                 + "mot_cnh_numero = ? "
                 + "mot_cnh_data_validade = ? "
                 + "mot_cnh_imagem = ? "
                 + "mot_cnh_categoria = ? "
                 + "WHERE mot_id = ? ";
-          try {
+        
+        try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             
-            preparedStatement.setString(1, motorista.getNome());
-            preparedStatement.setString(2, motorista.getCpf());
-            preparedStatement.setString(3, motorista.getRg());
-            preparedStatement.setString(4, motorista.getOrgaoEmissor());
-            preparedStatement.setString(5, motorista.getNumeroCnh());
-            preparedStatement.setDate(6, new java.sql.Date(motorista.getDataValidadeCnh().getTime()));
-            preparedStatement.setString(7, motorista.getPathImagemCnh());
-            preparedStatement.setString(8, motorista.getCategoriaCnh().name());
+                preparedStatement.setString(1, motorista.getNome());
+                preparedStatement.setString(2, motorista.getCpf());
+                preparedStatement.setString(3, motorista.getRg());
+                preparedStatement.setString(4, motorista.getOrgaoEmissor());
+                preparedStatement.setString(5, motorista.getStatus().toString());
+                preparedStatement.setString(6, motorista.getNumeroCnh());
+                preparedStatement.setDate(7, new java.sql.Date(motorista.getDataValidadeCnh().getTime()));
+                preparedStatement.setString(8, motorista.getPathImagemCnh());
+                preparedStatement.setString(9, motorista.getCategoriaCnh().name());
             
             preparedStatement.executeUpdate();
 
@@ -120,7 +146,7 @@ public class MotoristaDal {
             while (rs.next()) {
                 Motorista motorista = new Motorista();
                 
-                preencherMotoristaRetornoBanco(motorista, rs);
+                motorista = preencherMotoristaRetornoBanco(rs);
 
                 listaMotoristas.add(motorista);
             }
@@ -133,7 +159,7 @@ public class MotoristaDal {
 
     public Motorista getMotoristaById(Motorista motorista) throws Exception {
         Motorista motoristaRetorno = null;
-
+        
         String sql = "SELECT * FROM motorista WHERE mot_id = ?";
 
         try {
@@ -144,13 +170,13 @@ public class MotoristaDal {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                preencherMotoristaRetornoBanco(motoristaRetorno, rs);
+                motoristaRetorno = preencherMotoristaRetornoBanco(rs);
             }
         } catch (Exception e) {
             Logger.getLogger(Motorista.class.getName()).log(Level.SEVERE, "MotoristaDal - ", e );
             throw e;
-        }
-        return motorista;
+        } 
+        return motoristaRetorno;
     }
 
     public Motorista getMotoristaByCpf(Motorista motorista) throws Exception {
@@ -164,7 +190,7 @@ public class MotoristaDal {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                preencherMotoristaRetornoBanco(motoristaRetorno, rs);
+                motoristaRetorno = preencherMotoristaRetornoBanco(rs);
             }
         } catch (Exception e) {
             Logger.getLogger(Motorista.class.getName()).log(Level.SEVERE, "MotoristaDal - ", e );
@@ -184,7 +210,7 @@ public class MotoristaDal {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                preencherMotoristaRetornoBanco(motoristaRetorno, rs);
+                preencherMotoristaRetornoBanco(rs);
             }
         } catch (Exception e) {
             Logger.getLogger(Motorista.class.getName()).log(Level.SEVERE, "MotoristaDal - ", e );
@@ -193,27 +219,7 @@ public class MotoristaDal {
         return motoristaRetorno;
     }    
 
-    public Motorista getMotoristaByNumeroCnh(Motorista motorista) throws Exception {
-        Motorista motoristaRetorno = null;
-
-        String sql = "SELECT * FROM motorista where mot_cnh_numero like ? ";
-        try {
-            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-            preparedStatement.setString(1, String.format("%%s%", motorista.getNumeroCnh()));
-            ResultSet rs = preparedStatement.executeQuery();
-            
-            if (rs.next()) {
-                preencherMotoristaRetornoBanco(motoristaRetorno, rs);
-            }            
-
-        } catch (Exception e) {
-            Logger.getLogger(Motorista.class.getName()).log(Level.SEVERE, "MotoristaDal - ", e );
-            throw e;            
-        }
-        return motoristaRetorno;
-    }
- 
-   public Motorista getMotoristaByNome(Motorista motorista) throws Exception {
+    public Motorista getMotoristaByNome(Motorista motorista) throws Exception {
         Motorista motoristaRetorno = null;
 
         String sql = "SELECT * FROM motorista where mot_nome like ? ";
@@ -223,7 +229,7 @@ public class MotoristaDal {
             ResultSet rs = preparedStatement.executeQuery();
             
             if (rs.next()) {
-                preencherMotoristaRetornoBanco(motoristaRetorno, rs);
+                motoristaRetorno = preencherMotoristaRetornoBanco(rs);
             }            
 
         } catch (Exception e) {
@@ -231,18 +237,55 @@ public class MotoristaDal {
             throw e;            
         }
         return motoristaRetorno;
-    }    
+    }
     
-    private void preencherMotoristaRetornoBanco(Motorista motoristaRetorno, ResultSet rs) throws SQLException {
-        motoristaRetorno = new Motorista();
+    private Motorista preencherMotoristaRetornoBanco(ResultSet rs) throws SQLException {
+        Motorista motoristaRetorno = new Motorista();
         motoristaRetorno.setId(rs.getInt("mot_id"));
         motoristaRetorno.setNome(rs.getString("mot_nome"));
         motoristaRetorno.setCpf(rs.getString("mot_cpf"));
         motoristaRetorno.setRg(rs.getString("mot_rg"));
+        motoristaRetorno.setOrgaoEmissor(rs.getString("mot_rg_orgao_emissor"));
+        motoristaRetorno.setStatus(EnumStatus.valueOf(rs.getString("mot_status")));
         motoristaRetorno.setNumeroCnh(rs.getString("mot_cnh_numero"));
-        motoristaRetorno.setDataValidadeCnh(new Date(rs.getString("mot_cnh_data_validade")));
+        motoristaRetorno.setDataValidadeCnh(rs.getDate("mot_cnh_data_validade"));
         motoristaRetorno.setPathImagemCnh(rs.getString("mot_cnh_imagem"));
         motoristaRetorno.setCategoriaCnh(EnumCategoriaCnh.valueOf(rs.getString("mot_cnh_categoria")));
-    }    
+        
+        return motoristaRetorno;
+    }  
     
+    public ArrayList sourceMotorista(String dados) throws Exception {
+
+        String textoDigitado = dados.trim().toLowerCase();
+        ArrayList<Motorista> resultado = new ArrayList<>();
+        boolean existe = false;
+        for (Motorista mot : getAllMotoristas()) {
+            if (mot.getNome().toLowerCase().trim().contains(textoDigitado)
+                    || mot.getCpf().trim().contains(textoDigitado)
+                    || mot.getRg().trim().contains(textoDigitado)
+                    || mot.getNumeroCnh().trim().contains(textoDigitado)) {
+                resultado.add(mot);
+                existe = true;
+            }
+        }
+        if (!existe) {
+            throw new Exception("Registro não encontrado!\n");
+        }
+        return resultado;
+
+    }
+
+    @Override
+    public ImageIcon exibirImagem(Motorista motorista) throws Exception {
+        
+        ImageIcon imageIcon = new ImageIcon(motorista.getPathImagemCnh());
+        Image image = imageIcon.getImage();
+        Image newing = image.getScaledInstance(300, 250, java.awt.Image.SCALE_SMOOTH);
+        
+        ImageIcon icon = new ImageIcon(newing);
+        
+        return icon;
+    }
+
 }

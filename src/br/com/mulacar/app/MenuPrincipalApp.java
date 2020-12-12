@@ -6,7 +6,6 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.app;
 
 import br.com.mulacar.util.CanvasTelaPrincipal;
@@ -14,11 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -33,7 +30,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         setExtendedState(MAXIMIZED_BOTH);
 
         initComponents();
-        
+
         CanvasTelaPrincipal canvas = new CanvasTelaPrincipal();
         this.jDesktopPaneMulaCar.add(canvas);
     }
@@ -73,14 +70,17 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenuItemCadVeiculos = new javax.swing.JMenuItem();
         jMenuItemCadClientes = new javax.swing.JMenuItem();
         jMenuItemCadUsuarios = new javax.swing.JMenuItem();
+        jMenuItemAcessorios = new javax.swing.JMenuItem();
         jMenuRelatorios = new javax.swing.JMenu();
         jMenuItemRelCategorias = new javax.swing.JMenuItem();
         jMenuItemRelMarcas = new javax.swing.JMenuItem();
         jMenuItemRelModelos = new javax.swing.JMenuItem();
         jMenuItemRelVeiculos = new javax.swing.JMenuItem();
-        jMenuItemRelContratos = new javax.swing.JMenuItem();
         jMenuItemRelClientes = new javax.swing.JMenuItem();
         jMenuItemRelUsuarios = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem17 = new javax.swing.JMenuItem();
         jMenuFerramentas = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -210,6 +210,11 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
         jMenuOperacoes.setMnemonic('o');
         jMenuOperacoes.setText("Operação");
+        jMenuOperacoes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuOperacoesActionPerformed(evt);
+            }
+        });
         jMenuOperacoes.add(jSeparator1);
 
         jMenuItemLocarVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-add-icon-24px.png"))); // NOI18N
@@ -299,6 +304,14 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         });
         jMenuCadastros.add(jMenuItemCadUsuarios);
 
+        jMenuItemAcessorios.setText("Acessórios");
+        jMenuItemAcessorios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAcessoriosActionPerformed(evt);
+            }
+        });
+        jMenuCadastros.add(jMenuItemAcessorios);
+
         jMenuBarTelaPrincipal.add(jMenuCadastros);
 
         jMenuRelatorios.setMnemonic('r');
@@ -341,14 +354,6 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         });
         jMenuRelatorios.add(jMenuItemRelVeiculos);
 
-        jMenuItemRelContratos.setText("Contratos");
-        jMenuItemRelContratos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemRelContratosActionPerformed(evt);
-            }
-        });
-        jMenuRelatorios.add(jMenuItemRelContratos);
-
         jMenuItemRelClientes.setText("Clientes");
         jMenuItemRelClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -364,6 +369,30 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
             }
         });
         jMenuRelatorios.add(jMenuItemRelUsuarios);
+
+        jMenuItem2.setText("Motoristas");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenuRelatorios.add(jMenuItem2);
+
+        jMenuItem5.setText("Locações");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenuRelatorios.add(jMenuItem5);
+
+        jMenuItem17.setText("ContratoTeste");
+        jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem17ActionPerformed(evt);
+            }
+        });
+        jMenuRelatorios.add(jMenuItem17);
 
         jMenuBarTelaPrincipal.add(jMenuRelatorios);
 
@@ -511,7 +540,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao abrir a janela de manutenção de clientes.");
-        }        
+        }
     }//GEN-LAST:event_jMenuItemCadClientesActionPerformed
 
     private void jMenuItemCadVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadVeiculosActionPerformed
@@ -529,10 +558,6 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jMenuItemCadUsuariosActionPerformed
-
-    private void jMenuItemRelContratosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRelContratosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItemRelContratosActionPerformed
 
     private void jMenuItemRelClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRelClientesActionPerformed
         // TODO add your handling code here:
@@ -556,7 +581,8 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
     private void jMenuRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuRelatoriosActionPerformed
         // TODO add your handling code here:
-        
+
+
     }//GEN-LAST:event_jMenuRelatoriosActionPerformed
 
     private void jMenuItemRelUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRelUsuariosActionPerformed
@@ -570,7 +596,6 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         try {
             new RelatorioDeVeiculosApp(this, true).setVisible(true);
             this.setVisible(true);
-            
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
@@ -598,9 +623,10 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
     private void jMenuItemLocarVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLocarVeiculosActionPerformed
         // TODO add your handling code here:
-        
-        
-        
+        new LocacaoVeiculosApp(this, true).setVisible(true);
+        this.setVisible(true);
+
+
     }//GEN-LAST:event_jMenuItemLocarVeiculosActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -609,20 +635,19 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         Date dataSistema = new Date();
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         jLabelData.setText(formato.format(dataSistema));
-        
+
         //HORA RODAPÉ
         Timer timer = new Timer(1000, new hora());
-        timer.start();        
-        
+        timer.start();
+
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItemERSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemERSActionPerformed
-            try {
-                java.awt.Desktop.getDesktop().browse(new java.net.URI
-                                ("https://drive.google.com/file/d/1z4Q1Y5infFKUjAlnTfn-oNKOlGv11gtk/view?usp=sharing"));
-            } catch (IOException ex) {
-                Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (URISyntaxException ex) {
+        try {
+            java.awt.Desktop.getDesktop().browse(new java.net.URI("https://drive.google.com/file/d/1z4Q1Y5infFKUjAlnTfn-oNKOlGv11gtk/view?usp=sharing"));
+        } catch (IOException ex) {
+            Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
             Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItemERSActionPerformed
@@ -657,11 +682,45 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         try {
             new RelatorioDeMarcaApp(this, true).setVisible(true);
             this.setVisible(true);
-            
+
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
     }//GEN-LAST:event_jMenuItemRelMarcasActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        new RelatorioDeMotoristaApp(this, true).setVisible(true);
+        this.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        new RelatorioDeLocacoesApp(this, true).setVisible(true);
+        this.setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuOperacoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuOperacoesActionPerformed
+        // TODO add your handling code here:
+        new LocacaoVeiculosApp(this, true).setVisible(true);
+        this.setVisible(true);
+    }//GEN-LAST:event_jMenuOperacoesActionPerformed
+
+    private void jMenuItemAcessoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAcessoriosActionPerformed
+        // TODO add your handling code here:
+        new AcessorioApp(this, true).setVisible(true);
+        this.setVisible(true);
+    }//GEN-LAST:event_jMenuItemAcessoriosActionPerformed
+
+    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
+        try {
+            // TODO add your handling code here:
+            new ContratoDeLocacaoApp(this, true).setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(MenuPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.setVisible(true);
+    }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -716,10 +775,11 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
             }
         });
     }
-    
-    class hora implements ActionListener{
+
+    class hora implements ActionListener {
+
         @Override
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
             Calendar now = Calendar.getInstance();
             jLabelHora.setText(String.format("%1$tH:%1$tM:%1$tS", now));
         }
@@ -752,12 +812,16 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JMenuItem jMenuItemAcessorios;
     private javax.swing.JMenuItem jMenuItemCadCategorias;
     private javax.swing.JMenuItem jMenuItemCadClientes;
     private javax.swing.JMenuItem jMenuItemCadMarcas;
@@ -769,7 +833,6 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemLocarVeiculos;
     private javax.swing.JMenuItem jMenuItemRelCategorias;
     private javax.swing.JMenuItem jMenuItemRelClientes;
-    private javax.swing.JMenuItem jMenuItemRelContratos;
     private javax.swing.JMenuItem jMenuItemRelMarcas;
     private javax.swing.JMenuItem jMenuItemRelModelos;
     private javax.swing.JMenuItem jMenuItemRelUsuarios;
@@ -786,4 +849,3 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }
-

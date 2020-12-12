@@ -30,6 +30,18 @@ public class Usuario {
     public Usuario(int id) {
         this.id = id;
     }
+
+    public Usuario(String nome, String cpf, String email, String senha, EnumPerfil perfil, EnumStatus status, Date dataCadastro) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.senha = senha;
+        this.perfil = perfil;
+        this.status = status;
+        this.dataCadastro = dataCadastro;
+    }
+    
+    
     
     public Usuario(String nome, String cpf, String email, String senha, EnumStatus status, EnumPerfil perfil) {
         this.nome   = nome;

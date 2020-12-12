@@ -355,7 +355,7 @@ public class CategoriaApp extends javax.swing.JDialog {
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
         try {
-            catBll.excluirCategoria(catBll.getCategoriaPorId(categoria));
+            catBll.excluirCategoria(catBll.getCategoriaPorId(this.categoria));
             imprimirDadosCategoria(catBll.getConsultaCategorias());
             limpaCampos();
 
@@ -443,6 +443,8 @@ public class CategoriaApp extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CategoriaApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 

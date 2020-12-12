@@ -6,7 +6,6 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.UsuarioBll;
@@ -18,6 +17,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 import br.com.mulacar.enumeration.EnumPerfil;
 import br.com.mulacar.enumeration.EnumStatus;
+import java.util.Locale;
 
 public class UsuarioApp extends javax.swing.JDialog {
 
@@ -32,6 +32,7 @@ public class UsuarioApp extends javax.swing.JDialog {
     public UsuarioApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
         usuBll = new UsuarioBll();
         rd = new Random();
 
@@ -40,16 +41,14 @@ public class UsuarioApp extends javax.swing.JDialog {
         for (EnumPerfil perfil : EnumPerfil.values()) {
             jComboBoxPerfilDoUsuario.addItem(perfil.toString());
         }
-        
+
         jComboBoxStatusUsuario.removeAllItems();
         jComboBoxStatusUsuario.addItem(" Selecione o Status do usuário");
-        for(EnumStatus status : EnumStatus.values()){
+        for (EnumStatus status : EnumStatus.values()) {
             jComboBoxStatusUsuario.addItem(status.toString());
         }
-        
 
-        dataForm = new SimpleDateFormat("dd/MM/yyyy");
-        jTextFieldDataAtual.setText(dataForm.format(new Date()));
+        jTextFieldDataAtual.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
     }
 
     private void imprimirDadosUsuarioNosCampos(ArrayList<Usuario> lista) throws Exception {
@@ -62,9 +61,10 @@ public class UsuarioApp extends javax.swing.JDialog {
             jTextFieldEmail.setText(usu.getEmail());
             jPasswordFieldSenha.setText(usu.getSenha());
             jComboBoxStatusUsuario.setSelectedItem(usu.getStatus().toString());
-//            SimpleDateFormat dataCupom = new SimpleDateFormat("dd/MM/yyyy");
-//            jTextFieldDataAtual.setText(dataCupom.format(usu.getDataCupom()));
             jComboBoxPerfilDoUsuario.setSelectedItem(usu.getPerfil().toString());
+            SimpleDateFormat dataForm = new SimpleDateFormat("dd/MM/yyyy");
+            jTextFieldDataAtual.setText(dataForm.format(usu.getDataCadastro()));
+            jTextFieldDataAtual.setText(convertDate(usu.getDataCadastro()));
             jButtonSalvar.setLabel("Editar");
 
         }
@@ -80,6 +80,26 @@ public class UsuarioApp extends javax.swing.JDialog {
         jTextFieldNome.requestFocus();
         jComboBoxPerfilDoUsuario.setSelectedIndex(0);
         jButtonSalvar.setLabel("Salvar");
+    }
+
+    private static Date createNewDate(String data) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            return formato.parse(data);
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String convertDate(Date dtConsulta) {
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy", new Locale("pt", "BR"));
+            return formato.format(dtConsulta);
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -113,6 +133,7 @@ public class UsuarioApp extends javax.swing.JDialog {
         jTextFieldDataAtual = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jComboBoxStatusUsuario = new javax.swing.JComboBox();
+        jButtonExcluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Manutenção de cadastro de usuários");
@@ -202,6 +223,14 @@ public class UsuarioApp extends javax.swing.JDialog {
 
         jComboBoxStatusUsuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Action-remove-icon-24px.png"))); // NOI18N
+        jButtonExcluir.setText("Excluir");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelUsuariosLayout = new javax.swing.GroupLayout(jPanelUsuarios);
         jPanelUsuarios.setLayout(jPanelUsuariosLayout);
         jPanelUsuariosLayout.setHorizontalGroup(
@@ -209,40 +238,54 @@ public class UsuarioApp extends javax.swing.JDialog {
             .addGroup(jPanelUsuariosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelUsuariosLayout.createSequentialGroup()
-                        .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBoxPerfilDoUsuario, 0, 232, Short.MAX_VALUE)
-                            .addComponent(jPasswordFieldSenha)
-                            .addComponent(jTextFieldCpf))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                        .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelUsuariosLayout.createSequentialGroup()
+                        .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanelUsuariosLayout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxPerfilDoUsuario, 0, 235, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxStatusUsuario, 0, 291, Short.MAX_VALUE))
+                            .addGroup(jPanelUsuariosLayout.createSequentialGroup()
+                                .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanelUsuariosLayout.createSequentialGroup()
+                                        .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jPasswordFieldSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                                            .addComponent(jTextFieldCpf))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                                        .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jTextFieldDataAtual, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                                            .addComponent(jTextFieldEmail)))
+                                    .addGroup(jPanelUsuariosLayout.createSequentialGroup()
+                                        .addComponent(jTextFieldCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(jLabel2)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(jTextFieldNome)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextFieldDataAtual, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBoxStatusUsuario, javax.swing.GroupLayout.Alignment.TRAILING, 0, 288, Short.MAX_VALUE)
-                            .addComponent(jTextFieldEmail)))
-                    .addGroup(jPanelUsuariosLayout.createSequentialGroup()
-                        .addComponent(jTextFieldCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel2)
-                        .addGap(10, 10, 10)
-                        .addComponent(jTextFieldNome)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonNovoCadastro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonListarUsuarios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonSalvar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonFechar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonPesquisarUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonPesquisarUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanelUsuariosLayout.createSequentialGroup()
+                                .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonNovoCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButtonListarUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButtonSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelUsuariosLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonFechar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -282,20 +325,27 @@ public class UsuarioApp extends javax.swing.JDialog {
                                     .addComponent(jPasswordFieldSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextFieldDataAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel7))
-                                .addGap(27, 27, 27)))
-                        .addGap(0, 0, Short.MAX_VALUE)
+                                .addGap(27, 27, 27))))
+                    .addGroup(jPanelUsuariosLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)))
+                .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelUsuariosLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jComboBoxPerfilDoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel8))
-                            .addComponent(jComboBoxStatusUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonFechar, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jComboBoxStatusUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9)))
+                        .addGap(122, 122, 122))
                     .addGroup(jPanelUsuariosLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel9)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonExcluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonFechar)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -309,9 +359,7 @@ public class UsuarioApp extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanelUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanelUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -321,6 +369,7 @@ public class UsuarioApp extends javax.swing.JDialog {
     private void jButtonPesquisarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarUsuarioActionPerformed
         // TODO add your handling code here:
         try {
+            jButtonSalvar.setLabel("Editar");
             imprimirDadosUsuarioNosCampos(usuBll.pesquisarUsuario(jTextFieldNome.getText()));
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
@@ -340,22 +389,20 @@ public class UsuarioApp extends javax.swing.JDialog {
         // TODO add your handling code here:
 
         try {
-            String nome     = jTextFieldNome.getText();
-            String cpf      = jTextFieldCpf.getText();
-            String email    = jTextFieldEmail.getText();
-            String senha    = jPasswordFieldSenha.getText();
-            int desc        = rd.nextInt(60) + 1;
-
-//            Date data = dataForm.parse(jTextFieldDataAtual.getText());
-            EnumStatus status = EnumStatus.valueOf(jComboBoxStatusUsuario.getSelectedItem().toString());
+            String nome = jTextFieldNome.getText();
+            String cpf = jTextFieldCpf.getText();
+            String email = jTextFieldEmail.getText();
+            String senha = jPasswordFieldSenha.getText();
             EnumPerfil perfil = EnumPerfil.valueOf(jComboBoxPerfilDoUsuario.getSelectedItem().toString());
+            EnumStatus status = EnumStatus.valueOf(jComboBoxStatusUsuario.getSelectedItem().toString());
+            Date data = createNewDate(jTextFieldDataAtual.getText());
 
             if (jButtonSalvar.getLabel().equalsIgnoreCase("Salvar")) {
-                usuario = new Usuario(nome, cpf, email, senha, status, perfil);
+                usuario = new Usuario(nome, cpf, email, senha, perfil, status, data);
                 usuBll.adicionarUsuario(usuario);
             } else {
                 int id = Integer.parseInt(jTextFieldCodigo.getText());
-                usuario = new Usuario(id, nome, cpf, email, senha, perfil, status, new Date());
+                usuario = new Usuario(id, nome, cpf, email, senha, perfil, status, data);
                 usuBll.alterarUsuario(usuario);
 
             }
@@ -385,6 +432,10 @@ public class UsuarioApp extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
     }//GEN-LAST:event_jButtonNovoCadastroActionPerformed
+
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -432,6 +483,7 @@ public class UsuarioApp extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonExcluir;
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonListarUsuarios;
     private javax.swing.JButton jButtonNovoCadastro;

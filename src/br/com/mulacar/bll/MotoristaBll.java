@@ -9,10 +9,14 @@
 
 package br.com.mulacar.bll;
 
-import br.com.mulacar.dal.MotoristaDal;
+import br.com.mulacar.dal.MotoristaDal;   
+import br.com.mulacar.exception.MulaCarException;
+import br.com.mulacar.interfaces.Interface_ExibirImagem;
 import br.com.mulacar.model.Motorista;
 import br.com.mulacar.util.UtilObjetos;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 
 
 public class MotoristaBll {
@@ -20,16 +24,19 @@ public class MotoristaBll {
     private static final long sderialVersionUID = 1L;
     
     private MotoristaDal motoristaDal;
+    private Interface_ExibirImagem objetoMotoristaDal;
 
     public MotoristaBll() {
         motoristaDal = new MotoristaDal();
+        objetoMotoristaDal = new MotoristaDal();
     }
 
-    public void adicionarMotorista(Motorista motorista) throws Exception {
+    public Motorista adicionarMotorista(Motorista motorista) throws Exception {
 
         this.validarMotorista(motorista);
         
-        motoristaDal.addMotorista(motorista);
+        return motoristaDal.addMotorista(motorista);
+        
     }
 
     public void excluirMotorista(Motorista motorista) throws Exception {
@@ -37,7 +44,7 @@ public class MotoristaBll {
         
         this.validarIdNulo(motorista);
         
-        this.verificarMotoristaExistentePorId(motorista);
+        this.validarMotoristaExistentePorId(motorista);
         
         motoristaDal.deleteMotorista(motorista);
 
@@ -48,12 +55,12 @@ public class MotoristaBll {
         
         this.validarIdNulo(motorista);
         
-        this.verificarMotoristaExistentePorId(motorista);
+        this.validarMotoristaExistentePorId(motorista);
 
         motoristaDal.updateMotorista(motorista);
     }
 
-    private void verificarMotoristaExistentePorId(Motorista motorista) throws Exception {
+    private void validarMotoristaExistentePorId(Motorista motorista) throws Exception {
         Motorista motoristaRetorno = motoristaDal.getMotoristaById(motorista);
         
         if (UtilObjetos.ehNuloOuVazio(motoristaRetorno)) {
@@ -78,7 +85,7 @@ public class MotoristaBll {
         this.validarMotorista(motorista);
         
         if (UtilObjetos.ehNuloOuVazio(motorista.getNome())) {
-            throw new Exception("Digite nome para pesquisa.");
+            throw new Exception("Digite nome ou nome Fantasia para pesquisa.");
         }
         
         return motoristaDal.getMotoristaByNome(motorista);
@@ -102,9 +109,9 @@ public class MotoristaBll {
         
         this.validarCamposObrigatorios(motorista);
         
-        this.validarIdNulo(motorista);
+        this.validarMotoristaExistentePorCpfRg(motorista);
         
-        this.validarMotoristaExistente(motorista);
+        this.validarCaracteresEspeciaisCpfRg(motorista);
         
         this.validarTamanhoMinimoNome(motorista, 3);
         
@@ -117,14 +124,8 @@ public class MotoristaBll {
     }    
 
     private void validarCamposObrigatorios(Motorista motorista) throws Exception {
-        boolean temCamposNulos = UtilObjetos.ehNuloOuVazio(motorista.getNome())
-                || UtilObjetos.ehNuloOuVazio(motorista.getCpf())
-                || UtilObjetos.ehNuloOuVazio(motorista.getRg())
-                || UtilObjetos.ehNuloOuVazio(motorista.getOrgaoEmissor())
-                || UtilObjetos.ehNuloOuVazio(motorista.getNumeroCnh())
-                || UtilObjetos.ehNuloOuVazio(motorista.getDataValidadeCnh())
-                || UtilObjetos.ehNuloOuVazio(motorista.getCategoriaCnh())
-                || UtilObjetos.ehNuloOuVazio(motorista.getPathImagemCnh());
+        boolean temCamposNulos = UtilObjetos.ehNuloOuVazio(motorista.getStatus())
+                || UtilObjetos.ehNuloOuVazio(motorista.getCpf());
         
         if (temCamposNulos) {
             throw new Exception("Campos obrigatórios não foram preenchidos!\n");
@@ -132,46 +133,55 @@ public class MotoristaBll {
     }
 
     private void validarTamanhoMinimoNome(Motorista motorista, int tamanhoMinimo) throws Exception {
-        if (motorista.getNome().length() < tamanhoMinimo || motorista.getNome().length() < tamanhoMinimo) {
-            throw new Exception(String.format("O noem do motorista deve ter no mínimo %s caracteres!\n", tamanhoMinimo));
-        }
+            if (motorista.getNome().length() < tamanhoMinimo) {
+                throw new Exception("O nome motorista deve ter no mínimo 3 letras!\n");
+            }
     }
 
-    private void validarCaracteresEspeciaisCpf(Motorista motorista) throws Exception {
+    private void validarCaracteresEspeciaisCpfRg(Motorista motorista) throws Exception {
         String invalidos = "!@#$%¨&*()+={[}]/?><;:";
         
         for (int i = 0; i < invalidos.length(); i++) {
             if (motorista.getCpf().contains("" + invalidos.charAt(i))) {
-                throw new Exception("Só é permitido numeros para o CPF.!\n");
+                throw new Exception("Cpf inválido para o motorista!\n");
             }
         }
     }
 
-    private void validarMotoristaExistente(Motorista motorista) throws Exception {
+    private void validarMotoristaExistentePorCpfRg(Motorista motorista) throws Exception {
         this.validarMotoristaNulo(motorista);
         
         Motorista motoristaBanco = null;
         
         if (!UtilObjetos.ehNuloOuVazio(motorista.getCpf())) {
             motoristaBanco = motoristaDal.getMotoristaByCpf(motorista);
-        }
-        
-        if (!UtilObjetos.ehNuloOuVazio(motorista.getNumeroCnh())) {
-            motoristaBanco = motoristaDal.getMotoristaByNumeroCnh(motorista);
-        }
 
-        if (!UtilObjetos.ehNuloOuVazio(motorista.getRg())) {
-            motoristaBanco = motoristaDal.getMotoristaByRg(motorista);
-        }        
+            if (!UtilObjetos.ehNuloOuVazio(motoristaBanco)) {
+                throw new MulaCarException("Motorista já possui cadastro.");
+            }
+        }
         
-        if (!UtilObjetos.ehNuloOuVazio(motoristaBanco)) {
-            throw new Exception("Motorista já possui cadastro.");
-        }        
+        if (!UtilObjetos.ehNuloOuVazio(motorista.getRg())) {
+            
+            motoristaBanco = motoristaDal.getMotoristaByRg(motorista);
+
+            if (!UtilObjetos.ehNuloOuVazio(motoristaBanco)) {
+                throw new MulaCarException("Motorista já possui cadastro.");
+            }        
+        }
     }
 
     private void validarMotoristaNulo(Motorista motorista) throws Exception {
         if (UtilObjetos.ehNuloOuVazio(motorista)) {
             throw new Exception("Motorista não pode ser nulo ou vazio.");
         }
-    }       
+    } 
+    
+    public ArrayList pesquisarMotorista(String dados) throws Exception{
+        return motoristaDal.sourceMotorista(dados);
+    }
+    
+    public ImageIcon exibirImagem(Motorista motorista) throws Exception{
+        return objetoMotoristaDal.exibirImagem(motorista);
+    }
 }

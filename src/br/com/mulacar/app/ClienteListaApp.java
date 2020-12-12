@@ -75,7 +75,7 @@ public class ClienteListaApp extends javax.swing.JDialog {
     public void preencherCampos(int id) {
         try {
             if (id > 0) {
-                categoria = catBll.getCategoriaPorId(categoria);
+                categoria = catBll.getCategoriaPorId(new Categoria(id));
                 jTextFieldCodigo.setText(id + "");
                 jTextFieldDescCategoria.setText(categoria.getDescricao());
                 jTextFieldValor.setText(String.format("%.2f", categoria.getValor()));
@@ -355,7 +355,7 @@ public class ClienteListaApp extends javax.swing.JDialog {
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
         try {
-            catBll.excluirCategoria(catBll.getCategoriaPorId(categoria));
+            catBll.excluirCategoria(catBll.getCategoriaPorId(this.categoria));
             imprimirDadosCategoria(catBll.getConsultaCategorias());
             limpaCampos();
 
@@ -443,10 +443,7 @@ public class ClienteListaApp extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ClienteListaApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {

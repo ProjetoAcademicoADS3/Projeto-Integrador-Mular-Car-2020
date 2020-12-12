@@ -12,7 +12,7 @@ package br.com.mulacar.bll;
 import br.com.mulacar.dal.UsuarioDal;
 import br.com.mulacar.model.Usuario;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class UsuarioBll {
@@ -45,7 +45,7 @@ public class UsuarioBll {
         
     }
 
-    public List<Usuario> getConsultaUsuarios() throws Exception {
+    public Iterator getConsultaUsuarios() throws Exception {
         return usuDal.getAllUsuarios();
     }
 
@@ -75,9 +75,9 @@ public class UsuarioBll {
             throw new Exception("CPF inválido!Verifique\n");
         }
 
-        List<Usuario> lista = usuDal.getAllUsuarios();
-        for (int pos = 0; pos < lista.size(); pos++) {
-            Usuario usu = lista.get(pos);
+        Iterator<Usuario> lista = usuDal.getAllUsuarios();
+        for (int pos = 0; pos < lista.hashCode(); pos++) {
+            Usuario usu = lista.next();
             if (usuario.getCpf().equals(usu.getCpf()) && !usuario.getEmail().equals("usuario.admin@gmail.com")) {
                 throw new Exception("Já existe um usuário com este CPF\nVerifique\n");
             }

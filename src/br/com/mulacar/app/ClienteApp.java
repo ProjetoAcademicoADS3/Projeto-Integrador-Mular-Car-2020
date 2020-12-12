@@ -42,7 +42,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
 public class ClienteApp extends javax.swing.JDialog {
 
     private static final Logger LOG = Logger.getLogger(ClienteApp.class.getName());
@@ -57,37 +56,37 @@ public class ClienteApp extends javax.swing.JDialog {
     
     private List<Contato> contatos;
 
-    private ClienteBll clienteBll;
-    
     private EnderecoBll enderecoBll;
-    
+
     private ContatoBll contatoBll;
-    
+
     private List<Endereco> enderecos;
-    
+
     private boolean ambienteDesenvolvimento = false;
-    
+
     private String mensagemErroPadrao;
-    
+
     private int idEnderecoSelecinadoTabela;
-    
+
     private int idContatoSelecinadoTabela;
     
+    private int idContatoSelecinadoTabela;
+
     public ClienteApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        
+
         initComponents();
-        
+
         inicializar();
     }
-    
+
     private void inicializar() {
-        
+
         this.reiniciarTodosCampos();
         
         /**
          * DESTINADO A AMBIENTE DE DESENVOLVIMENTO
-         * PARA PRODUÇÃO ATRIBUIR FALSE PARA A VARIAVEL  ambienteDesenvolvimento 
+         * PARA PRODUCAO ATRIBUIR FALSE PARA A VARIAVEL  ambienteDesenvolvimento 
          */ 
         this.ambienteDesenvolvimento = true;
         
@@ -100,16 +99,16 @@ public class ClienteApp extends javax.swing.JDialog {
 
         setTitle("Manutenção de Clientes");
 
-        setResizable(false);    
+        setResizable(false);
         
         jButtonRemoverEnderecoTabela.setEnabled(false);
-        
+
         jButtonRemoverContatoTabela.setEnabled(false);
-        
+
         this.mensagemErroPadrao = "Entre em contato com suporte";
 
         this.clienteBll = new ClienteBll();
-        
+
         this.enderecoBll = new EnderecoBll();
         
         this.contatoBll = new ContatoBll();
@@ -155,8 +154,46 @@ public class ClienteApp extends javax.swing.JDialog {
         jLabelAlertaPessoaFisica.setVisible(false);
         
         UtilTabela.limparTabelas(jTableContatos, jTableEnderecos);
-        
+
     }   
+
+    private void adicionarListenersCamposPessoaFisica() {
+        jTextFieldNome.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                bloquearCamposPessoaJuridica();
+
+        UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldCEP, LIMITE_CARACTERES_CEP);
+
+        UtilComponentes.adicionarKeyListenerlimitaQuantidadeCaracteresJTextField(jTextFieldCnpj, LIMITE_CARACTERES_CNPJ);
+
+        UtilComponentes.adicionarKeyListenerSomenteLetras(jTextFieldNome,
+                jTextFieldOrgaoEmissor,
+                jTextFieldRazaoSocial,
+                jTextFieldNomeFantasia,
+                jTextFieldCidade,
+                jTextFieldBairro);
+
+        UtilComponentes.adicionarKeyListenerSomenteNumeros(jTextFieldCpf,
+                jTextFieldRg,
+                jTextFieldCnpj,
+                jTextFieldCEP,
+                jTextFieldNumero,
+                jTextFieldNumeroTelefone);
+
+        UtilString.ehEmailValido(jTextField1Email.getText());
+
+        adicionarListenersCamposPessoaFisica();
+
+        adicionarListenersCamposPessoaJuridica();
+
+        jLabelAlertaPessoaJuridica.setVisible(false);
+
+        jLabelAlertaPessoaFisica.setVisible(false);
+
+        UtilTabela.limparTabelas(jTableContatos, jTableEnderecos);
+
+    }
 
     private void adicionarListenersCamposPessoaFisica() {
         jTextFieldNome.addKeyListener(new KeyAdapter() {
@@ -165,7 +202,7 @@ public class ClienteApp extends javax.swing.JDialog {
                 bloquearCamposPessoaJuridica();
             }
         });
-        
+
         jTextFieldCpf.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -293,6 +330,44 @@ public class ClienteApp extends javax.swing.JDialog {
         Vector<EnumTipoEndereco> tiposEndereco = EnumTipoEndereco.carregarTiposEndereco();
         jComboBoxTipoEndereco.setModel(new DefaultComboBoxModel(tiposEndereco));
         
+        Vector<EnumTipoTelefone> tiposTelefone = EnumTipoTelefone.carregarTiposTelefones();
+        jComboBoxTipoTelefone.setModel(new DefaultComboBoxModel(tiposTelefone));
+    }
+
+    private void adicionarMouseListenerTabelaEnderecos() {
+        jTableEnderecos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                int linha = jTableEnderecos.getSelectedRow();
+
+                idEnderecoSelecinadoTabela = Integer.parseInt(jTableEnderecos.getValueAt(linha, 0).toString());
+
+                habilitarDesabilitarBotaoRemoverItemTabela(jTableEnderecos, jButtonRemoverEnderecoTabela);
+            }
+        });
+    }
+
+    private void adicionarMouseListenerTabelaContatos() {
+        jTableContatos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                int linha = jTableContatos.getSelectedRow();
+
+                idContatoSelecinadoTabela = Integer.parseInt(jTableContatos.getValueAt(linha, 0).toString());
+
+                habilitarDesabilitarBotaoRemoverItemTabela(jTableContatos, jButtonRemoverContatoTabela);
+            }
+        });
+    }
+
+    private void carregarComboBoxes() {
+        Vector<EnumUF> ufs = EnumUF.carregarUnidadesFederativas();
+        jComboBoxUf.setModel(new DefaultComboBoxModel(ufs));
+        jComboBoxUf.setSelectedItem(EnumUF.ACRE);
+
+        Vector<EnumTipoEndereco> tiposEndereco = EnumTipoEndereco.carregarTiposEndereco();
+        jComboBoxTipoEndereco.setModel(new DefaultComboBoxModel(tiposEndereco));
+
         Vector<EnumTipoTelefone> tiposTelefone = EnumTipoTelefone.carregarTiposTelefones();
         jComboBoxTipoTelefone.setModel(new DefaultComboBoxModel(tiposTelefone));
     }
@@ -907,13 +982,13 @@ public class ClienteApp extends javax.swing.JDialog {
                 return;
             }            
             
-    //      Pessoa Física        
+    //      Pessoa fi�sica        
             String nome         = jTextFieldNome.getText();
             String cpf          = jTextFieldCpf.getText();
             String rg           = jTextFieldRg.getText();
             String orgaoEmissor = jTextFieldOrgaoEmissor.getText();
 
-    //      Pessoa Jurídica
+    //      Pessoa Juri�dica
             String cnpj         = jTextFieldCnpj.getText();
             String razaoSocial  = jTextFieldRazaoSocial.getText();
             String nomeFantasia = jTextFieldNomeFantasia.getText();
@@ -1102,7 +1177,7 @@ public class ClienteApp extends javax.swing.JDialog {
             String bairro       = jTextFieldBairro.getText();
             String cidade       = jTextFieldCidade.getText();
             EnumUF uf           = (EnumUF) jComboBoxUf.getSelectedItem();  
-            
+
             boolean temCamposVazios = UtilObjetos.ehNuloOuVazio(cep)
                                       || UtilObjetos.ehNuloOuVazio(tipoEndereco)
                                       || UtilObjetos.ehNuloOuVazio(rua)
@@ -1214,7 +1289,7 @@ public class ClienteApp extends javax.swing.JDialog {
         try {
             String pergunta = "Remover contato da tabela?";
             String tituloJanela = "Contato";
-            Icon icone =new ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Delete-icon - x - 24 x 24px.png"));
+            Icon icone = new ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Delete-icon - x - 24 x 24px.png"));
             String[] botaoOpcoes = {"Sim", "Não"};
             String label = botaoOpcoes[0];
             
@@ -1313,6 +1388,7 @@ public class ClienteApp extends javax.swing.JDialog {
 //        contatoBll.ordenaListaContatos(this.telefones);
         
         for (int i = 0; i < enderecos.size(); i++) {
+            String[] linha = new String[9];
             
             String[] linha = new String[9];
             
@@ -1351,6 +1427,7 @@ public class ClienteApp extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdicionarContatoTabela;
     private javax.swing.JButton jButtonAdicionarEnderecoTabela;
+    private javax.swing.JButton jButtonConcluirCadastro;
     private javax.swing.JButton jButtonConcluirCadastro;
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonIncluirEnderecoTeste;

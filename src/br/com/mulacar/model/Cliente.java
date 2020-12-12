@@ -27,6 +27,10 @@ public class Cliente {
 
     public Cliente() {
     }
+    
+    public Cliente(String nome) {
+        this.nome = nome;
+    }
 
     public Cliente(int id) {
         this.id = id;

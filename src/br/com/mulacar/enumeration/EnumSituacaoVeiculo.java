@@ -14,6 +14,6 @@ package br.com.mulacar.enumeration;
  */
 public enum EnumSituacaoVeiculo {
     
-    DISPONIVEL, INDISPONIVEL, VENDIDO, BAIXADO;
+    BAIXADO, DISPONIVEL, INDISPONIVEL,VENDIDO;
     
 }

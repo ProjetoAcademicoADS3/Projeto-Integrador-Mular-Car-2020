@@ -6,12 +6,9 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
+
 package br.com.mulacar.enumeration;
 
-/**
- *
- * @author roger
- */
 public enum EnumTipoVeiculo {
     
     HATCH, PICK_UP, SEDAN, SUV;

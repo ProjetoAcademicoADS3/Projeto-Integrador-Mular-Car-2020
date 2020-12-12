@@ -109,7 +109,7 @@ public class MarcasApp extends javax.swing.JDialog {
         jTextFieldQuantRegistros = new javax.swing.JTextField();
         jButtonFechar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jComboBoxStatus = new javax.swing.JComboBox<>();
+        jComboBoxStatus = new javax.swing.JComboBox<String>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Manutenção de cadastro de Marcas");
@@ -203,7 +203,7 @@ public class MarcasApp extends javax.swing.JDialog {
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel5.setText("Status");
 
-        jComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanelMarcaLayout = new javax.swing.GroupLayout(jPanelMarca);
         jPanelMarca.setLayout(jPanelMarcaLayout);
@@ -404,6 +404,10 @@ public class MarcasApp extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MarcasApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

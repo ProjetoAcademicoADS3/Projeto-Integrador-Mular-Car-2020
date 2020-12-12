@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import static java.util.Collections.list;
 import java.util.List;
 
 /**
@@ -165,12 +166,13 @@ public class VeiculoDal {
                     + "os registros de veiculos\n"
                     + erro.getMessage());
         }
+
         return listaVeiculos;
     }
 
     public Veiculo getVeiculoByPlaca(String placa) throws Exception {
         Veiculo veic = new Veiculo();
-        String sql = "SELECT * FROM veiculo WHERE vei_placa=?";
+        String sql = "SELECT * from veiculo WHERE vei_placa=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setString(1, placa);
@@ -203,6 +205,161 @@ public class VeiculoDal {
         }
         return veic;
     }
+    
+    public Veiculo getVeiculoById(Veiculo veiculo) throws Exception {
+        Veiculo veic = new Veiculo();
+        String sql = "SELECT * from veiculo WHERE vei_id=?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, veiculo.getId());
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+
+                veic.setId(rs.getInt("vei_id"));
+                veic.setPlaca(rs.getString("vei_placa"));
+                veic.setAnoFabricacao(rs.getInt("vei_ano_fabricacao"));
+                veic.setAnoModelo(rs.getInt("vei_ano_modelo"));
+                veic.setTipoCombustivel(EnumTipoCombustivel.valueOf(rs.getString("vei_tipo_combustivel")));
+                veic.setRenavan(rs.getString("vei_renavan"));
+                veic.setPrecoCompra(rs.getBigDecimal("vei_preco_compra"));
+                veic.setPrecoVenda(rs.getBigDecimal("vei_preco_venda"));
+                veic.setTipo(EnumTipoVeiculo.valueOf(rs.getString("vei_tipo")));
+                veic.setStatus(EnumStatus.valueOf(rs.getString("vei_status")));
+                veic.setNumPassageiros(rs.getInt("vei_num_passageiro"));
+                veic.setKm(rs.getLong("vei_km"));
+                CategoriaDal catDal = new CategoriaDal();
+                veic.setCategoria(catDal.getCategoriaById(new Categoria(rs.getInt("vei_categoria_id"))));
+                ModeloDal modDal = new ModeloDal();
+                veic.setModelo(modDal.getModeloById(rs.getInt("vei_modelo_id")));
+                veic.setSituacao(EnumSituacaoVeiculo.valueOf(rs.getString("vei_situacao")));
+
+            }
+        } catch (Exception erro) {
+            throw new Exception("Ocorreu um erro ao buscar este registro de contratos\n"
+                    + erro.getMessage());
+        }
+        return veic;
+    }
+
+    
+    public List<Veiculo> getVeiculoByCategoria(int categoria, String situacao) throws Exception {
+        List<Veiculo> lista = new ArrayList<Veiculo>();
+        String sql = "SELECT * from veiculo WHERE vei_categoria_id = ? AND vei_situacao = ?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, categoria);
+            preparedStatement.setString(2, situacao);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Veiculo veic = new Veiculo();
+
+                veic.setId(rs.getInt("vei_id"));
+                veic.setPlaca(rs.getString("vei_placa"));
+                veic.setAnoFabricacao(rs.getInt("vei_ano_fabricacao"));
+                veic.setAnoModelo(rs.getInt("vei_ano_modelo"));
+                veic.setTipoCombustivel(EnumTipoCombustivel.valueOf(rs.getString("vei_tipo_combustivel")));
+                veic.setRenavan(rs.getString("vei_renavan"));
+                veic.setPrecoCompra(rs.getBigDecimal("vei_preco_compra"));
+                veic.setPrecoVenda(rs.getBigDecimal("vei_preco_venda"));
+                veic.setTipo(EnumTipoVeiculo.valueOf(rs.getString("vei_tipo")));
+                veic.setStatus(EnumStatus.valueOf(rs.getString("vei_status")));
+                veic.setNumPassageiros(rs.getInt("vei_num_passageiro"));
+                veic.setKm(rs.getLong("vei_km"));
+                CategoriaDal catDal = new CategoriaDal();
+                veic.setCategoria(catDal.getCategoriaById(new Categoria(rs.getInt("vei_categoria_id"))));
+                ModeloDal modDal = new ModeloDal();
+                veic.setModelo(modDal.getModeloById(rs.getInt("vei_modelo_id")));
+                veic.setSituacao(EnumSituacaoVeiculo.valueOf(rs.getString("vei_situacao")));
+
+                lista.add(veic);
+
+            }
+        } catch (Exception erro) {
+            throw new Exception("Ocorreu um erro ao buscar este registro de contratos\n"
+                    + erro.getMessage());
+        }
+        return lista;
+    }
+    
+    public List<Veiculo> getVeiculoByCategoria(int categoria) throws Exception {
+        List<Veiculo> lista = new ArrayList<Veiculo>();
+        String sql = "SELECT * from veiculo WHERE vei_categoria_id = ? ";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, categoria);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Veiculo veic = new Veiculo();
+
+                veic.setId(rs.getInt("vei_id"));
+                veic.setPlaca(rs.getString("vei_placa"));
+                veic.setAnoFabricacao(rs.getInt("vei_ano_fabricacao"));
+                veic.setAnoModelo(rs.getInt("vei_ano_modelo"));
+                veic.setTipoCombustivel(EnumTipoCombustivel.valueOf(rs.getString("vei_tipo_combustivel")));
+                veic.setRenavan(rs.getString("vei_renavan"));
+                veic.setPrecoCompra(rs.getBigDecimal("vei_preco_compra"));
+                veic.setPrecoVenda(rs.getBigDecimal("vei_preco_venda"));
+                veic.setTipo(EnumTipoVeiculo.valueOf(rs.getString("vei_tipo")));
+                veic.setStatus(EnumStatus.valueOf(rs.getString("vei_status")));
+                veic.setNumPassageiros(rs.getInt("vei_num_passageiro"));
+                veic.setKm(rs.getLong("vei_km"));
+                CategoriaDal catDal = new CategoriaDal();
+                veic.setCategoria(catDal.getCategoriaById(new Categoria(rs.getInt("vei_categoria_id"))));
+                ModeloDal modDal = new ModeloDal();
+                veic.setModelo(modDal.getModeloById(rs.getInt("vei_modelo_id")));
+                veic.setSituacao(EnumSituacaoVeiculo.valueOf(rs.getString("vei_situacao")));
+
+                lista.add(veic);
+
+            }
+        } catch (Exception erro) {
+            throw new Exception("Ocorreu um erro ao buscar este registro de contratos\n"
+                    + erro.getMessage());
+        }
+        return lista;
+    }
+    
+    public List<Veiculo> getVeiculoBySituacao(String situacao) throws Exception {
+        List<Veiculo> lista = new ArrayList<Veiculo>();
+        String sql = "SELECT * from veiculo WHERE vei_situacao = ? ";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, situacao);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Veiculo veic = new Veiculo();
+
+                veic.setId(rs.getInt("vei_id"));
+                veic.setPlaca(rs.getString("vei_placa"));
+                veic.setAnoFabricacao(rs.getInt("vei_ano_fabricacao"));
+                veic.setAnoModelo(rs.getInt("vei_ano_modelo"));
+                veic.setTipoCombustivel(EnumTipoCombustivel.valueOf(rs.getString("vei_tipo_combustivel")));
+                veic.setRenavan(rs.getString("vei_renavan"));
+                veic.setPrecoCompra(rs.getBigDecimal("vei_preco_compra"));
+                veic.setPrecoVenda(rs.getBigDecimal("vei_preco_venda"));
+                veic.setTipo(EnumTipoVeiculo.valueOf(rs.getString("vei_tipo")));
+                veic.setStatus(EnumStatus.valueOf(rs.getString("vei_status")));
+                veic.setNumPassageiros(rs.getInt("vei_num_passageiro"));
+                veic.setKm(rs.getLong("vei_km"));
+                CategoriaDal catDal = new CategoriaDal();
+                veic.setCategoria(catDal.getCategoriaById(new Categoria(rs.getInt("vei_categoria_id"))));
+                ModeloDal modDal = new ModeloDal();
+                veic.setModelo(modDal.getModeloById(rs.getInt("vei_modelo_id")));
+                veic.setSituacao(EnumSituacaoVeiculo.valueOf(rs.getString("vei_situacao")));
+
+                lista.add(veic);
+
+            }
+        } catch (Exception erro) {
+            throw new Exception("Ocorreu um erro ao buscar este registro de contratos\n"
+                    + erro.getMessage());
+        }
+        return lista;
+    }
 
     public ArrayList sourceVeiculo(String dados) throws Exception {
         String textoDigitado = dados;
@@ -211,9 +368,7 @@ public class VeiculoDal {
         for (Veiculo veic : getAllVeiculo()) {
 
             if (veic.getPlaca().toLowerCase().trim().contains(textoDigitado)
-                    || veic.getRenavan().trim().contains(textoDigitado)
-                    || (veic.getModelo().getDescricao().toLowerCase().trim().contains(textoDigitado))
-                    || veic.getCategoria().getDescricao().toLowerCase().trim().contains(textoDigitado)) {
+                    || veic.getRenavan().trim().contains(textoDigitado)) {
 
                 resultadoDaPesquisa.add(veic);
 
@@ -225,7 +380,7 @@ public class VeiculoDal {
         }
         return resultadoDaPesquisa;
     }
-    
+
     public void ordenaListaVeiculos(List<Veiculo> lista) throws Exception {
         for (int i = 0; i < lista.size(); i++) {
             for (int j = i; j < lista.size(); j++) {

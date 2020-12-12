@@ -154,7 +154,7 @@ public class LoginApp extends javax.swing.JFrame {
         getContentPane().add(jButtonSair);
         jButtonSair.setBounds(380, 220, 70, 30);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Travel-BMV-icon-256px.png"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Travel-BMV-icon-128px-MulaCar.png"))); // NOI18N
         getContentPane().add(jLabel3);
         jLabel3.setBounds(60, 80, 130, 130);
 

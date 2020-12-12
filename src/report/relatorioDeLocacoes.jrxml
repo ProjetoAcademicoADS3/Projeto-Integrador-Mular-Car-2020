@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioDeLocacoes" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f839b9d1-c31f-40b3-a751-a662105b267d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[Select * from locacao WHERE loc_id = 3;]]>
+	</queryString>
+	<field name="loc_id" class="java.lang.Integer"/>
+	<field name="loc_cliente_id" class="java.lang.Integer"/>
+	<field name="loc_motorista_id" class="java.lang.Integer"/>
+	<field name="loc_veiculo_id" class="java.lang.Integer"/>
+	<field name="loc_usuario_cadastro_id" class="java.lang.Integer"/>
+	<field name="loc_valor_multa" class="java.math.BigDecimal"/>
+	<field name="loc_tanque_cheio" class="java.lang.Boolean"/>
+	<field name="loc_data_retirada" class="java.sql.Timestamp"/>
+	<field name="loc_data_devolucao_prevista" class="java.sql.Timestamp"/>
+	<field name="loc_km_inicial" class="java.lang.String"/>
+	<field name="loc_observacoes" class="java.lang.String"/>
+	<field name="loc_valores_acessorios" class="java.math.BigDecimal"/>
+	<field name="loc_valor_locacao" class="java.math.BigDecimal"/>
+	<field name="loc_valor_caucao" class="java.math.BigDecimal"/>
+	<field name="loc_valor_seguro" class="java.math.BigDecimal"/>
+	<field name="loc_status" class="java.lang.String"/>
+	<field name="loc_reserva" class="java.lang.Boolean"/>
+	<group name="loc_cliente_id">
+		<groupExpression><![CDATA[$F{loc_cliente_id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="79" uuid="9b7fea43-f991-41e1-9c56-f55802bb514d"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Locadora de Veículos MULARCAR]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="35" uuid="dc2f1a2f-b3d1-4aaf-80fe-59ff97160311"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de Locações de Veículos]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="29" uuid="3a16e4ed-31e8-4889-bc20-a4069445bdcc"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="32" height="20" uuid="0d8ee038-672e-4a41-ad21-58564ae40064"/>
+				<text><![CDATA[loc_id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="32" y="0" width="32" height="20" uuid="36a05727-9eac-4674-90f7-4c210c8b3c9c"/>
+				<text><![CDATA[loc_cliente_id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="64" y="0" width="32" height="20" uuid="d6897d41-bcea-4746-b278-cfd516c5a050"/>
+				<text><![CDATA[loc_motorista_id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="96" y="0" width="32" height="20" uuid="7004d3f1-b9f4-48bc-ae84-b271473beb78"/>
+				<text><![CDATA[loc_veiculo_id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="128" y="0" width="32" height="20" uuid="64c55fba-f8e7-409e-b7db-f481f7552959"/>
+				<text><![CDATA[loc_usuario_cadastro_id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="32" height="20" uuid="5c25e331-ccd3-4555-a877-e020c475c0f5"/>
+				<text><![CDATA[loc_valor_multa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="192" y="0" width="32" height="20" uuid="6f62d9f4-da20-4993-acf7-2a97d263b5e2"/>
+				<text><![CDATA[loc_tanque_cheio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="0" width="32" height="20" uuid="6023e0f9-c6db-48c6-a7fa-2e842c44d8e1"/>
+				<text><![CDATA[loc_data_retirada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="256" y="0" width="32" height="20" uuid="3c1019ca-90b6-4561-ab70-5a7b9899b65d"/>
+				<text><![CDATA[loc_data_devolucao_prevista]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="0" width="32" height="20" uuid="cafc506c-7691-47c7-b350-b866d1125bc7"/>
+				<text><![CDATA[loc_km_inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="32" height="20" uuid="f3054a03-e7e2-4d0e-aa86-95b31330a4b9"/>
+				<text><![CDATA[loc_observacoes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="0" width="32" height="20" uuid="4d145deb-a669-4104-9bbc-1892a247902c"/>
+				<text><![CDATA[loc_valores_acessorios]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="0" width="32" height="20" uuid="2c5a4fec-4e83-4014-83e3-580d85fed98c"/>
+				<text><![CDATA[loc_valor_locacao]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="0" width="32" height="20" uuid="4f6cd50e-deed-4844-a1ad-060cbd070bf0"/>
+				<text><![CDATA[loc_valor_caucao]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="448" y="0" width="32" height="20" uuid="2c64ff96-eeb4-4794-8a19-57e0e2d92410"/>
+				<text><![CDATA[loc_valor_seguro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="0" width="32" height="20" uuid="6344158a-4870-4ded-becb-840a642f506f"/>
+				<text><![CDATA[loc_status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="512" y="0" width="32" height="20" uuid="419759b4-598b-4e7c-a621-6ff9835c1067"/>
+				<text><![CDATA[loc_reserva]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="125" uuid="1d0636f5-5916-46a5-9727-829a253731ff"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="32" height="20" uuid="895e105e-9f7c-4b11-ae43-bb57bdeff45a"/>
+				<textFieldExpression><![CDATA[$F{loc_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="32" y="0" width="32" height="20" uuid="5018376a-508a-4df8-a885-7c9e0208560e"/>
+				<textFieldExpression><![CDATA[$F{loc_cliente_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="64" y="0" width="32" height="20" uuid="909c460b-b720-434e-bbcf-b8094867967a"/>
+				<textFieldExpression><![CDATA[$F{loc_motorista_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="0" width="32" height="20" uuid="10749a72-e359-44ce-bf8f-b1b464aa75bd"/>
+				<textFieldExpression><![CDATA[$F{loc_veiculo_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="128" y="0" width="32" height="20" uuid="3c03989e-8d30-40bc-8580-060a6fa97c8a"/>
+				<textFieldExpression><![CDATA[$F{loc_usuario_cadastro_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="0" width="32" height="20" uuid="5ce0969d-cc54-4f1f-a9e6-77a2f3fad630"/>
+				<textFieldExpression><![CDATA[$F{loc_valor_multa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="192" y="0" width="32" height="20" uuid="6cddf297-9600-48fe-b6e3-eb1ae176dca3"/>
+				<textFieldExpression><![CDATA[$F{loc_tanque_cheio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="224" y="0" width="32" height="20" uuid="57803839-b365-42c5-a0b4-5905231ec4df"/>
+				<textFieldExpression><![CDATA[$F{loc_data_retirada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="256" y="0" width="32" height="20" uuid="1b6d6963-dd34-4fdf-a71c-cf60daaae8b0"/>
+				<textFieldExpression><![CDATA[$F{loc_data_devolucao_prevista}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="288" y="0" width="32" height="20" uuid="495fec63-a5ad-4235-b1a5-8563d0c561d4"/>
+				<textFieldExpression><![CDATA[$F{loc_km_inicial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="0" width="32" height="20" uuid="24a137de-5299-4df2-af12-b3ef42791434"/>
+				<textFieldExpression><![CDATA[$F{loc_observacoes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="352" y="0" width="32" height="20" uuid="8e744905-553a-4bef-a467-1fac7d1504a1"/>
+				<textFieldExpression><![CDATA[$F{loc_valores_acessorios}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="384" y="0" width="32" height="20" uuid="d45ed007-2b7a-48ba-9328-318a8e5b46c4"/>
+				<textFieldExpression><![CDATA[$F{loc_valor_locacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="416" y="0" width="32" height="20" uuid="4130eba3-3059-4e78-a1ac-d1768e54a791"/>
+				<textFieldExpression><![CDATA[$F{loc_valor_caucao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="448" y="0" width="32" height="20" uuid="f0585c68-c4ee-404f-bbbd-fa7b15ce3732"/>
+				<textFieldExpression><![CDATA[$F{loc_valor_seguro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="0" width="32" height="20" uuid="5fec5713-853c-499e-bb19-056aebd31e33"/>
+				<textFieldExpression><![CDATA[$F{loc_status}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="512" y="0" width="32" height="20" uuid="e1595b2c-37c4-4a5f-87fc-2f9b2cb5cac0"/>
+				<textFieldExpression><![CDATA[$F{loc_reserva}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -6,15 +6,14 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.enumeration;
 
 public enum EnumCategoriaCnh {
-    
-    CATEGORIA_A, 
-    CATEGORIA_B, 
-    CATEGORIA_C, 
-    CATEGORIA_D, 
-    CATEGORIA_E, 
-    
+
+    CAT_A,
+    CAT_B,
+    CAT_C,
+    CAT_D,
+    CAT_E,
+
 }
