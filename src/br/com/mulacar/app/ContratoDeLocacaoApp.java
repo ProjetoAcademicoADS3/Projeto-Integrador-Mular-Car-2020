@@ -7,7 +7,6 @@ package br.com.mulacar.app;
 
 import br.com.mulacar.bll.LocacaoBll;
 import br.com.mulacar.model.Locacao;
-import br.com.mulacar.relatorios.ContratoGerador;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;

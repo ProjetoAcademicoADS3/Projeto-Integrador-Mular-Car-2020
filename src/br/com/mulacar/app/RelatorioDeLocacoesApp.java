@@ -74,7 +74,7 @@ public class RelatorioDeLocacoesApp extends javax.swing.JDialog {
             linha[11] = locacao.getKmInicial();
             linha[12] = locacao.getObservacoes();
             linha[13] = String.format("%.2f", locacao.getValorTotalAcessorios());
-            linha[14] = String.format("%.2f", locacao.getValorTotalLocacao());
+            linha[14] = String.format("%.2f", locacao.getValorLocacao());
             linha[15] = String.format("%.2f", locacao.getValorSeguro());
             linha[16] = String.format("%.2f", locacao.getValorCaucao());
             linha[17] = locacao.getStatus().toString();
