@@ -11,7 +11,9 @@ package br.com.mulacar.bll;
 
 import br.com.mulacar.dal.ContatoDal;
 import br.com.mulacar.exception.MulaCarException;
+import br.com.mulacar.model.Cliente;
 import br.com.mulacar.model.Contato;
+import br.com.mulacar.model.Motorista;
 import br.com.mulacar.util.UtilObjetos;
 import java.util.List;
 
@@ -81,6 +83,10 @@ public class ContatoBll {
         
         return contatoDal.getContatoById(contato);
     }
+    
+    public Contato getContatoByCliente(Contato contato) throws Exception {
+        return contatoDal.getContatoByCliente(contato);
+    }
 
     public Contato getContatoByEmail(Contato contato) throws Exception {
         this.validarContato(contato);
@@ -90,6 +96,14 @@ public class ContatoBll {
         }
         
         return contatoDal.getContatoByEmail(contato);
+    }
+    
+    public Contato getConsultaContatoPorClienteId(Cliente cliente) throws Exception {
+        return contatoDal.getContatoByClienteId(cliente);
+    }
+    
+    public Contato getConsultaContatoPorMotoristaId(Motorista motorista) throws Exception {
+        return contatoDal.getContatoByMotoristaId(motorista);
     }
     
     public void ordenaListaContatos(List<Contato> lista) throws Exception {

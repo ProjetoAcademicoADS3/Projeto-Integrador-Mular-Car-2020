@@ -178,7 +178,7 @@ public class LocacaoDal {
     }
 
     public Locacao getLocacaoById(Locacao locacao) throws Exception {
-        Locacao locacaoRetorno = null;
+        Locacao locacaoRetorno = new Locacao();
 
         String sql = "SELECT * FROM locacao WHERE loc_id = ?";
 

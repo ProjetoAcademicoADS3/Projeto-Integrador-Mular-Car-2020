@@ -32,6 +32,10 @@ public class Contato {
     public Contato(Motorista motorista) {
         this.motorista = motorista;
     }
+    
+    public Contato(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;

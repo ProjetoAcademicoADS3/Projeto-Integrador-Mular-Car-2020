@@ -84,8 +84,12 @@ public class EnderecoBll {
         
         return enderecoDal.getEnderecoById(endereco);
     }
+    
+    public Endereco getConsultaEnderecoByIdCliente(Cliente cliente) throws Exception {
+        return enderecoDal.getEnderecoByCliente(cliente);
+    }
 
-    public Endereco getEnderecoByCliente(Cliente cliente) throws Exception {
+    public Endereco getConsultaEnderecoByCliente(Cliente cliente) throws Exception {
         this.validarObjetoNulo(cliente);
         
         if (UtilObjetos.ehNuloOuVazio(cliente.getId())) {
