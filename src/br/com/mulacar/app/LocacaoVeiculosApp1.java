@@ -18,8 +18,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import org.jdesktop.swingx.JXDatePicker;
@@ -350,9 +348,9 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabelTituloTabVeiculo)
                 .addGap(21, 21, 21)
-                .addGroup(jPanelSelecaoDoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelselecioneModelo)
-                    .addComponent(jLabelSelecioneCategoria))
+                .addGroup(jPanelSelecaoDoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelSelecioneCategoria, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelselecioneModelo))
                 .addGap(4, 4, 4)
                 .addGroup(jPanelSelecaoDoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxSelecaoCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -947,7 +945,8 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                                                                .toLocalDate();
 
             if (dataRetirada.isAfter(dataDevolucao)) {
-                JOptionPane.showMessageDialog(null, "Data de retirada não pode ser maior que a data de devolução.");                
+                JOptionPane.showMessageDialog(null, "Data de retirada não pode ser maior que a data de devolução.");    
+                return;
             }
             
             

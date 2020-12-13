@@ -218,7 +218,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenuOperacoes.add(jSeparator1);
 
         jMenuItemLocarVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-add-icon-24px.png"))); // NOI18N
-        jMenuItemLocarVeiculos.setMnemonic('o');
+        jMenuItemLocarVeiculos.setMnemonic('l');
         jMenuItemLocarVeiculos.setText("Locação de Veículos");
         jMenuItemLocarVeiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
