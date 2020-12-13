@@ -623,7 +623,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
 
     private void jMenuItemLocarVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemLocarVeiculosActionPerformed
         // TODO add your handling code here:
-        new LocacaoVeiculosApp(this, true).setVisible(true);
+        new LocacaoVeiculosApp1(this, true).setVisible(true);
         this.setVisible(true);
 
 

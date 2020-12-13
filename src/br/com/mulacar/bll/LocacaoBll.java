@@ -67,7 +67,7 @@ public class LocacaoBll {
         return locacaoDal.getAllLocacao();
     }
 
-    public Locacao getLocacaoPorId(Locacao locacao) throws Exception {
+    public Locacao consultarLocacaoPorId(Locacao locacao) throws Exception {
         
         this.validarLocacaoNulo(locacao);
         
@@ -76,7 +76,7 @@ public class LocacaoBll {
         return locacaoDal.getLocacaoById(locacao);
     }
 
-    public Locacao getLocacaoCliente(Locacao locacao) throws Exception {
+    public Locacao consultarLocacaoPorCliente(Locacao locacao) throws Exception {
         this.validarLocacao(locacao);
         
         if (UtilObjetos.ehNuloOuVazio(locacao.getCliente())) {
