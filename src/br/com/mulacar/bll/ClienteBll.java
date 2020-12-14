@@ -78,7 +78,6 @@ public class ClienteBll {
     }
 
     public Cliente getClienteByNomeOuFantasia(Cliente cliente) throws Exception {
-        this.validarCliente(cliente);
         
         if (UtilObjetos.ehNuloOuVazio(cliente.getNome()) && UtilObjetos.ehNuloOuVazio(cliente.getNomeFantasia())) {
             throw new MulaCarException("Digite nome ou nome Fantasia para pesquisa.");
@@ -87,15 +86,44 @@ public class ClienteBll {
         return clienteDal.getClienteByNomeOuFantasia(cliente);
     }
     
+    public List<Cliente> getClientesByNomeOuFantasia(Cliente cliente) throws Exception {
+        
+        if (UtilObjetos.ehNuloOuVazio(cliente.getNome()) && UtilObjetos.ehNuloOuVazio(cliente.getNomeFantasia())) {
+            throw new MulaCarException("Digite nome ou nome Fantasia para pesquisa.");
+        }
+        
+        return clienteDal.getClientesByNomeOuFantasia(cliente);
+    }    
+    
+    public Cliente getClientesByCpfCnpj(Cliente cliente) throws Exception {
+        
+        if (UtilObjetos.ehNuloOuVazio(cliente.getCpfCnpj())) {
+            throw new MulaCarException("Digite CPF ou CNPJ para pesquisa.");
+        }
+        
+        return clienteDal.getClienteByCpfCnpj(cliente);
+    }    
+    
 
-    public void ordenaListaClientes(List<Cliente> lista) throws Exception {
+    public void ordenarListaClientes(List<Cliente> lista) throws Exception {
         for (int i = 0; i < lista.size(); i++) {
             for (int j = i; j < lista.size(); j++) {
-                if (lista.get(i).getNome().compareToIgnoreCase(lista.get(j).getNome()) >= 0) {
-                    Cliente temp = lista.get(j);
-                    lista.set(j, lista.get(i));
-                    lista.set(i, temp);
+                Cliente cli = lista.get(i);
+                
+                if ( cli.getTipoCliente().equals(EnumTipoCliente.PESSOA_FISICA)) {
+                    if (lista.get(i).getNome().compareToIgnoreCase(lista.get(j).getNome()) >= 0) {
+                        Cliente temp = lista.get(j);
+                        lista.set(j, lista.get(i));
+                        lista.set(i, temp);
+                    }
+                } else if (cli.getTipoCliente().equals(EnumTipoCliente.PESSOA_JURIDICA)) {
+                    if (lista.get(i).getNomeFantasia().compareToIgnoreCase(lista.get(j).getNomeFantasia()) >= 0) {
+                        Cliente temp = lista.get(j);
+                        lista.set(j, lista.get(i));
+                        lista.set(i, temp);
+                    }                    
                 }
+                
             }
         }
     }    
@@ -181,6 +209,7 @@ public class ClienteBll {
             }        
         }
     }
+    
 
     private void validarClienteNulo(Cliente cliente) throws Exception {
         if (UtilObjetos.ehNuloOuVazio(cliente)) {

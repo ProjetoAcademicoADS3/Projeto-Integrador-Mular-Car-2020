@@ -38,6 +38,10 @@ public class Locacao {
     public Locacao() {
     }
 
+    public Locacao(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     public Locacao(int id) {
         this.id = id;
     }

@@ -9,6 +9,7 @@
 package br.com.mulacar.dal;
 
 import br.com.mulacar.enumeration.EnumStatus;
+import br.com.mulacar.exception.MulaCarException;
 import br.com.mulacar.model.Cliente;
 import br.com.mulacar.model.Locacao;
 import br.com.mulacar.model.Motorista;
@@ -86,10 +87,10 @@ public class LocacaoDal {
         } catch (SQLException e) {
             conexao.rollback();
             Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );
-            throw e;
+            throw new MulaCarException("Ocorreu um erro ao inserir a locacao/reserva.");
         } catch (Exception ex) {
             Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", ex );
-            throw ex;            
+            throw new MulaCarException("Ocorreu um erro ao inserir a locacao/reserva.");           
         }      
     }
     
@@ -135,8 +136,9 @@ public class LocacaoDal {
             
             preparedStatement.executeUpdate();
 
-        } catch (SQLException erro) {
-            throw erro;
+        } catch (SQLException e) {
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );            
+            throw new MulaCarException("Ocorreu um erro ao atualizar a locacao/reserva.");
         }
     }    
 
@@ -150,7 +152,7 @@ public class LocacaoDal {
             
         } catch (Exception e) {
             Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );            
-            throw e;
+            throw new MulaCarException("Ocorreu um erro ao excluir a locacao/reserva.");
         }
     }
 
@@ -164,9 +166,7 @@ public class LocacaoDal {
             ResultSet rs = statement.executeQuery(sql);
 
             while (rs.next()) {
-                Locacao locacaoRetorno = new Locacao();
-
-                preencherLocacaoRetornoBanco(locacaoRetorno, rs);
+                Locacao locacaoRetorno = preencherLocacaoRetornoBanco(rs);
 
                 listaLocacao.add(locacaoRetorno);
             }
@@ -191,15 +191,12 @@ public class LocacaoDal {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-
-                preencherLocacaoRetornoBanco(locacaoRetorno, rs);
-
+                locacaoRetorno = preencherLocacaoRetornoBanco(rs);
             }
 
-        } catch (Exception erro) {
-            throw new Exception("Ocorreu um erro ao consultar "
-                    + "os registros de locações\n"
-                    + erro.getMessage());
+        } catch (Exception e) {
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );            
+            throw new MulaCarException("Ocorreu um erro ao buscar a locacao/reserva pelo id.");
         }
         return locacaoRetorno;
     }
@@ -215,11 +212,11 @@ public class LocacaoDal {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                preencherLocacaoRetornoBanco(locacaoRetorno, rs);
+                locacaoRetorno = preencherLocacaoRetornoBanco(rs);
             }
         } catch (Exception e) {
-            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e);
-            throw e;
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );            
+            throw new MulaCarException("Ocorreu um erro ao buscar a locacao/reserva pelo cliente.");
         }
         return locacaoRetorno;
     }
@@ -264,16 +261,22 @@ public class LocacaoDal {
 //        }
 //        return locacaoRetorno;
 //    }
-    private void preencherLocacaoRetornoBanco(Locacao locacaoRetorno, ResultSet rs) throws Exception {
-        locacaoRetorno.setId(rs.getInt("loc_id"));
+    private Locacao preencherLocacaoRetornoBanco(ResultSet rs) throws Exception {
         ClienteDal cliente = new ClienteDal();
+        Locacao locacaoRetorno = new Locacao();
+        
+        locacaoRetorno.setId(rs.getInt("loc_id"));
         locacaoRetorno.setCliente(cliente.getClienteById(new Cliente(rs.getInt("loc_cliente_id"))));
+        
         MotoristaDal motorista = new MotoristaDal();
         locacaoRetorno.setMotorista(motorista.getMotoristaById(new Motorista(rs.getInt("loc_motorista_id"))));
+        
         VeiculoDal veiculo = new VeiculoDal();
         locacaoRetorno.setVeiculo(veiculo.getVeiculoById(new Veiculo(rs.getInt("loc_veiculo_id"))));
+        
         UsuarioDal usuario = new UsuarioDal();
         locacaoRetorno.setUsuario(usuario.getUsuarioById(rs.getInt("loc_usuario_cadastro_id")));
+        
         locacaoRetorno.setValorMulta(rs.getBigDecimal("loc_valor_multa"));
         locacaoRetorno.setTanqueCheio(rs.getBoolean("loc_tanque_cheio"));
         locacaoRetorno.setDataRetirada(rs.getDate("loc_data_retirada"));
@@ -286,8 +289,8 @@ public class LocacaoDal {
         locacaoRetorno.setValorSeguro(rs.getBigDecimal("loc_valor_seguro"));
         locacaoRetorno.setStatus(EnumStatus.valueOf(rs.getString("loc_status")));
         locacaoRetorno.setReserva(rs.getBoolean("loc_reserva"));
+        
+        return locacaoRetorno;
     }
-    
-    
 
 }

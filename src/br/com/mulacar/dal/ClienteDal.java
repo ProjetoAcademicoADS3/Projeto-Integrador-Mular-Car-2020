@@ -228,17 +228,19 @@ public class ClienteDal {
     public Cliente getClienteByNomeOuFantasia(Cliente cliente) throws Exception {
         Cliente clienteRetorno = null;
 
-        String sql = "SELECT * FROM cliente where cli_nome like ? "
-                + "or cli_nome_fantasia like ? ";
+        String sql = "SELECT * FROM cliente "
+                    + "where (cli_nome like ? "
+                    + "or cli_nome_fantasia like ? )";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-            preparedStatement.setString(1, String.format("%%s%", cliente.getNome()));
-            preparedStatement.setString(2, String.format("%%s%", cliente.getNomeFantasia()));
+            preparedStatement.setString(1, "%" + cliente.getNome() + "%");
+            preparedStatement.setString(2, "%" + cliente.getNomeFantasia() + "%");
             ResultSet rs = preparedStatement.executeQuery();
             
             if (rs.next()) {
                 clienteRetorno = preencherClienteRetornoBanco(rs);
             }            
+                        
 
         } catch (Exception e) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, "ClienteDal - ", e );
@@ -246,6 +248,31 @@ public class ClienteDal {
         }
         return clienteRetorno;
     }
+    
+    public List<Cliente> getClientesByNomeOuFantasia(Cliente cliente) throws Exception {
+       List<Cliente> clientesRetorno = new ArrayList();
+
+        String sql = "SELECT * FROM cliente "
+                    + "where (cli_nome like ? "
+                    + "or cli_nome_fantasia like ? )";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, "%" + cliente.getNome() + "%");
+            preparedStatement.setString(2, "%" + cliente.getNomeFantasia() + "%");
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            while(rs.next()) {
+                Cliente clienteRetorno = preencherClienteRetornoBanco(rs);
+                clientesRetorno.add(clienteRetorno);
+            }            
+                        
+
+        } catch (Exception e) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, "ClienteDal - ", e );
+            throw e;            
+        }
+        return clientesRetorno;
+    }    
     
     private Cliente preencherClienteRetornoBanco(ResultSet rs) throws SQLException {
         Cliente clienteRetorno = new Cliente();

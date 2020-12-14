@@ -28,14 +28,14 @@ public class Cliente {
     public Cliente() {
     }
     
-    public Cliente(String nome) {
-        this.nome = nome;
-    }
-
     public Cliente(int id) {
         this.id = id;
     }
 
+    public Cliente(String nome) {
+        this.nome = nome;
+    }
+    
     public Cliente(String razaoSocial, String nomeFantasia, String nome, EnumStatus status, String cpfCnpj, String rg, String orgaoEmissor, EnumTipoCliente tipoCliente) {
         this.razaoSocial = razaoSocial;
         this.nomeFantasia = nomeFantasia;

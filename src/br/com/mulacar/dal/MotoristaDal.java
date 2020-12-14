@@ -22,7 +22,6 @@ import java.util.List;
 import br.com.mulacar.util.Conexao;
 import java.awt.Image;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;

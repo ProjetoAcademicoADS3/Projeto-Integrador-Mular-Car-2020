@@ -149,8 +149,16 @@ CREATE TABLE veiculo (
 	CONSTRAINT fk_vei_veiculo_vei_modelo_id FOREIGN KEY (vei_modelo_id) REFERENCES modelo(mod_id)	
 );
 
+INSERT INTO veiculo (vei_placa, vei_ano_fabricacao, vei_ano_modelo, vei_tipo_combustivel, vei_renavan, vei_preco_compra, vei_preco_venda, vei_tipo,
+						vei_status, vei_num_passageiro, vei_km, vei_categoria_id, vei_modelo_id, vei_situacao)
+values
+('ASD3456', '2010', '2011', 'FLEX', '12345543219', 56.300, 52.800, 'HATCH', 'ATIVO', 5, 234378, 1, 8, 'DISPONIVEL'),
+('BFE8765', '2018', '2019', 'FLEX', '93847512354', 45.100, 42.400, 'HATCH', 'ATIVO', 5, 12600, 1, 14, 'BAIXADO'),
+('ADF9090', '2015', '2015', 'FLEX', '09876512396', 89.200, 72.650, 'SUV', 'ATIVO', 8, 12600, 4, 28, 'DISPONIVEL'),
+('GDW8765', '2015', '2015', 'FLEX', '09876517463', 89.200, 72.650, 'SUV', 'ATIVO', 8, 15345, 4, 30, 'VENDIDO'),
+('EAS7353', '2018', '2019', 'FLEX', '93847518264', 59.100, 42.400, 'SEDAN', 'ATIVO', 5, 19300, 2, 21, 'DISPONIVEL'),
+('WDS9473', '2018', '2019', 'FLEX', '93847519823', 57.200, 42.400, 'SEDAN', 'ATIVO', 5, 23600, 3, 7, 'INDISPONIVEL');
 
--- Criar tabela de Acessórios
 
 CREATE TABLE acessorio(
     ace_id serial PRIMARY KEY,
@@ -254,25 +262,29 @@ CREATE TABLE motorista (
 	mot_cnh_imagem varchar(200) NOT NULL,
 	mot_cnh_categoria varchar(5) NOT NULL,
     mot_status varchar(20) NOT NULL,
-	CONSTRAINT mot_cnh_data_validade_valida CHECK ((mot_cnh_data_validade < CURRENT_DATE)),
+	CONSTRAINT mot_cnh_data_validade_valida CHECK ((mot_cnh_data_validade > CURRENT_DATE)),
 	CONSTRAINT mot_cnh_unica UNIQUE (mot_cnh_numero),
 	CONSTRAINT mot_cpf_unico UNIQUE (mot_cpf),
 	CONSTRAINT mot_rg_unico UNIQUE (mot_rg)
 );
 
---INSERT INTO motorista (
---mot_nome, mot_cpf, mot_rg, mot_rg_orgao_emissor, mot_cnh_numero, mot_cnh_data_validade, mot_cnh_imagem,
---mot_cnh_categoria, mot_status)
---VALUES
---('Rogerio','64066522076','21244108','ssp_sp','12345678901','28/11/2024',
--- 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC','status'),
--- ('Gabriel','82916982019','11222333','ssp_rs','12345678902','28/11/2024',
--- 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC','status'),
--- ('Aires','10464305055','11333444','ssp_rs','12345678903','28/11/2024',
--- 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC','status'),
---('Lucas','20860026027','11444555','ssp_rs','12345678904','28/11/2024',
--- 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC','status');
+INSERT INTO motorista (
+mot_nome, mot_cpf, mot_rg, mot_rg_orgao_emissor, mot_cnh_numero, mot_cnh_data_validade, mot_cnh_imagem,
+mot_cnh_categoria, mot_status)
+VALUES
+('Rogerio','64066522076','21244108','ssp_sp','12345678901','2024-11-28',
+ 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC','ATIVO'),
+ ('Gabriel','82916982019','11222333','ssp_rs','12345678902','2024/11/28',
+ 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC','ATIVO'),
+ ('Aires','10464305055','11333444','ssp_rs','12345678903','2024/11/28',
+ 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC','ATIVO'),
+('Lucas','20860026027','11444555','ssp_rs','12345678904','2024/11/28',
+ 'C:\Users\roger\Pictures\Miniaturas\kawazaki2.jpg','AC','ATIVO');
 
+select *
+--delete 
+from motorista
+where 1=1
 
 CREATE TABLE endereco (
     end_id SERIAL PRIMARY KEY,
@@ -327,6 +339,25 @@ CREATE TABLE locacao (
     CONSTRAINT fk_locacao_veiculo_id FOREIGN KEY (loc_veiculo_id) REFERENCES veiculo(vei_id),
     CONSTRAINT fk_locacao_usuario_cadastro_id FOREIGN KEY (loc_usuario_cadastro_id) REFERENCES usuario(usu_id)
 );
+
+INSERT INTO locacao (loc_cliente_id, loc_motorista_id, loc_veiculo_id, loc_usuario_cadastro_id, loc_valor_multa, loc_tanque_cheio, loc_data_retirada, 
+					loc_data_devolucao_prevista, loc_km_inicial, loc_observacoes, loc_valor_total_acessorios, loc_valor_locacao, loc_valor_caucao, 
+					loc_valor_seguro, loc_status, loc_reserva)
+values
+(1, 5, 14, 2, 0, true, '2021-12-05', '2021-12-25', '234378', 'Observacao teste', 356.90, 2897, 4345.5, 260.73, 'ATIVO', true),
+(2, 6, 14, 2, 0, false, '2021-12-05', '2021-12-25', '16488', 'Observacao teste2', 256.90, 1897, 3345.5, 160.73, 'INATIVO', false);
+
+select * 
+-- delete
+from locacao 
+where 1 = 1
+and loc_cliente_id = 2
+
+
+select * from cliente;
+select * from motorista where mot_id = 3
+select * from veiculo where vei_id = 14
+select * from usuario
 
 
 CREATE TABLE devolucao (

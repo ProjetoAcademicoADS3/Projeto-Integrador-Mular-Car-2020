@@ -9,10 +9,14 @@
 package br.com.mulacar.bll;
 
 import br.com.mulacar.dal.VeiculoDal;
+import br.com.mulacar.exception.MulaCarException;
+import br.com.mulacar.model.Locacao;
 import br.com.mulacar.model.Veiculo;
+import br.com.mulacar.util.UtilObjetos;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -163,6 +167,17 @@ public class VeiculoBll {
             }
         }
         // retorna o array ordenado por nome
+    }
+    
+    
+    public List<Veiculo> consultarVeiculosDisponiveisLocacao(Locacao locacao) throws Exception {
+        
+        if (UtilObjetos.ehNuloOuVazio(locacao)) {
+            throw new MulaCarException("Informe os dados da locação para consulta dos veiculos disponvies.");
+        }
+        
+        return veiculoDal.consultarVeiculosDisponiveisLocacao(locacao);
+        
     }
 
 }

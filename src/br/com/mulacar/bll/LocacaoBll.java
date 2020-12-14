@@ -9,6 +9,7 @@
 
 package br.com.mulacar.bll;
 
+import br.com.mulacar.dal.LocacaoDal;
 import br.com.mulacar.dal.LocacaoDal;   
 import br.com.mulacar.exception.MulaCarException;
 import br.com.mulacar.model.Locacao;
@@ -22,6 +23,10 @@ public class LocacaoBll {
     
     private LocacaoDal locacaoDal;
 
+    public LocacaoBll(LocacaoDal locacaoDal) {
+        this.locacaoDal = new LocacaoDal();
+    }
+    
     public LocacaoBll() {
         locacaoDal = new LocacaoDal();
     }
@@ -59,7 +64,7 @@ public class LocacaoBll {
         Locacao locacaoRetorno = locacaoDal.getLocacaoById(locacao);
         
         if (UtilObjetos.ehNuloOuVazio(locacaoRetorno)) {
-            throw new Exception("Já existe locação com esse ID.");
+            throw new MulaCarException("Não existe locação com esse ID.");
         }
     }
 
@@ -77,10 +82,9 @@ public class LocacaoBll {
     }
 
     public Locacao consultarLocacaoPorCliente(Locacao locacao) throws Exception {
-        this.validarLocacao(locacao);
         
         if (UtilObjetos.ehNuloOuVazio(locacao.getCliente())) {
-            throw new Exception("Digite nome ou nome Fantasia para pesquisa.");
+            throw new MulaCarException("Digite nome ou nome Fantasia para pesquisa.");
         }
         
         return locacaoDal.getLocacaoByCliente(locacao);
@@ -116,7 +120,7 @@ public class LocacaoBll {
     
     private void validarIdNulo(Locacao locacao) throws Exception {
         if (UtilObjetos.ehNuloOuVazio(locacao.getId())) {
-            throw new Exception("ID da Locacao não pode ser nulo ou vazio.");
+            throw new MulaCarException("ID da Locacao não pode ser nulo ou vazio.");
         }
     }    
 
@@ -137,7 +141,7 @@ public class LocacaoBll {
                                 || UtilObjetos.ehNuloOuVazio(locacao.isReserva());
         
         if (temCamposNulos) {
-            throw new Exception("Campos obrigatórios não foram preenchidos!\n");
+            throw new MulaCarException("Campos obrigatórios não foram preenchidos!\n");
         }
     }
 
@@ -153,14 +157,14 @@ public class LocacaoBll {
             locacaoBanco = locacaoDal.getLocacaoByCliente(locacao);
 
             if (!UtilObjetos.ehNuloOuVazio(locacaoBanco)) {
-                throw new MulaCarException("Já existe locação/reserva para este cliente.");
+                throw new MulaCarException("Já existe locação/reserva para este locacao.");
             }
         }
     }
 
     private void validarLocacaoNulo(Locacao locacao) throws Exception {
         if (UtilObjetos.ehNuloOuVazio(locacao)) {
-            throw new Exception("Locacao não pode ser nulo ou vazio.");
+            throw new MulaCarException("Locacao não pode ser nulo ou vazio.");
         }
     }       
 }

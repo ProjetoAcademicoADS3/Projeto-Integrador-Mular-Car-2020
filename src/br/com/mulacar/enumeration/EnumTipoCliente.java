@@ -14,26 +14,17 @@ public enum EnumTipoCliente {
     PESSOA_FISICA("Pessoa Física"), 
     PESSOA_JURIDICA("Pessoa Jurídica");
     
-    private final String pessoa;
+    private final String descricao;
     
     
     /**
      * Construtor do enum
      *
-     * @param pessoa    pessoa do tipo de cliente
+     * @param descricao    pessoa do tipo de cliente
      */    
-    EnumTipoCliente(final String pessoa) {
-      this.pessoa = pessoa;
+    EnumTipoCliente(final String descricao) {
+      this.descricao = descricao;
     }  
-    
-    /**
-     * Nome completo do tipo de cliente pessoa
-     *
-     * @return nome completo da UF
-     */
-    public String pessoa() {
-      return this.pessoa;
-    }   
     
     /**
      * Converte a partir do tipo de pessoa para o respectivo enum.
@@ -44,12 +35,26 @@ public enum EnumTipoCliente {
      */
     public static EnumTipoCliente fromPessoa(final String tipoPessoa) {
       for (final EnumTipoCliente tipo : EnumTipoCliente.values()) {
-        if (tipo.pessoa.equalsIgnoreCase(tipoPessoa)) {
+        if (tipo.descricao.equalsIgnoreCase(tipoPessoa)) {
           return tipo;
         }
       }
 
       throw new IllegalArgumentException(tipoPessoa);
     }    
+
+    public static EnumTipoCliente getPESSOA_FISICA() {
+        return PESSOA_FISICA;
+    }
+
+    public static EnumTipoCliente getPESSOA_JURIDICA() {
+        return PESSOA_JURIDICA;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+    
+    
     
 }
