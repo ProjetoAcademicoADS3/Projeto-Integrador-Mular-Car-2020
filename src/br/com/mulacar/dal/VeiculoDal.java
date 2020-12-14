@@ -8,10 +8,12 @@
  */
 package br.com.mulacar.dal;
 
+import br.com.mulacar.enumeration.EnumCategoriaVeiculo;
 import br.com.mulacar.enumeration.EnumSituacaoVeiculo;
 import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.enumeration.EnumTipoCombustivel;
 import br.com.mulacar.enumeration.EnumTipoVeiculo;
+import br.com.mulacar.exception.MulaCarException;
 import br.com.mulacar.model.Categoria;
 import br.com.mulacar.model.Locacao;
 import br.com.mulacar.model.Marca;
@@ -402,27 +404,26 @@ public class VeiculoDal {
     
     public List<Veiculo> consultarVeiculosDisponiveisLocacao(Locacao locacao ) throws Exception {
 
-        List<Veiculo> veiculosRetorno = new ArrayList<Veiculo>();
+        List<Veiculo> veiculosRetorno = new ArrayList<>();
         
-        String sql =   "select * from  veiculo vei"
+        String sql =   "select * from  veiculo vei "
                         + "left  join  locacao loc	on loc.loc_veiculo_id = vei.vei_id "
                         + "inner join  modelo    mod	on mod.mod_id         = vei.vei_modelo_id "
                         + "inner join  marca     mar 	on  mar.mar_id        = mod.mod_marca_id "
                         + "inner join  categoria cat	on cat.cat_id         = vei.vei_categoria_id "
                         + "     where  vei.vei_status 		= ? "
                         + "       and  vei.vei_situacao 	= ? "
-                        + "       and  loc.loc_data_retirada    >= ? "
-                        + "       and  loc.loc_status		= ? "
-                        + "       and  loc.loc_reserva		= ? ";
+                        + "       and  ((loc.loc_reserva = false  and  loc.loc_status = 'FINALIZADO') "
+                        + "        or  loc.loc_reserva   = true   and  loc.loc_status = 'PRAZO_EXPIRADO')";
         
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             
             preparedStatement.setString(1, String.valueOf(locacao.getVeiculo().getStatus()));
             preparedStatement.setString(2, String.valueOf(locacao.getVeiculo().getSituacao()));
-            preparedStatement.setDate(3,new java.sql.Date(locacao.getDataRetirada().getTime()));
-            preparedStatement.setString(4, String.valueOf(locacao.getStatus()));
-            preparedStatement.setBoolean(5, locacao.isReserva());
+//            preparedStatement.setDate(3,new java.sql.Date(locacao.getDataRetirada().getTime()));
+//            preparedStatement.setString(4, String.valueOf(locacao.getStatus()));
+//            preparedStatement.setBoolean(5, locacao.isReserva());
             
             ResultSet rs = preparedStatement.executeQuery();
 
@@ -453,6 +454,51 @@ public class VeiculoDal {
             return veiculosRetorno;
         } catch (Exception e) {
             throw new Exception("Ocorreu um erro ao buscar os veiculos disponiveis para locação.", e);
+        }
+    }
+    
+    public Veiculo consultarVeiculosDisponiveisLocacao(EnumCategoriaVeiculo categoriaVeiculoSelecionado, String nomeModelo) throws Exception {
+        Veiculo veic = null;
+        
+        String sql =   "select * from  veiculo vei "
+                        + "inner join categoria cat on cat.cat_id = vei.vei_categoria_id  "
+                        + "inner join modelo    mod on mod.mod_id = vei.vei_modelo_id "
+                        + "where cat.cat_nome = ? "
+                        + "and   LOWER(mod.mod_nome) like LOWER(?)";
+        
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            
+            preparedStatement.setString(1, String.valueOf(categoriaVeiculoSelecionado.name()));
+            preparedStatement.setString(2, String.valueOf(nomeModelo));
+            
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                veic.setId(rs.getInt("vei_id"));
+                veic.setPlaca(rs.getString("vei_placa"));
+                veic.setAnoFabricacao(rs.getInt("vei_ano_fabricacao"));
+                veic.setAnoModelo(rs.getInt("vei_ano_modelo"));
+                veic.setTipoCombustivel(EnumTipoCombustivel.valueOf(rs.getString("vei_tipo_combustivel")));
+                veic.setRenavan(rs.getString("vei_renavan"));
+                veic.setPrecoCompra(rs.getBigDecimal("vei_preco_compra"));
+                veic.setPrecoVenda(rs.getBigDecimal("vei_preco_venda"));
+                veic.setTipo(EnumTipoVeiculo.valueOf(rs.getString("vei_tipo")));
+                veic.setStatus(EnumStatus.valueOf(rs.getString("vei_status")));
+                veic.setNumPassageiros(rs.getInt("vei_num_passageiro"));
+                veic.setKm(rs.getLong("vei_km"));
+                CategoriaDal catDal = new CategoriaDal();
+                veic.setCategoria(catDal.getCategoriaById(new Categoria(rs.getInt("vei_categoria_id"))));
+                ModeloDal modDal = new ModeloDal();
+                veic.setModelo(modDal.getModeloById(rs.getInt("vei_modelo_id")));
+                veic.setSituacao(EnumSituacaoVeiculo.valueOf(rs.getString("vei_situacao")));
+
+            }
+            
+            return veic;        
+                
+        } catch (Exception e) {
+            throw new MulaCarException("Ocorreu um erro ao buscar os veiculos disponiveis para locação.", e);
         }
     }
 

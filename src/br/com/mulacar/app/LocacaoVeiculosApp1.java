@@ -10,6 +10,10 @@
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.*;
+import br.com.mulacar.enumeration.EnumCategoriaCnh;
+import br.com.mulacar.enumeration.EnumCategoriaVeiculo;
+import br.com.mulacar.enumeration.EnumSituacaoVeiculo;
+import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.enumeration.EnumTipoCliente;
 import br.com.mulacar.exception.MulaCarException;
 import br.com.mulacar.model.*;
@@ -18,6 +22,7 @@ import br.com.mulacar.util.UtilObjetos;
 import br.com.mulacar.util.UtilTabela;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -25,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.JXDatePicker;
@@ -34,7 +41,7 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
     private CategoriaBll catBll;
     private Categoria cat;
     private MarcaBll marBll;
-    private ModeloBll modBll;
+    private ModeloBll modeloBll;
     private Modelo mod;
     private String mensagemErroPadrao;
     private LocacaoBll locacaoBll;
@@ -43,6 +50,11 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
     private List<Cliente> clientesTabela;
     private MarcaBll marcaBll;
     private VeiculoBll veiculoBll;
+    private Veiculo veiculoSelecionadoTabela;
+    private Motorista motoristaSelecionadoTabela;
+    private List<Veiculo> veiculosDisponiveisTabela;
+    private List<Motorista> motoristasTabela;
+    private MotoristaBll motoristaBll;
 
     public LocacaoVeiculosApp1(java.awt.Frame parent, boolean modal) {
         
@@ -64,9 +76,19 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
         
         this.clientesTabela = new ArrayList<>();
         
+        this.motoristasTabela = new ArrayList();
+        
         this.marcaBll = new MarcaBll();
         
         this.veiculoBll = new VeiculoBll();
+        
+        this.veiculoSelecionadoTabela = new Veiculo();
+        
+        this.motoristaSelecionadoTabela = new Motorista();
+        
+        this.modeloBll = new ModeloBll();
+        
+        this.motoristaBll = new MotoristaBll();
         
         this.mensagemErroPadrao = "Entre em contato com o suporte.";
         
@@ -86,7 +108,6 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                                                 jTabbedPaneDadosLocacao,
                                                 jComboBoxSelecaoCategoria,
                                                 jComboBoxSelecaoModelo,
-                                                jButtonBuscarVeiculos,
                                                 jLabelTituloTabVeiculo,
                                                 jTableVeiculos,
                                                 jRadioButtonLocacao,
@@ -99,7 +120,21 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                                                 jButtonSelecionarCliente
                                                 );
         
+            this.adicionarMouseListenerTabelaClientes();
             
+            this.adicionarMouseListenerTabelaVeiculos();
+
+            this.AdicionarListenerJComboBoxSelecaoCategoria();
+            
+//          Configura com o JXDatePicker  
+            this.configurarJXDatePicker(jXDatePickerDataRetirada, jXDatePickerDataDevolucao);
+            
+            jComboBoxCampoPesquisaMotorista.addItem("CNH");
+            jComboBoxCampoPesquisaMotorista.addItem("CPF");
+            jComboBoxCampoPesquisaMotorista.addItem("Nome");
+            
+            
+//          CATEGORIAS
             List<Categoria> listaCategoria = catBll.getConsultaCategorias();
             
             catBll.ordenaListaCategorias(listaCategoria);
@@ -113,38 +148,63 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
 //                jComboBoxSelecaoCategoria.addItem(cat.getId()+ " - " + cat.getDescricao().toUpperCase());
             }
             
-            //LISTA MODELOS
-            modBll = new ModeloBll();
-            List<Modelo> listaModelo = modBll.getConsultaModelos();
-            modBll.ordenaListaModelos(listaModelo);
-            jComboBoxSelecaoModelo.removeAllItems();
-            jComboBoxSelecaoModelo.addItem(" ");
-            for (int pos = 0; pos < 10; pos++) {
-                mod = listaModelo.get(pos);
-                jComboBoxSelecaoModelo.addItem(mod.getDescricao().toUpperCase());
-            }
+            
             
             //LISTA MARCA
             marBll = new MarcaBll();
             List<Marca> listaMarca = marBll.getConsultaMarcas();
             marBll.ordenaListaMarcas(listaMarca);
             
-//          Configura com o JXDatePicker  
-            this.configurarJXDatePicker(jXDatePickerDataRetirada, jXDatePickerDataDevolucao);
-            
-            this.adicionarMouseListenerTabelaClientes();
+            jLabelSelecioneCategoria.setVisible(false);
+            jComboBoxSelecaoCategoria.setVisible(false);
+            jLabelselecioneModelo.setVisible(false);
+            jComboBoxSelecaoModelo.setVisible(false);
+            jButtonConsultarVeiculos.setVisible(false);
             
 //          Configura combobox horarios retirada/devolução
 //            Vector<String> horarios = preencherrHorariosLocacaoVector();
 //            jComboBoxHoraRetirada.setModel(new DefaultComboBoxModel(horarios));
-//            jComboBoxHoraDevolucao.setModel(new DefaultComboBoxModel(horarios));
-        
+//            jComboBoxHoraDevolucao.setModel(new DefaultComboBoxModel(horarios));            
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, String.format("Erro na iniciliazação. %s", mensagemErroPadrao));
         }      
     }    
+
+    private void AdicionarListenerJComboBoxSelecaoCategoria() {
+        jComboBoxSelecaoCategoria.addItemListener((e) -> {
+            try {
+                //LISTA MODELOS
+                String categoria = jComboBoxSelecaoCategoria.getSelectedItem().toString();
+                
+                EnumCategoriaVeiculo categoriaSelecionada = null;
+                
+                if (!UtilObjetos.ehNuloOuVazio(categoria)) {
+                    categoriaSelecionada = EnumCategoriaVeiculo.valueOf(categoria);
+
+                    List<Modelo> listaModelo = modeloBll.listarModelosPorCategoria(categoriaSelecionada);
+
+                    modeloBll = new ModeloBll();
+
+                    modeloBll.ordenaListaModelos(listaModelo);
+
+                    jComboBoxSelecaoModelo.removeAllItems();
+
+                    jComboBoxSelecaoModelo.addItem(" ");
+
+                    for (int pos = 0; pos < listaModelo.size(); pos++) {
+                        mod = listaModelo.get(pos);
+                        jComboBoxSelecaoModelo.addItem(mod.getDescricao().toUpperCase());
+                    }
+                }
+                
+            } catch (Exception ex) {
+                Logger.getLogger(LocacaoVeiculosApp1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
     
+     
     private void adicionarMouseListenerTabelaClientes() {
         jTableClientes.addMouseListener(new MouseAdapter() {
             @Override
@@ -160,6 +220,40 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
             }
         });
     }     
+    
+    private void adicionarMouseListenerTabelaVeiculos() {
+        jTableVeiculos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                
+                int linha = jTableVeiculos.getSelectedRow();
+                
+                if (jTableVeiculos.getSelectedRow() == 1) {
+                    veiculoSelecionadoTabela = new Veiculo();
+
+                    veiculoSelecionadoTabela.setId(Integer.parseInt(jTableVeiculos.getValueAt(linha, 0).toString()));
+                }
+                
+            }
+        });
+    }     
+    
+    private void adicionarMouseListenerTabelaMotoristas() {
+        jTableMotoristas.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                
+                int linha = jTableMotoristas.getSelectedRow();
+                
+                if (jTableMotoristas.getSelectedRow() == 1) {
+                    motoristaSelecionadoTabela = new Motorista();
+
+                    motoristaSelecionadoTabela.setId(Integer.parseInt(jTableVeiculos.getValueAt(linha, 0).toString()));
+                }
+                
+            }
+        });
+    }      
 
     private void configurarJXDatePicker(JXDatePicker... listaDatePicker) {
         
@@ -225,10 +319,11 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
         jComboBoxSelecaoCategoria = new javax.swing.JComboBox();
         jLabelselecioneModelo = new javax.swing.JLabel();
         jComboBoxSelecaoModelo = new javax.swing.JComboBox();
-        jButtonBuscarVeiculos = new javax.swing.JButton();
+        jButtonConsultarVeiculos = new javax.swing.JButton();
         jLabelTituloTabVeiculo = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTableVeiculos = new javax.swing.JTable();
+        jButtonVeiculoContinuar = new javax.swing.JButton();
         jPanelDadosDoCliente = new javax.swing.JPanel();
         jScrollPaneListaDeClientes = new javax.swing.JScrollPane();
         jTableDadosDoCliente = new javax.swing.JTable();
@@ -245,17 +340,18 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jPanelDadosDoMotorista = new javax.swing.JPanel();
         jLabel73 = new javax.swing.JLabel();
-        jTextFieldCpfCnpj1 = new javax.swing.JTextField();
         jLabel74 = new javax.swing.JLabel();
-        jTextFieldNomeCliente1 = new javax.swing.JTextField();
         jButtonInserirMotorista = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jButtonBuscarMotorista = new javax.swing.JButton();
+        jButtonConsultarMotorista = new javax.swing.JButton();
         jScrollPaneDadosDoCliente1 = new javax.swing.JScrollPane();
         jTextAreaDadosDoCliente1 = new javax.swing.JTextArea();
-        jScrollPaneListaDeClientes1 = new javax.swing.JScrollPane();
-        jTableDadosDoCliente1 = new javax.swing.JTable();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBoxMotoristaEhCliente = new javax.swing.JCheckBox();
+        jTextFieldMotoristaNomeOuCnpj = new javax.swing.JTextField();
+        jComboBoxCampoPesquisaMotorista = new javax.swing.JComboBox<>();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTableMotoristas = new javax.swing.JTable();
+        jButtonMotoristaContinuar = new javax.swing.JButton();
         jPanelDadosComplementares = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -309,6 +405,7 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
         jButtonSelecionarCliente = new javax.swing.JButton();
         jButtonNovaPesquisa = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(".");
@@ -331,13 +428,13 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
             }
         });
 
-        jButtonBuscarVeiculos.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButtonBuscarVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/search-icon-16px.png"))); // NOI18N
-        jButtonBuscarVeiculos.setMnemonic('u');
-        jButtonBuscarVeiculos.setText("Consultar");
-        jButtonBuscarVeiculos.addActionListener(new java.awt.event.ActionListener() {
+        jButtonConsultarVeiculos.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButtonConsultarVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/search-icon-16px.png"))); // NOI18N
+        jButtonConsultarVeiculos.setMnemonic('u');
+        jButtonConsultarVeiculos.setText("Consultar");
+        jButtonConsultarVeiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBuscarVeiculosActionPerformed(evt);
+                jButtonConsultarVeiculosActionPerformed(evt);
             }
         });
 
@@ -397,10 +494,21 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
             jTableVeiculos.getColumnModel().getColumn(10).setMaxWidth(150);
         }
 
+        jButtonVeiculoContinuar.setText("Continuar");
+        jButtonVeiculoContinuar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVeiculoContinuarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelSelecaoDoVeiculoLayout = new javax.swing.GroupLayout(jPanelSelecaoDoVeiculo);
         jPanelSelecaoDoVeiculo.setLayout(jPanelSelecaoDoVeiculoLayout);
         jPanelSelecaoDoVeiculoLayout.setHorizontalGroup(
             jPanelSelecaoDoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelSelecaoDoVeiculoLayout.createSequentialGroup()
+                .addGap(533, 533, 533)
+                .addComponent(jLabelTituloTabVeiculo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanelSelecaoDoVeiculoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelSelecaoDoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -415,20 +523,19 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                             .addGroup(jPanelSelecaoDoVeiculoLayout.createSequentialGroup()
                                 .addComponent(jComboBoxSelecaoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButtonBuscarVeiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 611, Short.MAX_VALUE)))
+                                .addComponent(jButtonConsultarVeiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 611, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelSelecaoDoVeiculoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonVeiculoContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(jPanelSelecaoDoVeiculoLayout.createSequentialGroup()
-                .addGap(533, 533, 533)
-                .addComponent(jLabelTituloTabVeiculo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelSelecaoDoVeiculoLayout.setVerticalGroup(
             jPanelSelecaoDoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelSelecaoDoVeiculoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabelTituloTabVeiculo)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelSelecaoDoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelSelecioneCategoria, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabelselecioneModelo))
@@ -436,10 +543,12 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                 .addGroup(jPanelSelecaoDoVeiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxSelecaoCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxSelecaoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonBuscarVeiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(76, Short.MAX_VALUE))
+                    .addComponent(jButtonConsultarVeiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonVeiculoContinuar)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jTabbedPaneDadosLocacao.addTab("Veículo", jPanelSelecaoDoVeiculo);
@@ -569,22 +678,27 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
 
         jPanelDadosDoMotorista.setPreferredSize(new java.awt.Dimension(1137, 434));
 
-        jLabel73.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel73.setText("Informe CPF");
+        jLabel73.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel73.setText("Campo Pesquisa");
 
-        jLabel74.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel74.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel74.setText("Informe Nome");
 
         jButtonInserirMotorista.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButtonInserirMotorista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/User-Clients-icon-24px.png"))); // NOI18N
         jButtonInserirMotorista.setText("Inserir");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
         jLabel5.setText("Dados Do Motorista");
 
-        jButtonBuscarMotorista.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButtonBuscarMotorista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/search-icon-24px.png"))); // NOI18N
-        jButtonBuscarMotorista.setText("Buscar");
+        jButtonConsultarMotorista.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButtonConsultarMotorista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/search-icon-24px.png"))); // NOI18N
+        jButtonConsultarMotorista.setText("Consultar");
+        jButtonConsultarMotorista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConsultarMotoristaActionPerformed(evt);
+            }
+        });
 
         jScrollPaneDadosDoCliente1.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados Do Cliente"));
 
@@ -592,95 +706,115 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
         jTextAreaDadosDoCliente1.setRows(5);
         jScrollPaneDadosDoCliente1.setViewportView(jTextAreaDadosDoCliente1);
 
-        jTableDadosDoCliente1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("")));
-        jTableDadosDoCliente1.setModel(new javax.swing.table.DefaultTableModel(
+        jCheckBoxMotoristaEhCliente.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jCheckBoxMotoristaEhCliente.setText("Cliente é o Motorista");
+
+        jTableMotoristas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "CPF / CPNP", "Nome / Razão Social", ""
+                "id", "Nome", "CNH", "Categoria", "Data Val. CNH", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPaneListaDeClientes1.setViewportView(jTableDadosDoCliente1);
-        if (jTableDadosDoCliente1.getColumnModel().getColumnCount() > 0) {
-            jTableDadosDoCliente1.getColumnModel().getColumn(0).setMinWidth(50);
-            jTableDadosDoCliente1.getColumnModel().getColumn(0).setPreferredWidth(50);
-            jTableDadosDoCliente1.getColumnModel().getColumn(0).setMaxWidth(50);
-            jTableDadosDoCliente1.getColumnModel().getColumn(1).setMinWidth(200);
-            jTableDadosDoCliente1.getColumnModel().getColumn(1).setPreferredWidth(200);
-            jTableDadosDoCliente1.getColumnModel().getColumn(1).setMaxWidth(200);
-            jTableDadosDoCliente1.getColumnModel().getColumn(3).setMinWidth(30);
-            jTableDadosDoCliente1.getColumnModel().getColumn(3).setPreferredWidth(30);
-            jTableDadosDoCliente1.getColumnModel().getColumn(3).setMaxWidth(30);
+        jScrollPane5.setViewportView(jTableMotoristas);
+        if (jTableMotoristas.getColumnModel().getColumnCount() > 0) {
+            jTableMotoristas.getColumnModel().getColumn(0).setMinWidth(40);
+            jTableMotoristas.getColumnModel().getColumn(0).setPreferredWidth(40);
+            jTableMotoristas.getColumnModel().getColumn(0).setMaxWidth(40);
+            jTableMotoristas.getColumnModel().getColumn(1).setMinWidth(300);
+            jTableMotoristas.getColumnModel().getColumn(1).setPreferredWidth(300);
+            jTableMotoristas.getColumnModel().getColumn(1).setMaxWidth(300);
+            jTableMotoristas.getColumnModel().getColumn(2).setMinWidth(150);
+            jTableMotoristas.getColumnModel().getColumn(2).setPreferredWidth(150);
+            jTableMotoristas.getColumnModel().getColumn(2).setMaxWidth(150);
+            jTableMotoristas.getColumnModel().getColumn(3).setMinWidth(150);
+            jTableMotoristas.getColumnModel().getColumn(3).setPreferredWidth(150);
+            jTableMotoristas.getColumnModel().getColumn(3).setMaxWidth(150);
+            jTableMotoristas.getColumnModel().getColumn(4).setMinWidth(120);
+            jTableMotoristas.getColumnModel().getColumn(4).setPreferredWidth(120);
+            jTableMotoristas.getColumnModel().getColumn(4).setMaxWidth(120);
+            jTableMotoristas.getColumnModel().getColumn(5).setMinWidth(100);
+            jTableMotoristas.getColumnModel().getColumn(5).setPreferredWidth(100);
+            jTableMotoristas.getColumnModel().getColumn(5).setMaxWidth(100);
         }
 
-        jCheckBox1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jCheckBox1.setText("Cliente é o Motorista");
+        jButtonMotoristaContinuar.setText("Continuar");
+        jButtonMotoristaContinuar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMotoristaContinuarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelDadosDoMotoristaLayout = new javax.swing.GroupLayout(jPanelDadosDoMotorista);
         jPanelDadosDoMotorista.setLayout(jPanelDadosDoMotoristaLayout);
         jPanelDadosDoMotoristaLayout.setHorizontalGroup(
             jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDadosDoMotoristaLayout.createSequentialGroup()
-                .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextFieldCpfCnpj1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel73, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelDadosDoMotoristaLayout.createSequentialGroup()
-                        .addComponent(jLabel74, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanelDadosDoMotoristaLayout.createSequentialGroup()
-                        .addComponent(jTextFieldNomeCliente1)
-                        .addGap(203, 203, 203)))
-                .addComponent(jButtonBuscarMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jButtonInserirMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanelDadosDoMotoristaLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(521, 521, 521)
                 .addComponent(jLabel5)
-                .addGap(485, 485, 485))
-            .addGroup(jPanelDadosDoMotoristaLayout.createSequentialGroup()
-                .addComponent(jScrollPaneListaDeClientes1, javax.swing.GroupLayout.DEFAULT_SIZE, 810, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDadosDoMotoristaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelDadosDoMotoristaLayout.createSequentialGroup()
+                        .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel73, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxCampoPesquisaMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelDadosDoMotoristaLayout.createSequentialGroup()
+                                .addComponent(jLabel74, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanelDadosDoMotoristaLayout.createSequentialGroup()
+                                .addComponent(jTextFieldMotoristaNomeOuCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jCheckBoxMotoristaEhCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButtonConsultarMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonInserirMotorista, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelDadosDoMotoristaLayout.createSequentialGroup()
-                        .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(252, 252, 252))
-                    .addComponent(jScrollPaneDadosDoCliente1)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonMotoristaContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPaneDadosDoCliente1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanelDadosDoMotoristaLayout.setVerticalGroup(
             jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDadosDoMotoristaLayout.createSequentialGroup()
-                .addComponent(jLabel5)
                 .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelDadosDoMotoristaLayout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel74)
-                            .addComponent(jLabel73))
-                        .addGap(1, 1, 1)
-                        .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldCpfCnpj1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldNomeCliente1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanelDadosDoMotoristaLayout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel73, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel74))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonBuscarMotorista)
-                            .addComponent(jButtonInserirMotorista)
-                            .addComponent(jCheckBox1))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPaneDadosDoCliente1)
-                    .addComponent(jScrollPaneListaDeClientes1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)))
+                            .addComponent(jComboBoxCampoPesquisaMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldMotoristaNomeOuCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCheckBoxMotoristaEhCliente)
+                            .addComponent(jButtonConsultarMotorista)
+                            .addComponent(jButtonInserirMotorista)))
+                    .addGroup(jPanelDadosDoMotoristaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel5)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPaneDadosDoCliente1, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonMotoristaContinuar)
+                .addGap(0, 23, Short.MAX_VALUE))
         );
 
         jTabbedPaneDadosLocacao.addTab("Motorista", jPanelDadosDoMotorista);
@@ -930,7 +1064,7 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                                 .addComponent(jXDatePickerDataDevolucao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jButtonConsultarDisponibilidadeLocacao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jSeparator1))))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1025,6 +1159,8 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
         jButton1.setMnemonic('o');
         jButton1.setText("Novo");
 
+        jButton2.setText("Abrir Reservas");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -1034,6 +1170,8 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jButtonNovaPesquisa)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1062,7 +1200,8 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonSelecionarCliente)
                     .addComponent(jButtonNovaPesquisa)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addContainerGap())
         );
 
@@ -1103,7 +1242,7 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(1269, 687));
+        setSize(new java.awt.Dimension(1269, 735));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1112,9 +1251,57 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
         
     }//GEN-LAST:event_jComboBoxSelecaoModeloActionPerformed
 
-    private void jButtonBuscarVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarVeiculosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonBuscarVeiculosActionPerformed
+    private void jButtonConsultarVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarVeiculosActionPerformed
+        
+        try {
+            String categoria = jComboBoxSelecaoCategoria.getSelectedItem().toString() != null ? jComboBoxSelecaoCategoria.getSelectedItem().toString() : "";
+
+            boolean temModeloECategoriaSelecionado = !UtilObjetos.ehNuloOuVazio(jComboBoxSelecaoModelo.getSelectedItem())
+                                                 && !UtilObjetos.ehNuloOuVazio(jComboBoxSelecaoModelo.getSelectedItem().toString())
+                                                 && !UtilObjetos.ehNuloOuVazio(jComboBoxSelecaoCategoria.getSelectedItem())
+                                                 && !UtilObjetos.ehNuloOuVazio(jComboBoxSelecaoCategoria.getSelectedItem().toString());
+
+            if (!temModeloECategoriaSelecionado) {
+                JOptionPane.showMessageDialog(null, "Selecione CATEGORIA e MODELO para pesquisar um veículo.");
+            }
+
+            EnumCategoriaVeiculo categoriaVeiculoSelecionado = EnumCategoriaVeiculo.valueOf(categoria);
+
+            String nomeModelo = jComboBoxSelecaoCategoria.getSelectedItem().toString();
+
+            Veiculo veiculoBanco = veiculoBll.consultarVeiculosDisponiveisLocacao(categoriaVeiculoSelecionado, nomeModelo);
+
+            if (!UtilObjetos.ehNuloOuVazio(veiculoBanco)) {
+                this.veiculosDisponiveisTabela.clear();
+
+                this.veiculosDisponiveisTabela.add(veiculoBanco);
+
+                UtilTabela.limparTabelas(jTableVeiculos);
+
+                preencherTabelaVeiculos(this.veiculosDisponiveisTabela);                  
+            }
+
+    //        for (Veiculo v : this.veiculosDisponiveisTabela) {
+    //            if (v.getModelo().getDescricao().equals(nomeModelo)) {
+    //                
+    //                this.veiculosDisponiveisTabela.clear();
+    //                
+    //                UtilTabela.limparTabelas(jTableVeiculos);
+    //                
+    //                preencherTabelaVeiculos(this.veiculosDisponiveisTabela);
+    //            }
+    //        }
+
+        } catch (Exception e) {
+            if (!(e instanceof MulaCarException)) {
+                JOptionPane.showMessageDialog(null, String.format("Erro ao buscar o veículo. %s", mensagemErroPadrao));
+            } else {
+                JOptionPane.showMessageDialog(null, e.getMessage());            
+            }              
+        }
+        
+        
+    }//GEN-LAST:event_jButtonConsultarVeiculosActionPerformed
 
     private void jXDatePickerDataRetiradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXDatePickerDataRetiradaActionPerformed
         // TODO add your handling code here:
@@ -1144,7 +1331,6 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                                                 jTabbedPaneDadosLocacao,
                                                 jComboBoxSelecaoCategoria,
                                                 jComboBoxSelecaoModelo,
-                                                jButtonBuscarVeiculos,
                                                 jLabelTituloTabVeiculo,
                                                 jTableVeiculos);            
 
@@ -1152,17 +1338,24 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                 
                 Date dataRetiradaVeiculo = jXDatePickerDataRetirada.getDate();
                 
-                Date dataDevolucaoVeiculo = jXDatePickerDataRetirada.getDate();
+//                Date dataDevolucaoVeiculo = jXDatePickerDataRetirada.getDate();
                 
                 Locacao locacao =  new Locacao();
                 locacao.setDataRetirada(dataRetiradaVeiculo);
-                locacao.setDataDevolucaoPrevista(dataDevolucaoVeiculo);
+                locacao.setStatus(EnumStatus.INATIVO);
+                locacao.setReserva(false);
                 
-                List<Veiculo> veiculosDisponiveis = veiculoBll.consultarVeiculosDisponiveisLocacao(new Locacao());
+                Veiculo veiculo = new Veiculo();
+                veiculo.setStatus(EnumStatus.ATIVO);
+                veiculo.setSituacao(EnumSituacaoVeiculo.DISPONIVEL);
+                
+                locacao.setVeiculo(veiculo);
+                
+                this.veiculosDisponiveisTabela = veiculoBll.consultarVeiculosDisponiveisLocacao(locacao);
                 
                 UtilTabela.limparTabelas(jTableVeiculos);
                 
-                preencherTabelaVeiculos(veiculosDisponiveis);
+                preencherTabelaVeiculos(veiculosDisponiveisTabela);
                 
             } else {
 
@@ -1276,29 +1469,61 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
         
             for (int pos = 0; pos < veiculos.size(); pos++) {
 
-                String[] linha = new String[11];
+                String[] linha = new String[12];
 
                 Veiculo vei = veiculos.get(pos);
 
                 Marca marca = marcaBll.getMarcaPorId(vei.getModelo().getId());
                 
                 linha[0] = String.valueOf(vei.getId());
-                linha[2] = vei.getCategoria().getDescricao();
-                linha[3] = vei.getTipo().name();
-                linha[4] = marca.getDescricao();
-                linha[5] = vei.getModelo().getDescricao();
-                linha[6] = vei.getSituacao().name();
-                linha[7] = vei.getStatus().name();
-                linha[8] = String.valueOf(vei.getNumPassageiros());
-                linha[9] = String.valueOf(vei.getKm());
-                linha[10] = vei.getTipoCombustivel().name();
-                linha[11] = String.valueOf(vei.getCategoria().getValor());
+                linha[1] = vei.getCategoria().getDescricao();
+                linha[2] = vei.getTipo().name();
+                linha[3] = marca.getDescricao();
+                linha[4] = vei.getModelo().getDescricao();
+                linha[5] = vei.getSituacao().name();
+                linha[6] = vei.getStatus().name();
+                linha[7] = String.valueOf(vei.getNumPassageiros());
+                linha[8] = String.valueOf(vei.getKm());
+                linha[9] = vei.getTipoCombustivel().name();
+                linha[10] = String.valueOf(vei.getCategoria().getValor());
 
 
                 model.addRow(linha);
             }                    
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao consultar o cliente. " + mensagemErroPadrao);
+            JOptionPane.showMessageDialog(null, "Erro ao preencher tabela de veiculos. " + mensagemErroPadrao);
+        }
+    }   
+    
+    private void preencherTabelaMotoristas(List<Motorista> motoristas) {
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTableMotoristas.getModel();
+       
+            model.setNumRows(0);
+        
+//            clienteBll.ordenarListaVeiculos(veiculos);
+        
+            for (int pos = 0; pos < motoristas.size(); pos++) {
+
+                String[] linha = new String[7];
+
+                Motorista mot = motoristas.get(pos);
+
+                linha[0] = String.valueOf(mot.getId());
+                linha[1] = mot.getNome();
+                linha[2] = mot.getNumeroCnh();
+                linha[3] = mot.getCategoriaCnh().name();
+                
+                DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");  
+                String dataValidadeCnh = dateFormat.format(mot.getDataValidadeCnh());  
+                linha[4] = dataValidadeCnh;
+                
+                linha[5] = mot.getStatus().name();
+
+                model.addRow(linha);
+            }                    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro prencher tabela de motoristas.. " + mensagemErroPadrao);
         }
     }    
     
@@ -1309,8 +1534,8 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                 
                 if (!UtilObjetos.ehNuloOuVazio(locacaoBanco) && locacaoBanco.isReserva()) {
                     
-                    String pergunta = "Ja existe reserva para esse cliente. \nDeseja excluir a reserva Existente e efetuar uma nova?";
-                    String tituloJanela = "Reserva";
+                    String pergunta = "Existem reservas pendentes para esse cliente.\nDeseja verificar ?";
+                    String tituloJanela = "Reservas";
                     String[] botaoOpcoes = {"Sim", "Não"};
                     String label = botaoOpcoes[0];
 
@@ -1323,15 +1548,18 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                                                             botaoOpcoes,
                                                             label);
                     if (opcao == JOptionPane.YES_OPTION) {
-                        locacaoBll.excluirLocacao(locacaoBanco);
+                        
+//                        TODO: chamar a tela de reservas
 
-                        JOptionPane.showMessageDialog(this, "Reserva Removida. Efetue um nova reserva ou locação.");
-                        
-                        UtilTabela.limparTabelas(jTableClientes);
-                        
-                        preencherTabelaClientes(this.clientesTabela);
-                        
-                        UtilComponentes.habilitarComponentes(false, jButtonSelecionarCliente);
+//                        locacaoBll.excluirLocacao(locacaoBanco);
+//
+//                        JOptionPane.showMessageDialog(this, "Reserva Removida. Efetue um nova reserva ou locação.");
+//                        
+//                        UtilTabela.limparTabelas(jTableClientes);
+//                        
+//                        this.preencherTabelaClientes(this.clientesTabela);
+//                        
+//                        UtilComponentes.habilitarComponentes(false, jButtonSelecionarCliente);
                         
                         return;
                     } else {
@@ -1348,7 +1576,10 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                                                 jLabelDataDevolucao,
                                                 jXDatePickerDataDevolucao,
                                                 jButtonConsultarDisponibilidadeLocacao
-                                                );            
+                                                );  
+                
+                
+                
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Erro ao tratar reserva.");
             }
@@ -1368,7 +1599,7 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
                                                 jTabbedPaneDadosLocacao,
                                                 jComboBoxSelecaoCategoria,
                                                 jComboBoxSelecaoModelo,
-                                                jButtonBuscarVeiculos,
+                                                jButtonConsultarVeiculos,
                                                 jLabelTituloTabVeiculo,
                                                 jTableVeiculos,
                                                 jRadioButtonLocacao,
@@ -1383,6 +1614,97 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
         
         jButtonSelecionarCliente.setEnabled(false);
     }//GEN-LAST:event_jButtonNovaPesquisaActionPerformed
+
+    private void jButtonVeiculoContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVeiculoContinuarActionPerformed
+        jTabbedPaneDadosLocacao.setSelectedIndex(2);
+    }//GEN-LAST:event_jButtonVeiculoContinuarActionPerformed
+
+    private void jButtonConsultarMotoristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarMotoristaActionPerformed
+        
+        try {
+            String campoPesquisa =  jComboBoxCampoPesquisaMotorista.getSelectedItem().toString();
+
+            String valorPesquisa = jTextFieldMotoristaNomeOuCnpj.getText();
+
+            if (UtilObjetos.ehNuloOuVazio(campoPesquisa) || UtilObjetos.ehNuloOuVazio(valorPesquisa)) {
+                JOptionPane.showMessageDialog(null, "Digite texto para pesquisar motorista.");
+            }
+            
+            Motorista motoristaParaPesquisar = new Motorista();
+            
+            this.motoristasTabela.clear();
+        
+            if ("Nome".equals(campoPesquisa)) {
+                
+                motoristaParaPesquisar.setNome(valorPesquisa.trim());
+                
+                Motorista motoristaBanco = motoristaBll.getMotoristaByNome(motoristaParaPesquisar);            
+
+                if (!UtilObjetos.ehNuloOuVazio(motoristaBanco)) {
+
+                    this.motoristasTabela.add(motoristaBanco);
+
+                    UtilTabela.limparTabelas(jTableVeiculos);
+
+                    this.preencherTabelaMotoristas(motoristasTabela);
+                    
+                } else {
+                    JOptionPane.showMessageDialog(null, "Motorista não encontrado.");
+                    
+                    return;                    
+                }
+                
+            } else if ("CPF".equals(campoPesquisa)) {
+                
+                motoristaParaPesquisar.setCpf(valorPesquisa);
+                
+                motoristaParaPesquisar = motoristaBll.getMotoristaByCPF(motoristaParaPesquisar);            
+
+                if (!UtilObjetos.ehNuloOuVazio(motoristaParaPesquisar)) {
+
+                    this.motoristasTabela.add(motoristaParaPesquisar);
+
+                    UtilTabela.limparTabelas(jTableMotoristas);
+
+                    this.preencherTabelaMotoristas(motoristasTabela);                
+               } else {
+                    JOptionPane.showMessageDialog(null, "Motorista não encontrado.");
+                    
+                    return;                    
+                }
+            } else if ("CNH".equals(campoPesquisa)) {
+                
+                motoristaParaPesquisar.setNumeroCnh(valorPesquisa);
+                
+                motoristaParaPesquisar = motoristaBll.getMotoristaByCNH(motoristaParaPesquisar);            
+
+                if (!UtilObjetos.ehNuloOuVazio(motoristaParaPesquisar)) {
+
+                    this.motoristasTabela.add(motoristaParaPesquisar);
+
+                    UtilTabela.limparTabelas(jTableMotoristas);
+
+                    this.preencherTabelaMotoristas(motoristasTabela);                
+               } else {
+                    JOptionPane.showMessageDialog(null, "Motorista não encontrado.");
+                    
+                    return;                    
+                }               
+            } else {
+                JOptionPane.showMessageDialog(null, "Deve ser seleciconado um campo para pesquisar");
+            }
+        } catch (Exception e) {
+            if (!(e instanceof MulaCarException)) {
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro ao consultar o motorista. Entre em contato com suporte!");
+            } else {
+                JOptionPane.showMessageDialog(null, e.getMessage());            
+            }            
+        }
+    }//GEN-LAST:event_jButtonConsultarMotoristaActionPerformed
+
+    private void jButtonMotoristaContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMotoristaContinuarActionPerformed
+        jTabbedPaneDadosLocacao.setSelectedIndex(3);
+    }//GEN-LAST:event_jButtonMotoristaContinuarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1430,20 +1752,24 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupLocacaoReserva;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonBuscarCliente;
-    private javax.swing.JButton jButtonBuscarMotorista;
-    private javax.swing.JButton jButtonBuscarVeiculos;
     private javax.swing.JButton jButtonConfirmarComposicaoValores;
     private javax.swing.JButton jButtonConsultarCliente;
     private javax.swing.JButton jButtonConsultarDisponibilidadeLocacao;
+    private javax.swing.JButton jButtonConsultarMotorista;
+    private javax.swing.JButton jButtonConsultarVeiculos;
     private javax.swing.JButton jButtonFinalizarCadastro;
     private javax.swing.JButton jButtonInserirCliente;
     private javax.swing.JButton jButtonInserirMotorista;
+    private javax.swing.JButton jButtonMotoristaContinuar;
     private javax.swing.JButton jButtonNovaPesquisa;
     private javax.swing.JButton jButtonSelecionarCliente;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JButton jButtonVeiculoContinuar;
     private javax.swing.JCheckBox jCheckBoxAcessorioCadeirinha;
     private javax.swing.JCheckBox jCheckBoxAcessorioSuporteParaBiciclet;
+    private javax.swing.JCheckBox jCheckBoxMotoristaEhCliente;
+    private javax.swing.JComboBox<String> jComboBoxCampoPesquisaMotorista;
     private javax.swing.JComboBox jComboBoxSelecaoCategoria;
     private javax.swing.JComboBox jComboBoxSelecaoModelo;
     private javax.swing.JLabel jLabel1;
@@ -1486,16 +1812,16 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPaneDadosDoCliente;
     private javax.swing.JScrollPane jScrollPaneDadosDoCliente1;
     private javax.swing.JScrollPane jScrollPaneListaDeClientes;
-    private javax.swing.JScrollPane jScrollPaneListaDeClientes1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPaneDadosLocacao;
     private javax.swing.JTable jTableClientes;
     private javax.swing.JTable jTableDadosDoCliente;
-    private javax.swing.JTable jTableDadosDoCliente1;
+    private javax.swing.JTable jTableMotoristas;
     private javax.swing.JTable jTableVeiculos;
     private javax.swing.JTextArea jTextAreaComposicaoValores;
     private javax.swing.JTextArea jTextAreaDadosDoCliente;
@@ -1503,13 +1829,12 @@ public class LocacaoVeiculosApp1 extends javax.swing.JDialog {
     private javax.swing.JTextArea jTextAreaObservacao;
     private javax.swing.JTextField jTextFieldCPFOuCNPJ;
     private javax.swing.JTextField jTextFieldCpfCnpj;
-    private javax.swing.JTextField jTextFieldCpfCnpj1;
     private javax.swing.JTextField jTextFieldDataCadastro;
     private javax.swing.JTextField jTextFieldDataDaRetirada;
     private javax.swing.JTextField jTextFieldDataDevolucaoPrevista;
     private javax.swing.JTextField jTextFieldKmInicial;
+    private javax.swing.JTextField jTextFieldMotoristaNomeOuCnpj;
     private javax.swing.JTextField jTextFieldNomeCliente;
-    private javax.swing.JTextField jTextFieldNomeCliente1;
     private javax.swing.JTextField jTextFieldRazaoSocial;
     private javax.swing.JTextField jTextFieldSituacaoDoTanque;
     private javax.swing.JTextField jTextFieldUsuarioCadastro;

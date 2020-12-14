@@ -35,7 +35,7 @@ public class EnderecoBll {
     }
     
     public void adicionarEnderecos(List<Endereco> enderecos) throws Exception {
-
+        
         for (Endereco end : enderecos) {
             this.validarEndereco(end);
         }

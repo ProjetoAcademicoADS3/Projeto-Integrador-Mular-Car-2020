@@ -82,10 +82,30 @@ public class MotoristaBll {
     }
 
     public Motorista getMotoristaByNome(Motorista motorista) throws Exception {
-        this.validarMotorista(motorista);
+        this.validarMotoristaNulo(motorista);
         
         if (UtilObjetos.ehNuloOuVazio(motorista.getNome())) {
-            throw new Exception("Digite nome ou nome Fantasia para pesquisa.");
+            throw new MulaCarException("Digite nome para pesquisa.");
+        }
+        
+        return motoristaDal.getMotoristaByNome(motorista);
+    }
+    
+    public Motorista getMotoristaByCPF(Motorista motorista) throws Exception {
+        this.validarMotoristaNulo(motorista);
+        
+        if (UtilObjetos.ehNuloOuVazio(motorista.getCpf())) {
+            throw new MulaCarException("Digite CPF para pesquisa.");
+        }
+        
+        return motoristaDal.getMotoristaByNome(motorista);
+    }
+
+    public Motorista getMotoristaByCNH(Motorista motorista) throws Exception {
+        this.validarMotorista(motorista);
+        
+        if (UtilObjetos.ehNuloOuVazio(motorista.getNumeroCnh())) {
+            throw new MulaCarException("Digite numero da CNH para pesquisa.");
         }
         
         return motoristaDal.getMotoristaByNome(motorista);
@@ -119,22 +139,22 @@ public class MotoristaBll {
     
     private void validarIdNulo(Motorista motorista) throws Exception {
         if (UtilObjetos.ehNuloOuVazio(motorista.getId())) {
-            throw new Exception("ID do Motorista não pode ser nulo ou vazio.");
+            throw new MulaCarException("ID do Motorista não pode ser nulo ou vazio.");
         }
     }    
 
     private void validarCamposObrigatorios(Motorista motorista) throws Exception {
         boolean temCamposNulos = UtilObjetos.ehNuloOuVazio(motorista.getStatus())
-                || UtilObjetos.ehNuloOuVazio(motorista.getCpf());
+                                 || UtilObjetos.ehNuloOuVazio(motorista.getCpf());
         
         if (temCamposNulos) {
-            throw new Exception("Campos obrigatórios não foram preenchidos!\n");
+            throw new MulaCarException("Campos obrigatórios não foram preenchidos!\n");
         }
     }
 
     private void validarTamanhoMinimoNome(Motorista motorista, int tamanhoMinimo) throws Exception {
             if (motorista.getNome().length() < tamanhoMinimo) {
-                throw new Exception("O nome motorista deve ter no mínimo 3 letras!\n");
+                throw new MulaCarException("O nome motorista deve ter no mínimo 3 letras!\n");
             }
     }
 
@@ -143,7 +163,7 @@ public class MotoristaBll {
         
         for (int i = 0; i < invalidos.length(); i++) {
             if (motorista.getCpf().contains("" + invalidos.charAt(i))) {
-                throw new Exception("Cpf inválido para o motorista!\n");
+                throw new MulaCarException("Cpf inválido para o motorista!\n");
             }
         }
     }

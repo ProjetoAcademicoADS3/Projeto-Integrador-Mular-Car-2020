@@ -10,7 +10,10 @@
 package br.com.mulacar.bll;
 
 import br.com.mulacar.dal.ModeloDal;
+import br.com.mulacar.enumeration.EnumCategoriaVeiculo;
+import br.com.mulacar.exception.MulaCarException;
 import br.com.mulacar.model.Modelo;
+import br.com.mulacar.util.UtilObjetos;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +56,13 @@ public class ModeloBll {
                         + " já existe uma modelo com esta descrição\n");
             }
         }
+    }
+    
+    public List<Modelo> listarModelosPorCategoria(EnumCategoriaVeiculo categoriaSelecionada) throws Exception {
+         if (UtilObjetos.ehNuloOuVazio(categoriaSelecionada)) {
+             throw new MulaCarException("Deve ser selecionada uma categoria para buscar os modelos!.");
+         }
+         return modDal.listarModelosPorCategoria(categoriaSelecionada);
     }
 
     public List<Modelo> getConsultaModelos() throws Exception {

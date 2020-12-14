@@ -340,12 +340,16 @@ CREATE TABLE locacao (
     CONSTRAINT fk_locacao_usuario_cadastro_id FOREIGN KEY (loc_usuario_cadastro_id) REFERENCES usuario(usu_id)
 );
 
-INSERT INTO locacao (loc_cliente_id, loc_motorista_id, loc_veiculo_id, loc_usuario_cadastro_id, loc_valor_multa, loc_tanque_cheio, loc_data_retirada, 
-					loc_data_devolucao_prevista, loc_km_inicial, loc_observacoes, loc_valor_total_acessorios, loc_valor_locacao, loc_valor_caucao, 
-					loc_valor_seguro, loc_status, loc_reserva)
+INSERT INTO locacao (loc_cliente_id, loc_motorista_id, loc_veiculo_id, loc_usuario_cadastro_id, loc_valor_multa, loc_tanque_cheio, loc_data_retirada, loc_data_devolucao_prevista, loc_km_inicial, loc_observacoes, loc_valor_total_acessorios, loc_valor_locacao, loc_valor_caucao,loc_valor_seguro, loc_status, loc_reserva)
 values
-(1, 5, 14, 2, 0, true, '2021-12-05', '2021-12-25', '234378', 'Observacao teste', 356.90, 2897, 4345.5, 260.73, 'ATIVO', true),
-(2, 6, 14, 2, 0, false, '2021-12-05', '2021-12-25', '16488', 'Observacao teste2', 256.90, 1897, 3345.5, 160.73, 'INATIVO', false);
+(1, 5, 14, 2, 0, true, '2021-12-18', '2021-12-25', '234378', 'Observacao teste', 356.90, 2897, 4345.5, 260.73, 'AGUARDANDO', true),
+(2, 6, 9, 2, 0, false, '2020-12-05', '2020-12-26', '16488', 'Observacao teste2', 256.90, 1897, 3345.5, 189.80, 'VIGENTE', false),
+(3, 7, 10, 2, 0, true, '2021-01-04', '2021-01-27', '36488', 'Observacao teste3', 256.90, 1897, 3345.5, 123.66, 'AGUARDANDO', true),
+(4, 8, 12, 2, 0, false, '2021-08-12', '2021-12-25', '46488', 'Observacao teste4', 256.90, 1897, 3345.5, 234.55, 'VIGENTE', false),
+(5, 5, 13, 2, 0, true, '2020-10-29', '2020-11-09', '45637', 'Observacao teste5', 256.90, 1897, 3345.5, 454.65, 'PRAZO_EXPIRADO', true),
+(6, 6, 11, 2, 0, false, '2021-12-14', '2021-12-25', '76635', 'Observacao teste6', 256.90, 1897, 3345.5, 122.23, 'VIGENTE', false),
+(7, 7, 12, 2, 0, true, '2020-12-10', '2020-11-16', '35556', 'Observacao teste7', 256.90, 1897, 3345.5, 878.34, 'PRAZO_EXPIRADO', false),
+(8, 8, 14, 2, 0, false, '2020-06-15', '2020-05-25', '16488', 'Observacao teste8', 256.90, 1897, 3345.5, 232.50, 'FINALIZADO', false);
 
 select * 
 -- delete

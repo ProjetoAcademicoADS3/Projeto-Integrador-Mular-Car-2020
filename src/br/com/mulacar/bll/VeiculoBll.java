@@ -9,6 +9,7 @@
 package br.com.mulacar.bll;
 
 import br.com.mulacar.dal.VeiculoDal;
+import br.com.mulacar.enumeration.EnumCategoriaVeiculo;
 import br.com.mulacar.exception.MulaCarException;
 import br.com.mulacar.model.Locacao;
 import br.com.mulacar.model.Veiculo;
@@ -16,7 +17,6 @@ import br.com.mulacar.util.UtilObjetos;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -177,6 +177,16 @@ public class VeiculoBll {
         }
         
         return veiculoDal.consultarVeiculosDisponiveisLocacao(locacao);
+        
+    }
+    
+    public Veiculo consultarVeiculosDisponiveisLocacao(EnumCategoriaVeiculo categoriaVeiculoSelecionado, String nomeModelo) throws Exception {
+        
+        if (UtilObjetos.ehNuloOuVazio(categoriaVeiculoSelecionado) ||UtilObjetos.ehNuloOuVazio(nomeModelo)) {
+            throw new MulaCarException("Informe os dados da locação para consulta dos veiculos disponvies.");
+        }
+        
+        return veiculoDal.consultarVeiculosDisponiveisLocacao(categoriaVeiculoSelecionado, nomeModelo);
         
     }
 

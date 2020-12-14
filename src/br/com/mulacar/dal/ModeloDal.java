@@ -10,6 +10,7 @@
 package br.com.mulacar.dal;
 
 import br.com.mulacar.bll.MarcaBll;
+import br.com.mulacar.enumeration.EnumCategoriaVeiculo;
 import br.com.mulacar.enumeration.EnumStatus;
 import br.com.mulacar.model.Modelo;
 import java.sql.Connection;
@@ -167,6 +168,37 @@ public class ModeloDal {
         } catch (Exception e) {
         }
         return rs;
+    }
+    
+    public List<Modelo> listarModelosPorCategoria(EnumCategoriaVeiculo categoriaSelecionada)  throws Exception {
+        
+        List<Modelo> listaModelos = new ArrayList<>();
+        
+        String sql = "select * from modelo mod " 
+                   + "inner join veiculo vei on vei.vei_modelo_id = mod.mod_id " 
+                   + "inner join categoria cat on cat.cat_id = vei.vei_categoria_id " 
+                   + "where cat.cat_nome = ?";
+        try {
+            PreparedStatement pst = conexao.prepareStatement(sql);
+            
+            pst.setString(1, String.valueOf(categoriaSelecionada));
+            
+            ResultSet rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                Modelo mod = new Modelo();
+                mod.setId(rs.getInt("mod_id"));
+                mod.setDescricao(rs.getString("mod_nome"));
+                mod.setStatus(EnumStatus.valueOf(rs.getString("mod_status")));
+                MarcaBll marBll = new MarcaBll();
+                mod.setMarca(marBll.getMarcaPorId(rs.getInt("mod_marca_id")));
+                
+                listaModelos.add(mod);
+            }
+        } catch (Exception e) {
+            throw new Exception("Ocorreu um erro ao buscar os veiculos disponiveis para locação.", e);
+        }
+        return listaModelos;        
     }
 
 }

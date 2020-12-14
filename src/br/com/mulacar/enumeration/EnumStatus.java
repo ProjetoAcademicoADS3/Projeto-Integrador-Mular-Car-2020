@@ -11,7 +11,12 @@ package br.com.mulacar.enumeration;
 
 public enum EnumStatus {
     
-    ATIVO, INATIVO;
-    
+    ATIVO, 
+    INATIVO, 
+    PENDENTE,
+    AGUARDANDO,
+    VIGENTE,
+    FINALIZADO, 
+    PRAZO_EXPIRADO;
     
 }

@@ -221,10 +221,53 @@ public class MotoristaDal implements  Interface_ExibirImagem{
     public Motorista getMotoristaByNome(Motorista motorista) throws Exception {
         Motorista motoristaRetorno = null;
 
-        String sql = "SELECT * FROM motorista where mot_nome like ? ";
+        String sql = "SELECT * FROM motorista "
+                     + "where LOWER(mot_nome) like LOWER(?) ";
+        
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-            preparedStatement.setString(1, String.format("%%s%", motorista.getNome()));
+            preparedStatement.setString(1, "%" + motorista.getNome() + "%");
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            if (rs.next()) {
+                motoristaRetorno = preencherMotoristaRetornoBanco(rs);
+            }            
+
+        } catch (Exception e) {
+            Logger.getLogger(Motorista.class.getName()).log(Level.SEVERE, "MotoristaDal - ", e );
+            throw e;            
+        }
+        return motoristaRetorno;
+    }
+    
+    public Motorista getMotoristaByCNH(Motorista motorista) throws Exception {
+        Motorista motoristaRetorno = null;
+
+        String sql = "SELECT * FROM motorista where mot_cnh_numero = ? ";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, motorista.getNumeroCnh());
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            if (rs.next()) {
+                motoristaRetorno = preencherMotoristaRetornoBanco(rs);
+            }            
+
+        } catch (Exception e) {
+            Logger.getLogger(Motorista.class.getName()).log(Level.SEVERE, "MotoristaDal - ", e );
+            throw e;            
+        }
+        return motoristaRetorno;
+    }
+
+    public Motorista getMotoristaByCPF(Motorista motorista) throws Exception {
+        Motorista motoristaRetorno = null;
+
+        String sql = "SELECT * FROM motorista where mot_cpf = ? ";
+        
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, motorista.getCpf());
             ResultSet rs = preparedStatement.executeQuery();
             
             if (rs.next()) {
