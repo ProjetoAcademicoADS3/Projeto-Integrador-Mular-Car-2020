@@ -6,32 +6,41 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 package br.com.mulacar.app;
 
 import br.com.mulacar.bll.*;
 import br.com.mulacar.model.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-
 public class LocacaoVeiculosApp extends javax.swing.JDialog {
-    CategoriaBll catBll;
-    Categoria cat;
-    MarcaBll marBll;
-    Marca mar;
-    ModeloBll modBll;
-    Modelo mod;
+
+    private CategoriaBll catBll;
+    private Categoria cat;
+    private MarcaBll marBll;
+    private Marca mar;
+    private ModeloBll modBll;
+    private Modelo mod;
+    protected static Locacao numContrato;
 
     /**
      * Creates new form LocacaoVeiculosApp
      */
     public LocacaoVeiculosApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-            initComponents();
-            catBll = new CategoriaBll();
+        initComponents();
+
+        numContrato = new Locacao();
+
+        jTextFieldDataCadastro.setText(new SimpleDateFormat().format(new Date()));
+
+        jTextFieldUsuarioCadastro.setText(LoginApp.usuario.getNome());
+
+        catBll = new CategoriaBll();
         try {
             List<Categoria> listaCategoria = catBll.getConsultaCategorias();
             catBll.ordenaListaCategorias(listaCategoria);
@@ -52,7 +61,7 @@ public class LocacaoVeiculosApp extends javax.swing.JDialog {
                 mod = listaModelo.get(pos);
                 jComboBoxSelecaoModelo.addItem(mod.getDescricao().toUpperCase());
             }
-            
+
             //LISTA MARCA
             marBll = new MarcaBll();
             List<Marca> listaMarca = marBll.getConsultaMarcas();
@@ -63,13 +72,11 @@ public class LocacaoVeiculosApp extends javax.swing.JDialog {
                 mar = listaMarca.get(i);
                 jComboBoxSelecaoMarca.addItem(mar.getDescricao().toUpperCase());
             }
-   
-            
+
         } catch (Exception ex) {
             Logger.getLogger(LocacaoVeiculosApp.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
     }
 
     /**
@@ -288,7 +295,7 @@ public class LocacaoVeiculosApp extends javax.swing.JDialog {
                     .addComponent(jComboBoxSelecaoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonBuscarVeiculos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneListaDeVeiculo, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
+                .addComponent(jScrollPaneListaDeVeiculo, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("", jPanelSelecaoDoVeiculo);
@@ -528,7 +535,7 @@ public class LocacaoVeiculosApp extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelDadosDoMotoristaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPaneDadosDoCliente1)
-                    .addComponent(jScrollPaneListaDeClientes1, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)))
+                    .addComponent(jScrollPaneListaDeClientes1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)))
         );
 
         jTabbedPane1.addTab("", jPanelDadosDoMotorista);
@@ -556,10 +563,19 @@ public class LocacaoVeiculosApp extends javax.swing.JDialog {
 
         jLabel13.setText("Data Cadastro:");
 
+        jTextFieldDataCadastro.setEditable(false);
+
         jLabel14.setText("Usuário:");
+
+        jTextFieldUsuarioCadastro.setEditable(false);
 
         jButtonFinalizarCadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Ok-icon-24px.png"))); // NOI18N
         jButtonFinalizarCadastro.setText("Finalizar Cadastro");
+        jButtonFinalizarCadastro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFinalizarCadastroActionPerformed(evt);
+            }
+        });
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel15.setText("Acessórios");
@@ -829,10 +845,11 @@ public class LocacaoVeiculosApp extends javax.swing.JDialog {
                             .addComponent(jButtonFecharLocacao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jButtonDadosComplementares, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        setSize(new java.awt.Dimension(1148, 643));
+        setSize(new java.awt.Dimension(1148, 673));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -858,12 +875,12 @@ public class LocacaoVeiculosApp extends javax.swing.JDialog {
 
     private void jComboBoxSelecaoModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSelecaoModeloActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jComboBoxSelecaoModeloActionPerformed
 
     private void jComboBoxSelecaoMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSelecaoMarcaActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jComboBoxSelecaoMarcaActionPerformed
 
     private void jButtonBuscarVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarVeiculosActionPerformed
@@ -878,6 +895,18 @@ public class LocacaoVeiculosApp extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
     }//GEN-LAST:event_jButtonFecharLocacaoActionPerformed
+
+    private void jButtonFinalizarCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFinalizarCadastroActionPerformed
+        // TODO add your handling code here:
+        try {
+            numContrato = new Locacao(21);
+            this.setVisible(false);
+            new ContratoDeLocacaoApp(null, true).setVisible(true);
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, "Atenção no botão finalizar !\n" + erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonFinalizarCadastroActionPerformed
 
     /**
      * @param args the command line arguments

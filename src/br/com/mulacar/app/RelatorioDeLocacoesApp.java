@@ -5,8 +5,13 @@
  */
 package br.com.mulacar.app;
 
+import br.com.mulacar.bll.ClienteBll;
 import br.com.mulacar.bll.LocacaoBll;
+import br.com.mulacar.bll.VeiculoBll;
+import br.com.mulacar.enumeration.EnumStatus;
+import br.com.mulacar.model.Cliente;
 import br.com.mulacar.model.Locacao;
+import br.com.mulacar.model.Veiculo;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +27,8 @@ public class RelatorioDeLocacoesApp extends javax.swing.JDialog {
 
     private LocacaoBll locacaoBll;
     private Locacao locacao;
+    private ClienteBll clienteBll;
+    private VeiculoBll veiculoBll;
 
     /**
      * Creates new form RelatorioDeLocacoesApp
@@ -31,7 +38,15 @@ public class RelatorioDeLocacoesApp extends javax.swing.JDialog {
         initComponents();
 
         locacaoBll = new LocacaoBll();
+        clienteBll = new ClienteBll();
+        veiculoBll = new VeiculoBll();
 
+        jComboBoxOpcaoDeFiltro.removeAllItems();
+        String[] opcaoDeFiltro ={"todos", "cpf cliente", "placa veículo", "vigente",
+                "finalizado", "pendente", "aguardando", "prazo_expirado"};
+        for (String opcoes : opcaoDeFiltro) {
+            jComboBoxOpcaoDeFiltro.addItem(opcoes.toUpperCase());
+        }
     }
 
     public static String convertDate(Date dtConsulta) {
@@ -44,7 +59,7 @@ public class RelatorioDeLocacoesApp extends javax.swing.JDialog {
         }
     }
 
-    private void imprimirLocacoes(List<Locacao> listaLocacao) throws Exception {
+    private void printOutLocations(List<Locacao> listaLocacao) throws Exception {
         DefaultTableModel model = (DefaultTableModel) jTableRelatorioDeLocacoaes.getModel();
         model.setNumRows(0);
         locacaoBll.ordenaListaLocacoes(listaLocacao);
@@ -101,6 +116,8 @@ public class RelatorioDeLocacoesApp extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jTextFieldQuantRegistros = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jComboBoxOpcaoDeFiltro = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Relatório de Locações de Veiculos - LOCADORA MULACAR");
@@ -142,6 +159,10 @@ public class RelatorioDeLocacoesApp extends javax.swing.JDialog {
             }
         });
 
+        jLabel2.setText("Filtrar por:");
+
+        jComboBoxOpcaoDeFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanelRelatorioDeLocacoesLayout = new javax.swing.GroupLayout(jPanelRelatorioDeLocacoes);
         jPanelRelatorioDeLocacoes.setLayout(jPanelRelatorioDeLocacoesLayout);
         jPanelRelatorioDeLocacoesLayout.setHorizontalGroup(
@@ -150,20 +171,22 @@ public class RelatorioDeLocacoesApp extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanelRelatorioDeLocacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelRelatorioDeLocacoesLayout.createSequentialGroup()
-                        .addGap(0, 680, Short.MAX_VALUE)
-                        .addComponent(jTextFieldCampoDePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonBuscarLocacoes))
+                        .addComponent(jComboBoxOpcaoDeFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonBuscarLocacoes)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldCampoDePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1228, Short.MAX_VALUE)
                     .addGroup(jPanelRelatorioDeLocacoesLayout.createSequentialGroup()
-                        .addGroup(jPanelRelatorioDeLocacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanelRelatorioDeLocacoesLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(7, 7, 7)
-                                .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)))
-                        .addContainerGap())))
+                        .addComponent(jLabel1)
+                        .addGap(7, 7, 7)
+                        .addComponent(jTextFieldQuantRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
+                .addContainerGap())
         );
         jPanelRelatorioDeLocacoesLayout.setVerticalGroup(
             jPanelRelatorioDeLocacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,7 +194,9 @@ public class RelatorioDeLocacoesApp extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanelRelatorioDeLocacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonBuscarLocacoes)
-                    .addComponent(jTextFieldCampoDePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldCampoDePesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jComboBoxOpcaoDeFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -205,11 +230,34 @@ public class RelatorioDeLocacoesApp extends javax.swing.JDialog {
 
     private void jButtonBuscarLocacoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarLocacoesActionPerformed
         // TODO add your handling code here:
+        int opcaoFiltro = jComboBoxOpcaoDeFiltro.getSelectedIndex();
+        String pesquisarCpfOuPlaca = jTextFieldCampoDePesquisa.getText().trim();
         try {
-            imprimirLocacoes(locacaoBll.getConsultaLocacoes());
+
+            switch (opcaoFiltro) {
+
+                case 0:
+                    printOutLocations(locacaoBll.getConsultaLocacoes());
+                    break;
+                case 1:
+                    String cpf = JOptionPane.showInputDialog("Informe o CPF do cliente por favor: ");
+                    Cliente cliente;
+                    cliente = clienteBll.getConsultaClienteByCpfCnpj(new Cliente(cpf));
+                    printOutLocations(locacaoBll.getConsultaAllLocationsByCliente(new Locacao(cliente)));
+                    break;
+                case 2:
+                    Veiculo veiculo;
+                    veiculo = veiculoBll.getConsultarVeiculoByPlaca(pesquisarCpfOuPlaca);
+                    printOutLocations(locacaoBll.getConsultaAllLocationsByVeiculo(new Locacao(veiculo)));
+                    break;
+                default:
+                    EnumStatus status = EnumStatus.valueOf(jComboBoxOpcaoDeFiltro.getSelectedItem().toString());
+                    printOutLocations(locacaoBll.getConsultaLocacoesPorStatus(new Locacao(status)));
+                    break;
+            }
 
         } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null, "Atenção ao botão buscar !!!\n" + erro.getMessage());
+            JOptionPane.showMessageDialog(null, "Atenção ao botão pesquisar locações\n" + erro.getMessage());
         }
     }//GEN-LAST:event_jButtonBuscarLocacoesActionPerformed
 
@@ -264,7 +312,9 @@ public class RelatorioDeLocacoesApp extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonBuscarLocacoes;
+    private javax.swing.JComboBox<String> jComboBoxOpcaoDeFiltro;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanelRelatorioDeLocacoes;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableRelatorioDeLocacoaes;

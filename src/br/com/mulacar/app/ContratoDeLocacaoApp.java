@@ -8,11 +8,9 @@ package br.com.mulacar.app;
 import br.com.mulacar.bll.ContatoBll;
 import br.com.mulacar.bll.EnderecoBll;
 import br.com.mulacar.bll.LocacaoBll;
-import br.com.mulacar.model.Cliente;
 import br.com.mulacar.model.Contato;
 import br.com.mulacar.model.Endereco;
 import br.com.mulacar.model.Locacao;
-import br.com.mulacar.model.Motorista;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -40,24 +38,46 @@ public class ContratoDeLocacaoApp extends javax.swing.JDialog {
     public ContratoDeLocacaoApp(java.awt.Frame parent, boolean modal) throws Exception {
         super(parent, modal);
         initComponents();
-        jTextAreaContratoDeLocacao.setLineWrap(true);
+        jTextAreaSaidaDoContrato.setLineWrap(true);
+        
+        int idContrato = LocacaoVeiculosApp.numContrato.getId();
 
         locacaoBll = new LocacaoBll();
         enderecoBll = new EnderecoBll();
         contatoBll = new ContatoBll();
 
-        locacao = locacaoBll.getLocacaoPorId(new Locacao(3));
+        locacao = locacaoBll.getLocacaoPorId(new Locacao(idContrato));
         enderecoCliente = enderecoBll.getConsultaEnderecoByCliente(locacao.getCliente());
         contatoCliente = contatoBll.getConsultaContatoPorClienteId(locacao.getCliente());
-        contatoMotorista = contatoBll.getConsultaContatoPorMotoristaId(new Motorista(2));
+        contatoMotorista = contatoBll.getConsultaContatoPorMotoristaId(locacao.getMotorista());
 
-        jTextAreaContratoDeLocacao.append(imprimirContrato(locacao, enderecoCliente, contatoCliente, contatoMotorista));
+        jTextAreaSaidaDoContrato.append(imprimirContrato(locacao, enderecoCliente, contatoCliente, contatoMotorista));
+    }
+    
+     public static String convertDate(Date dtConsulta) {
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", new Locale("pt", "BR"));
+            return formato.format(dtConsulta);
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            return null;
+        }
+    }
+
+    private static Date createNewDate(String data) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        try {
+            return formato.parse(data);
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            return null;
+        }
     }
 
     private String imprimirContrato(Locacao locacao, Endereco end,
             Contato contatoCli, Contato contatoMotorista) throws Exception {
 
-        String contrato = "\t\t\t\tCONTRATO DE LOCAÇÃO DE VEÍCULO\n"
+        String contrato = "\n\n\t\t\t\tCONTRATO DE LOCAÇÃO DE VEÍCULO\n"
                 //Dados do contrato
 
                 + "\n\t1. Partes Contratantes\n\n"
@@ -90,7 +110,7 @@ public class ContratoDeLocacaoApp extends javax.swing.JDialog {
                 + "\t3. Do motorista\n\n"
                 + "\t3.1 " + locacao.getMotorista().getNome().toUpperCase() + ", portador do CPF " + locacao.getMotorista().getCpf()
                 + ", RG " + locacao.getMotorista().getRg() + ", orgão emissor " + locacao.getMotorista().getOrgaoEmissor().toUpperCase()
-                + ", CNH de número " + locacao.getMotorista().getNumeroCnh() + ", com data de validade " + locacao.getMotorista().getDataValidadeCnh()
+                + ", CNH de número " + locacao.getMotorista().getNumeroCnh() + ", com data de validade " + convertDate(locacao.getMotorista().getDataValidadeCnh())
                 + ", categoria " + locacao.getMotorista().getCategoriaCnh() + ".\n\n"
                 //Contato do motorista
                 + "\tContato do motorista:\n"
@@ -146,22 +166,20 @@ public class ContratoDeLocacaoApp extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanelContratoDeLocacao = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextAreaContratoDeLocacao = new javax.swing.JTextArea();
+        jTextAreaSaidaDoContrato = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Contrato de Locação de Veículos MULACAR");
-        setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
-        setResizable(false);
+        setTitle("CONTRATO DE LOCAÇÃO DE VEÍCULOS - LOCADORA MULACAR");
 
-        jPanelContratoDeLocacao.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jTextAreaSaidaDoContrato.setEditable(false);
+        jTextAreaSaidaDoContrato.setColumns(20);
+        jTextAreaSaidaDoContrato.setRows(5);
+        jScrollPane1.setViewportView(jTextAreaSaidaDoContrato);
 
-        jTextAreaContratoDeLocacao.setEditable(false);
-        jTextAreaContratoDeLocacao.setColumns(20);
-        jTextAreaContratoDeLocacao.setRows(5);
-        jScrollPane2.setViewportView(jTextAreaContratoDeLocacao);
+        jLabel1.setFont(new java.awt.Font("Monotype Corsiva", 1, 18)); // NOI18N
+        jLabel1.setText("Contrato de Locacão - LOCADORA MULACAR");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/impressora.png"))); // NOI18N
         jButton1.setText("Imprimir");
@@ -171,47 +189,36 @@ public class ContratoDeLocacaoApp extends javax.swing.JDialog {
             }
         });
 
-        javax.swing.GroupLayout jPanelContratoDeLocacaoLayout = new javax.swing.GroupLayout(jPanelContratoDeLocacao);
-        jPanelContratoDeLocacao.setLayout(jPanelContratoDeLocacaoLayout);
-        jPanelContratoDeLocacaoLayout.setHorizontalGroup(
-            jPanelContratoDeLocacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelContratoDeLocacaoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelContratoDeLocacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 821, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelContratoDeLocacaoLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)))
-                .addContainerGap())
-        );
-        jPanelContratoDeLocacaoLayout.setVerticalGroup(
-            jPanelContratoDeLocacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelContratoDeLocacaoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
-
-        jScrollPane1.setViewportView(jPanelContratoDeLocacao);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 840, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 952, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(296, 296, 296))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addContainerGap())))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         pack();
@@ -227,15 +234,7 @@ public class ContratoDeLocacaoApp extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-     public static String convertDate(Date dtConsulta) {
-        try {
-            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:MM:SS", new Locale("pt", "BR"));
-            return formato.format(dtConsulta);
-        } catch (Exception erro) {
-            erro.printStackTrace();
-            return null;
-        }
-    }
+     
     /**
      * @param args the command line arguments
      */
@@ -285,9 +284,8 @@ public class ContratoDeLocacaoApp extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JPanel jPanelContratoDeLocacao;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextAreaContratoDeLocacao;
+    private javax.swing.JTextArea jTextAreaSaidaDoContrato;
     // End of variables declaration//GEN-END:variables
 }

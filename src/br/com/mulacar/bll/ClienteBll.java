@@ -76,6 +76,10 @@ public class ClienteBll {
         
         return clienteDal.getClienteById(cliente);
     }
+    
+    public Cliente getConsultaClienteByCpfCnpj(Cliente cliente) throws Exception {
+        return clienteDal.getClienteByCpfCnpj(cliente);
+    }
 
     public Cliente getClienteByNomeOuFantasia(Cliente cliente) throws Exception {
         this.validarCliente(cliente);

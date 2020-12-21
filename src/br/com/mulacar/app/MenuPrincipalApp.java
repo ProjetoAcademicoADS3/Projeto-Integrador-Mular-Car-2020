@@ -22,7 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 public class MenuPrincipalApp extends javax.swing.JFrame {
-
     /**
      * Creates new form TelaPrincipal
      */
@@ -30,6 +29,10 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         setExtendedState(MAXIMIZED_BOTH);
 
         initComponents();
+        
+        jLabelDataHora.setText(new SimpleDateFormat().format(new Date()));
+        
+        jLabelUsuarioLogado.setText("Usuario: " + LoginApp.usuario.getNome());
 
         CanvasTelaPrincipal canvas = new CanvasTelaPrincipal();
         this.jDesktopPaneMulaCar.add(canvas);
@@ -48,13 +51,19 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabelHora = new javax.swing.JLabel();
         jLabelData = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
         jSeparator4 = new javax.swing.JToolBar.Separator();
         jButtonSair = new javax.swing.JButton();
         jButtonUsuario = new javax.swing.JButton();
         jButtonCadVeiculos = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButtonDevolucaoDeVeiculo = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jSeparator6 = new javax.swing.JToolBar.Separator();
+        jLabelUsuarioLogado = new javax.swing.JLabel();
+        jSeparator7 = new javax.swing.JToolBar.Separator();
+        jLabelDataHora = new javax.swing.JLabel();
+        jSeparator8 = new javax.swing.JToolBar.Separator();
         jSeparator5 = new javax.swing.JSeparator();
         jMenuBarTelaPrincipal = new javax.swing.JMenuBar();
         jMenuOperacoes = new javax.swing.JMenu();
@@ -123,23 +132,31 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jLabelData.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelData.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
+        jLabel1.setText("Usuario: ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 556, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabelData, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelHora, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelData, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelHora, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addContainerGap())
         );
 
         jToolBar1.setFloatable(false);
@@ -190,14 +207,19 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         });
         jToolBar1.add(jButtonCadVeiculos);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-delete-icon-24px.png"))); // NOI18N
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setMaximumSize(new java.awt.Dimension(35, 35));
-        jButton2.setMinimumSize(new java.awt.Dimension(35, 35));
-        jButton2.setPreferredSize(new java.awt.Dimension(35, 35));
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton2);
+        jButtonDevolucaoDeVeiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-delete-icon-24px.png"))); // NOI18N
+        jButtonDevolucaoDeVeiculo.setFocusable(false);
+        jButtonDevolucaoDeVeiculo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonDevolucaoDeVeiculo.setMaximumSize(new java.awt.Dimension(35, 35));
+        jButtonDevolucaoDeVeiculo.setMinimumSize(new java.awt.Dimension(35, 35));
+        jButtonDevolucaoDeVeiculo.setPreferredSize(new java.awt.Dimension(35, 35));
+        jButtonDevolucaoDeVeiculo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonDevolucaoDeVeiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDevolucaoDeVeiculoActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButtonDevolucaoDeVeiculo);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/Actions-document-save-icon-24px.png"))); // NOI18N
         jButton3.setFocusable(false);
@@ -207,6 +229,18 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jButton3.setPreferredSize(new java.awt.Dimension(35, 35));
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton3);
+        jToolBar1.add(jSeparator6);
+
+        jLabelUsuarioLogado.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        jLabelUsuarioLogado.setText("Usuario");
+        jLabelUsuarioLogado.setEnabled(false);
+        jToolBar1.add(jLabelUsuarioLogado);
+        jToolBar1.add(jSeparator7);
+
+        jLabelDataHora.setText("Data / Hora");
+        jLabelDataHora.setEnabled(false);
+        jToolBar1.add(jLabelDataHora);
+        jToolBar1.add(jSeparator8);
 
         jMenuOperacoes.setMnemonic('o');
         jMenuOperacoes.setText("Operação");
@@ -230,6 +264,11 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         jMenuItemDevolverVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/mulacar/imagens/car-delete-icon-24px.png"))); // NOI18N
         jMenuItemDevolverVeiculos.setMnemonic('d');
         jMenuItemDevolverVeiculos.setText("Devolução de Veículos");
+        jMenuItemDevolverVeiculos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDevolverVeiculosActionPerformed(evt);
+            }
+        });
         jMenuOperacoes.add(jMenuItemDevolverVeiculos);
         jMenuOperacoes.add(jSeparator2);
 
@@ -497,7 +536,7 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
                     .addComponent(jSeparator5)
                     .addComponent(jDesktopPaneMulaCar)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -507,9 +546,10 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDesktopPaneMulaCar, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jDesktopPaneMulaCar, javax.swing.GroupLayout.PREFERRED_SIZE, 629, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         setSize(new java.awt.Dimension(719, 795));
@@ -722,6 +762,26 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
         this.setVisible(true);
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
+    private void jMenuItemDevolverVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDevolverVeiculosActionPerformed
+        // TODO add your handling code here:
+        try {
+            new DevolucaoApp(this, true).setVisible(true);
+            this.setVisible(true);
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
+    }//GEN-LAST:event_jMenuItemDevolverVeiculosActionPerformed
+
+    private void jButtonDevolucaoDeVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDevolucaoDeVeiculoActionPerformed
+        // TODO add your handling code here:
+        try {
+            new DevolucaoApp(this, true).setVisible(true);
+            this.setVisible(true);
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonDevolucaoDeVeiculoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -786,14 +846,17 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonCadVeiculos;
+    private javax.swing.JButton jButtonDevolucaoDeVeiculo;
     private javax.swing.JButton jButtonSair;
     private javax.swing.JButton jButtonUsuario;
     private javax.swing.JDesktopPane jDesktopPaneMulaCar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelData;
+    private javax.swing.JLabel jLabelDataHora;
     private javax.swing.JLabel jLabelHora;
+    private javax.swing.JLabel jLabelUsuarioLogado;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -846,6 +909,9 @@ public class MenuPrincipalApp extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JToolBar.Separator jSeparator6;
+    private javax.swing.JToolBar.Separator jSeparator7;
+    private javax.swing.JToolBar.Separator jSeparator8;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }

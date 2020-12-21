@@ -9,6 +9,7 @@
 
 package br.com.mulacar.model;
 
+import br.com.mulacar.app.LoginApp;
 import br.com.mulacar.enumeration.EnumPerfil;
 import br.com.mulacar.enumeration.EnumStatus;
 import java.util.Date;
@@ -25,6 +26,10 @@ public class Usuario {
     private Date dataCadastro;
 
     public Usuario() {
+    }
+    
+    public Usuario(String nome) {
+        this.nome = nome;
     }
 
     public Usuario(int id) {

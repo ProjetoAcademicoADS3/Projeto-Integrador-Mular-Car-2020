@@ -28,8 +28,8 @@ public class Cliente {
     public Cliente() {
     }
     
-    public Cliente(String nome) {
-        this.nome = nome;
+    public Cliente(String str) {
+        this.cpfCnpj = str;
     }
 
     public Cliente(int id) {

@@ -67,7 +67,7 @@ public class UsuarioDal {
     }
 
     public void updateUsuario(Usuario usu) throws Exception {
-        String sql = "UPDATE usuario SET"
+        String sql = "UPDATE usuario SET "
                 + "usu_nome=?,"
                 + "usu_cpf=?,"
                 + "usu_email=?,"
@@ -167,11 +167,7 @@ public class UsuarioDal {
                 usu.setEmail(rs.getString("usu_email"));
                 usu.setSenha(rs.getString("usu_senha"));
                 usu.setStatus(EnumStatus.ATIVO);
-                if (rs.getString("usu_perfil").equalsIgnoreCase("ADMINISTRADOR")) {
-                    usu.setPerfil(EnumPerfil.ADMINISTRADOR);
-                } else {
-                    usu.setPerfil(EnumPerfil.CLIENTE);
-                }
+                usu.setPerfil(EnumPerfil.valueOf(rs.getString("usu_perfil")));
 
             }
         } catch (Exception erro) {
@@ -231,11 +227,6 @@ public class UsuarioDal {
                 EnumPerfil perfil = EnumPerfil.valueOf(rs.getString("usu_perfil"));
                 usu.setPerfil(perfil);
 
-//                if (rs.getString("usu_perfil").equalsIgnoreCase("ADMINISTRADOR")) {
-//                    usu.setPerfil(EnumPerfil.ADMINISTRADOR);
-//                } else {
-//                    usu.setPerfil(EnumPerfil.CLIENTE);
-//                }
             }
         } catch (Exception erro) {
             throw new Exception("Ocorreu um erro ao buscar este registro de Usuários\n"

@@ -30,7 +30,7 @@ public class VeiculoBll {
     }
 
     public void adicionarVeiculo(Veiculo veiculo) throws Exception {
-        validarVeiculo(veiculo);
+        validarVeiculoNoInsert(veiculo);
         veiculoDal.addVeiculo(veiculo);
     }
 
@@ -47,6 +47,7 @@ public class VeiculoBll {
     }
 
     public void atualizarVeiculo(Veiculo veic) throws Exception {
+        validarVeiculoNoAltera(veic);
         veiculoDal.updateVeiculo(veic);
     }
 
@@ -78,7 +79,7 @@ public class VeiculoBll {
         return veiculoDal.sourceVeiculo(dados);
     }
 
-    public void validarVeiculo(Veiculo objeto) throws Exception {
+    public void validarVeiculoNoInsert(Veiculo objeto) throws Exception {
         int placaPadrao = 7;
         int anoFabricPrimeiroVeiculo = 1886;
         int renavanPadrao = 11;
@@ -97,6 +98,68 @@ public class VeiculoBll {
                         + "outro veículo!\nVerifique.");
             }
         }
+
+        if (objeto.getPlaca().length() != placaPadrao) {
+            throw new Exception("Placa inválida!\n"
+                    + "A placa informada deve ter 7 caracteres\n");
+        }
+        if (objeto.getAnoFabricacao() < anoFabricPrimeiroVeiculo) {
+            throw new Exception("Ano de fabricação do veículo inválido!\n"
+                    + "Ano de fabricação deve ser maior que 1886,"
+                    + " ano em que foi fabricado o primeiro veículo da "
+                    + "história automobilistica.");
+        }
+        if (objeto.getAnoFabricacao() > cal.get(Calendar.YEAR)) {
+            throw new Exception("Ano de fabricação inválido!\n"
+                    + "Ano de fabricação não pode ser maior que o ano corrente.");
+        }
+        if (objeto.getAnoModelo() < objeto.getAnoFabricacao()) {
+            throw new Exception("Ano de modelo do veículo inválido!\n"
+                    + "Ano de modelo deve ser maior ou igual ao "
+                    + "ano de fabricação do veículo.");
+        }
+        if (objeto.getAnoModelo() > objeto.getAnoFabricacao() + 1) {
+            throw new Exception("Ano de modelo inválido!\n"
+                    + "Ano de modelo não pode ser maior que o ano corrente + 1.");
+        }
+        if (objeto.getRenavan().length() > renavanPadrao
+                || objeto.getRenavan().length() < renavanPadrao) {
+            throw new Exception("Número do renavan inválido!\n"
+                    + "O número do renavan deve conter 11 digitos numéricos.");
+        }
+        if (objeto.getPrecoCompra().compareTo(BigDecimal.ZERO) == 0
+                || objeto.getPrecoCompra().compareTo(BigDecimal.ZERO) == -1) {
+            throw new Exception("Valor de compra do veículo inválido!\n"
+                    + "Verifique");
+        }
+        if (objeto.getPrecoVenda().compareTo(BigDecimal.ZERO) == 0
+                || objeto.getPrecoVenda().compareTo(BigDecimal.ZERO) == -1) {
+            throw new Exception("Valor de venda do veículo inválido!\n"
+                    + "Verifique.");
+        }
+        if (objeto.getNumPassageiros() < 1) {
+            throw new Exception("O número de passageiros não pode ser menor que um!\n");
+        }
+        if (objeto.getKm() <= 0 || objeto.getKm() > 999999) {
+            throw new Exception("A quilometragem do veículo inválida\n"
+                    + "Verifique!");
+        }
+        if (objeto.getCategoria().equals("")) {
+            throw new Exception("Informe a categoria do veículo!\n");
+        }
+        if (objeto.getModelo().equals("")) {
+            throw new Exception("Informe o modelo do veículo!\n");
+        }
+
+    }
+    public void validarVeiculoNoAltera(Veiculo objeto) throws Exception {
+        int placaPadrao = 7;
+        int anoFabricPrimeiroVeiculo = 1886;
+        int renavanPadrao = 11;
+        String renavan = objeto.getRenavan().toLowerCase().trim();
+        String placa = objeto.getPlaca().toLowerCase().trim();
+
+        List<Veiculo> listaVeiculos = veiculoDal.getAllVeiculo();
 
         if (objeto.getPlaca().length() != placaPadrao) {
             throw new Exception("Placa inválida!\n"

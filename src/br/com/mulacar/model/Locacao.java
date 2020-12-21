@@ -7,13 +7,11 @@ package br.com.mulacar.model;
 
 import br.com.mulacar.enumeration.EnumStatus;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  *
- * @author Gabriel Cunha <gabrielcunhadev@gmail.com>
+ * 
  */
 public class Locacao {
 
@@ -40,6 +38,56 @@ public class Locacao {
 
     public Locacao(int id) {
         this.id = id;
+    }
+
+    public Locacao(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Locacao(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
+     public Locacao (EnumStatus status){
+         this.status = status;
+     }
+
+    public Locacao(Cliente cliente, Motorista motorista, Veiculo veiculo, Usuario usuario, BigDecimal valorMulta, boolean tanqueCheio, Date dataRetirada, Date dataDevolucaoPrevista, String kmInicial, String observacoes, BigDecimal valorTotalAcessorios, BigDecimal valorLocacao, BigDecimal valorSeguro, BigDecimal valorCaucao, EnumStatus status, boolean reserva) {
+        this.cliente = cliente;
+        this.motorista = motorista;
+        this.veiculo = veiculo;
+        this.usuario = usuario;
+        this.valorMulta = valorMulta;
+        this.tanqueCheio = tanqueCheio;
+        this.dataRetirada = dataRetirada;
+        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
+        this.kmInicial = kmInicial;
+        this.observacoes = observacoes;
+        this.valorTotalAcessorios = valorTotalAcessorios;
+        this.valorLocacao = valorLocacao;
+        this.valorSeguro = valorSeguro;
+        this.valorCaucao = valorCaucao;
+        this.status = status;
+        this.reserva = reserva;
+    }
+
+    public Locacao(int id, Cliente cliente, Motorista motorista, Veiculo veiculo, Usuario usuario, BigDecimal valorMulta, boolean tanqueCheio, Date dataRetirada, Date dataDevolucaoPrevista, String kmInicial, String observacoes, BigDecimal valorTotalAcessorios, BigDecimal valorLocacao, BigDecimal valorSeguro, BigDecimal valorCaucao, EnumStatus status, boolean reserva) {
+        this.id = id;
+        this.cliente = cliente;
+        this.motorista = motorista;
+        this.veiculo = veiculo;
+        this.usuario = usuario;
+        this.valorMulta = valorMulta;
+        this.tanqueCheio = tanqueCheio;
+        this.dataRetirada = dataRetirada;
+        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
+        this.kmInicial = kmInicial;
+        this.observacoes = observacoes;
+        this.valorTotalAcessorios = valorTotalAcessorios;
+        this.valorLocacao = valorLocacao;
+        this.valorSeguro = valorSeguro;
+        this.valorCaucao = valorCaucao;
+        this.status = status;
+        this.reserva = reserva;
     }
 
     public int getId() {

@@ -66,13 +66,13 @@ public class LocacaoDal {
             preparedStatement.setBoolean(16, locacao.isReserva());
 
             int idLocacao = preparedStatement.executeUpdate();
-            
+
             conexao.commit();
 
             if (idLocacao == 0) {
                 throw new SQLException("Falha ao inserir a locacao no banco, nenhum registro criado.");
             }
-            
+
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     locacaoBanco.setId(generatedKeys.getInt(1));
@@ -80,42 +80,41 @@ public class LocacaoDal {
                     throw new SQLException("Falha ao criar o locacao. Não obteve o id da inserção.");
                 }
             }
-            
+
             return locacaoBanco;
 
         } catch (SQLException e) {
             conexao.rollback();
-            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e);
             throw e;
         } catch (Exception ex) {
-            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", ex );
-            throw ex;            
-        }      
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", ex);
+            throw ex;
+        }
     }
-    
+
     public void updateLocacao(Locacao locacao) throws Exception {
-        
+
         String sql = "UPDATE locacao "
                 + "SET loc_cliente_id = ?, "
                 + "loc_motorista_id = ?, "
-                + "loc_veiculo_id = ? "
-                + "loc_usuario_cadastro_id = ? "
-                + "loc_valor_multa = ? "
-                + "loc_tanque_cheio = ? "
-                + "loc_data_retirada = ? "
-                + "loc_data_devolucao_prevista = ? "
-                + "loc_km_inicial = ? "
-                + "loc_observacoes = ? "
-                + "loc_valores_acessorios = ? "
-                + "loc_valor_locacao = ? "
-                + "loc_valor_caucao = ? "
-                + "loc_valor_seguro = ? "
-                + "loc_status = ? "
-                + "loc_reserva = ? "
-                + "WHERE loc_id = ? ";
+                + "loc_veiculo_id = ?, "
+                + "loc_usuario_cadastro_id = ?, "
+                + "loc_valor_multa = ?, "
+                + "loc_tanque_cheio = ?, "
+                + "loc_data_retirada = ?, "
+                + "loc_data_devolucao_prevista = ?, "
+                + "loc_km_inicial = ?, "
+                + "loc_observacoes = ?, "
+                + "loc_valores_acessorios = ?, "
+                + "loc_valor_locacao = ?, "
+                + "loc_valor_caucao = ?, "
+                + "loc_valor_seguro = ?, "
+                + "loc_status = ?, "
+                + "loc_reserva = ? WHERE loc_id = ? ";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-            
+
             preparedStatement.setInt(1, locacao.getCliente().getId());
             preparedStatement.setInt(2, locacao.getMotorista().getId());
             preparedStatement.setInt(3, locacao.getVeiculo().getId());
@@ -132,33 +131,53 @@ public class LocacaoDal {
             preparedStatement.setBigDecimal(14, locacao.getValorSeguro());
             preparedStatement.setString(15, locacao.getStatus().name());
             preparedStatement.setBoolean(16, locacao.isReserva());
-            
+
             preparedStatement.executeUpdate();
 
         } catch (SQLException erro) {
             throw erro;
         }
-    }    
+    }
+
+    public void updateLocacaoStatus(Locacao locacao) throws Exception {
+
+        String sql = "UPDATE locacao "
+                + "SET loc_status=?, "
+                + "loc_observacoes=? "
+                + " WHERE loc_id = ? ";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+
+            preparedStatement.setString(1, locacao.getStatus().toString());
+            preparedStatement.setString(2, locacao.getObservacoes());
+            preparedStatement.setInt(3, locacao.getId());
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException erro) {
+            throw erro;
+        }
+    }
 
     public void deleteLocacao(Locacao locacao) throws Exception {
         String sql = "DELETE FROM locacao WHERE loc_id = ?";
-        
+
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, locacao.getId());
             preparedStatement.executeUpdate();
-            
+
         } catch (Exception e) {
-            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );            
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e);
             throw e;
         }
     }
 
     public List<Locacao> getAllLocacao() throws Exception {
         List<Locacao> listaLocacao = new ArrayList<>();
-        
+
         String sql = "SELECT * FROM locacao";
-        
+
         try {
             Statement statement = conexao.createStatement();
             ResultSet rs = statement.executeQuery(sql);
@@ -166,19 +185,91 @@ public class LocacaoDal {
             while (rs.next()) {
                 Locacao locacaoRetorno = new Locacao();
 
-                preencherLocacaoRetornoBanco(locacaoRetorno, rs);
+                locacaoRetorno = preencherLocacaoRetornoBanco(rs);
 
                 listaLocacao.add(locacaoRetorno);
             }
         } catch (Exception e) {
-            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );            
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e);
             throw new Exception("Erro ao listar locacoes" + e.getMessage());
         }
         return listaLocacao;
     }
 
+    public List<Locacao> getAllLocationsByStatus(Locacao locacao) throws Exception {
+        List<Locacao> listaLocacao = new ArrayList<>();
+
+        String sql = "SELECT * FROM locacao WHERE loc_status = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, locacao.getStatus().toString());
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Locacao locacaoRetorno = new Locacao();
+
+                locacaoRetorno = preencherLocacaoRetornoBanco(rs);
+
+                listaLocacao.add(locacaoRetorno);
+            }
+        } catch (Exception e) {
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e);
+            throw new Exception("Erro ao listar locacoes\n" + e.getMessage());
+        }
+        return listaLocacao;
+    }
+    
+    public List<Locacao> getAllLocationsByCliente(Locacao locacao) throws Exception {
+        List<Locacao> listaLocacao = new ArrayList<>();
+
+        String sql = "SELECT * FROM locacao WHERE loc_cliente_id = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, locacao.getCliente().getId());
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Locacao locacaoRetorno = new Locacao();
+
+                locacaoRetorno = preencherLocacaoRetornoBanco(rs);
+
+                listaLocacao.add(locacaoRetorno);
+            }
+        } catch (Exception e) {
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e);
+            throw new Exception("Erro ao listar locacoes\n" + e.getMessage());
+        }
+        return listaLocacao;
+    }
+
+    public List<Locacao> getAllLocationsByVeiculo(Locacao locacao) throws Exception {
+        List<Locacao> listaLocacao = new ArrayList<>();
+
+        String sql = "SELECT * FROM locacao WHERE loc_veiculo_id = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, locacao.getVeiculo().getId());
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Locacao locacaoRetorno = new Locacao();
+
+                locacaoRetorno = preencherLocacaoRetornoBanco(rs);
+
+                listaLocacao.add(locacaoRetorno);
+            }
+        } catch (Exception e) {
+            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e);
+            throw new Exception("Erro ao listar locacoes\n" + e.getMessage());
+        }
+        return listaLocacao;
+    }
+
     public Locacao getLocacaoById(Locacao locacao) throws Exception {
-        Locacao locacaoRetorno = new Locacao();
+        Locacao locacaoRetorno = null;
 
         String sql = "SELECT * FROM locacao WHERE loc_id = ?";
 
@@ -192,7 +283,7 @@ public class LocacaoDal {
 
             if (rs.next()) {
 
-                preencherLocacaoRetornoBanco(locacaoRetorno, rs);
+                locacaoRetorno = preencherLocacaoRetornoBanco(rs);
 
             }
 
@@ -215,7 +306,7 @@ public class LocacaoDal {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                preencherLocacaoRetornoBanco(locacaoRetorno, rs);
+                locacaoRetorno = preencherLocacaoRetornoBanco(rs);
             }
         } catch (Exception e) {
             Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e);
@@ -224,7 +315,46 @@ public class LocacaoDal {
         return locacaoRetorno;
     }
 
-//    public Locacao getLocacaoByRg(Locacao locacao) throws Exception {
+    private Locacao preencherLocacaoRetornoBanco(ResultSet rs) throws Exception {
+        Locacao locacaoRetorno = new Locacao();
+        locacaoRetorno.setId(rs.getInt("loc_id"));
+        ClienteDal cliente = new ClienteDal();
+        locacaoRetorno.setCliente(cliente.getClienteById(new Cliente(rs.getInt("loc_cliente_id"))));
+        MotoristaDal motorista = new MotoristaDal();
+        locacaoRetorno.setMotorista(motorista.getMotoristaById(new Motorista(rs.getInt("loc_motorista_id"))));
+        VeiculoDal veiculo = new VeiculoDal();
+        locacaoRetorno.setVeiculo(veiculo.getVeiculoById(new Veiculo(rs.getInt("loc_veiculo_id"))));
+        UsuarioDal usuario = new UsuarioDal();
+        locacaoRetorno.setUsuario(usuario.getUsuarioById(rs.getInt("loc_usuario_cadastro_id")));
+        locacaoRetorno.setValorMulta(rs.getBigDecimal("loc_valor_multa"));
+        locacaoRetorno.setTanqueCheio(rs.getBoolean("loc_tanque_cheio"));
+        locacaoRetorno.setDataRetirada(rs.getDate("loc_data_retirada"));
+        locacaoRetorno.setDataDevolucaoPrevista(rs.getDate("loc_data_devolucao_prevista"));
+        locacaoRetorno.setKmInicial(rs.getString("loc_km_inicial"));
+        locacaoRetorno.setObservacoes(rs.getString("loc_observacoes"));
+        locacaoRetorno.setValorTotalAcessorios(rs.getBigDecimal("loc_valor_total_acessorios"));
+        locacaoRetorno.setValorLocacao(rs.getBigDecimal("loc_valor_locacao"));
+        locacaoRetorno.setValorCaucao(rs.getBigDecimal("loc_valor_caucao"));
+        locacaoRetorno.setValorSeguro(rs.getBigDecimal("loc_valor_seguro"));
+        locacaoRetorno.setStatus(EnumStatus.valueOf(rs.getString("loc_status")));
+        locacaoRetorno.setReserva(rs.getBoolean("loc_reserva"));
+        return locacaoRetorno;
+    }
+
+    public void ordenaListaLocation(List<Locacao> lista) throws Exception {
+        for (int i = 0; i < lista.size(); i++) {
+            for (int j = i; j < lista.size(); j++) {
+                if (lista.get(i).getCliente().getNome()
+                        .compareToIgnoreCase(lista.get(j).getCliente().getNome()) >= 0) {
+                    Locacao temp = lista.get(j);
+                    lista.set(j, lista.get(i));
+                    lista.set(i, temp);
+                }
+            }
+        }
+    }
+
+    //    public Locacao getLocacaoByRg(Locacao locacao) throws Exception {
 //        Locacao locacaoRetorno = null;
 //        
 //        String sql = "SELECT * FROM locacao WHERE loc_rg = ?";
@@ -263,31 +393,4 @@ public class LocacaoDal {
 //            throw e;            
 //        }
 //        return locacaoRetorno;
-//    }
-    private void preencherLocacaoRetornoBanco(Locacao locacaoRetorno, ResultSet rs) throws Exception {
-        locacaoRetorno.setId(rs.getInt("loc_id"));
-        ClienteDal cliente = new ClienteDal();
-        locacaoRetorno.setCliente(cliente.getClienteById(new Cliente(rs.getInt("loc_cliente_id"))));
-        MotoristaDal motorista = new MotoristaDal();
-        locacaoRetorno.setMotorista(motorista.getMotoristaById(new Motorista(rs.getInt("loc_motorista_id"))));
-        VeiculoDal veiculo = new VeiculoDal();
-        locacaoRetorno.setVeiculo(veiculo.getVeiculoById(new Veiculo(rs.getInt("loc_veiculo_id"))));
-        UsuarioDal usuario = new UsuarioDal();
-        locacaoRetorno.setUsuario(usuario.getUsuarioById(rs.getInt("loc_usuario_cadastro_id")));
-        locacaoRetorno.setValorMulta(rs.getBigDecimal("loc_valor_multa"));
-        locacaoRetorno.setTanqueCheio(rs.getBoolean("loc_tanque_cheio"));
-        locacaoRetorno.setDataRetirada(rs.getDate("loc_data_retirada"));
-        locacaoRetorno.setDataDevolucaoPrevista(rs.getDate("loc_data_devolucao_prevista"));
-        locacaoRetorno.setKmInicial(rs.getString("loc_km_inicial"));
-        locacaoRetorno.setObservacoes(rs.getString("loc_observacoes"));
-        locacaoRetorno.setValorTotalAcessorios(rs.getBigDecimal("loc_valor_total_acessorios"));
-        locacaoRetorno.setValorLocacao(rs.getBigDecimal("loc_valor_locacao"));
-        locacaoRetorno.setValorCaucao(rs.getBigDecimal("loc_valor_caucao"));
-        locacaoRetorno.setValorSeguro(rs.getBigDecimal("loc_valor_seguro"));
-        locacaoRetorno.setStatus(EnumStatus.valueOf(rs.getString("loc_status")));
-        locacaoRetorno.setReserva(rs.getBoolean("loc_reserva"));
-    }
-    
-    
-
 }

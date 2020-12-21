@@ -78,6 +78,8 @@ public class ClienteApp extends javax.swing.JDialog {
         
         initComponents();
         
+        LoginApp.usuario.getNome();
+        
         inicializar();
     }
     

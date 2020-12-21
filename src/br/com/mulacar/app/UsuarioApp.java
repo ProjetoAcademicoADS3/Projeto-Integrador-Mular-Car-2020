@@ -76,7 +76,7 @@ public class UsuarioApp extends javax.swing.JDialog {
         jTextFieldCpf.setText("");
         jTextFieldEmail.setText("");
         jPasswordFieldSenha.setText("******");
-        jTextFieldDataAtual.setText("");
+        jTextFieldDataAtual.setText(convertDate(new Date()));
         jTextFieldNome.requestFocus();
         jComboBoxPerfilDoUsuario.setSelectedIndex(0);
         jButtonSalvar.setLabel("Salvar");
@@ -441,6 +441,15 @@ public class UsuarioApp extends javax.swing.JDialog {
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
+        try {
+            int id = Integer.parseInt(jTextFieldCodigo.getText());
+            usuBll.excluirUsuario(id);
+            limpaCampos();
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, "Atenção no botão excluir" + erro.getMessage());
+                    
+        }
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     /**

@@ -17,13 +17,12 @@ import br.com.mulacar.model.Usuario;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LoginApp extends javax.swing.JFrame {
-
-    private Usuario usuario;
+    
+    protected static Usuario usuario;
 
     private UsuarioBll usuBll = new UsuarioBll();
 
@@ -39,14 +38,11 @@ public class LoginApp extends javax.swing.JFrame {
         }
     }
 
+    public LoginApp() throws Exception {
 
- public LoginApp() throws Exception {
-        
         initComponents();
 
         usuario = new Usuario();
-
-        Random rd = new Random();
 
         this.criarUsuarioAdmin();
 
@@ -56,19 +52,10 @@ public class LoginApp extends javax.swing.JFrame {
 
             this.jPasswordFieldSenha.setText("123456");
 
-            
-            System.out.println("Teste");
-            
-//            this.jButtonEntrar.doClick();
-//            
-//            this.dispose();
-            System.out.println("");
-
-//        this.executarScriptsConfiguracoes();
         }
 
     }
-
+    
     private void criarUsuarioAdmin() {
         try {
             Usuario usuarioBanco = usuBll.getUsuarioByEmail("usuario.admin@gmail.com");
@@ -188,15 +175,16 @@ public class LoginApp extends javax.swing.JFrame {
                         && senha.equals(usuarioBanco.getSenha());
 
                 if (ehAutorizado && usuarioBanco.getPerfil().equals(EnumPerfil.ADMINISTRADOR)) {
+                   
+                    usuario = usuarioBanco;
 
                     MenuPrincipalApp tela = new MenuPrincipalApp();   //Chamar a tela
                     tela.setVisible(true);                      //Tornar a tela visivel
                     dispose();                                  //Fechar a tela de login e abrir apenas a tela principal
 
+
                 } else if (ehAutorizado && usuarioBanco.getPerfil().equals(EnumPerfil.CLIENTE)) {
 
-//                    VisualizarFilmesApp1 tela = new VisualizarFilmesApp1(usuarioBanco);
-//                    tela.setVisible(true);
                     dispose();
 
                 } else {
