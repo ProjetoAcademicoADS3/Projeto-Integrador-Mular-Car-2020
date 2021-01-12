@@ -354,43 +354,5 @@ public class LocacaoDal {
         }
     }
 
-    //    public Locacao getLocacaoByRg(Locacao locacao) throws Exception {
-//        Locacao locacaoRetorno = null;
-//        
-//        String sql = "SELECT * FROM locacao WHERE loc_rg = ?";
-//        
-//        try {
-//            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-//            preparedStatement.setString(1, locacao.getRg());
-//            ResultSet rs = preparedStatement.executeQuery();
-//
-//            if (rs.next()) {
-//                preencherLocacaoRetornoBanco(rs);
-//            }
-//        } catch (Exception e) {
-//            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );
-//            throw e;
-//        }
-//        return locacaoRetorno;
-//    }    
-//    public Locacao getLocacaoByNomeOuFantasia(Locacao locacao) throws Exception {
-//        Locacao locacaoRetorno = null;
-//
-//        String sql = "SELECT * FROM locacao where loc_nome like ? "
-//                + "or loc_nome_fantasia like ? ";
-//        try {
-//            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-//            preparedStatement.setString(1, String.format("%%s%", locacao.getNome()));
-//            preparedStatement.setString(2, String.format("%%s%", locacao.getNomeFantasia()));
-//            ResultSet rs = preparedStatement.executeQuery();
-//            
-//            if (rs.next()) {
-//                locacaoRetorno = preencherLocacaoRetornoBanco(rs);
-//            }            
-//
-//        } catch (Exception e) {
-//            Logger.getLogger(Locacao.class.getName()).log(Level.SEVERE, "LocacaoDal - ", e );
-//            throw e;            
-//        }
-//        return locacaoRetorno;
+   
 }
