@@ -6,15 +6,12 @@
  * Projeto Mula Car - aluguel de Veículos
  * Alunos: Aires Ribeiro, Gabriel Cunha, Lucas França e Rogério Reis
  */
-
 //APLICADO O PADRÃO DE PROJETO SINGLETON
-
 package br.com.mulacar.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
 
 public class Conexao {
 
@@ -27,18 +24,20 @@ public class Conexao {
         if (conexao == null) {
             try {
                 String driver = "org.postgresql.Driver";
-                String url = "jdbc:postgresql://192.168.0.13:5432/mulacar";
+                String url = "jdbc:postgresql://localhost:5432/mulacar";
                 String usuario = "postgres";
-                String password = "1357";
+                String password = "131726";
 
                 Class.forName(driver);
                 conexao = DriverManager.getConnection(url, usuario, password);
-//                JOptionPane.showMessageDialog(null, "Conectado !");
+                String status = "Conetado";
+                System.out.println("Status da conexão: " + status);
 
             } catch (ClassNotFoundException erro) {
                 erro.printStackTrace();
 
             } catch (SQLException erro) {
+                System.out.println("Não conectado");
                 erro.printStackTrace();
             }
         }
