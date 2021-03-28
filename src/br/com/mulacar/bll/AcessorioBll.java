@@ -19,6 +19,7 @@ import java.util.List;
 public class AcessorioBll {
     
     private static final long serialVersionUID = 1L;
+    
     private AcessorioDal  aceDal;
     
     public AcessorioBll(){
@@ -26,9 +27,10 @@ public class AcessorioBll {
         aceDal = new AcessorioDal();
     }
     
-    public void adicionarAcessorio(Acessorio acessorio)throws Exception{
+    public Acessorio adicionarAcessorio(Acessorio acessorio)throws Exception{
         validarAcessorio(acessorio);
         aceDal.addAcessorio(acessorio);
+        return acessorio;
     }
     
     public List<Acessorio> getConsultaAcessorios()throws Exception{

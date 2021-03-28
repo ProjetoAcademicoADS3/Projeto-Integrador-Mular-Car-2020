@@ -32,7 +32,11 @@ public class Modelo {
         this.status = status;
         this.marca = marca;
     }
-    
+
+    public Modelo(int id) {
+        this.id = id;
+    }
+
     public void splitModelo(String combo) {
         String[] vetor = combo.split(" - ");
         id = Integer.parseInt(vetor[0]);

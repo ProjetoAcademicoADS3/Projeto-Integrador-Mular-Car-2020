@@ -21,14 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AcessorioDal {
-    
+
     private Connection conexao;
-    
-    public AcessorioDal(){
+
+    public AcessorioDal() {
         conexao = Conexao.getConexao();
     }
-    
-    public void addAcessorio(Acessorio acessorio)throws Exception{
+
+    public Acessorio addAcessorio(Acessorio acessorio) throws Exception {
         String sql = "INSERT INTO acessorio(ace_nome, ace_valor, ace_status) VALUES(?,?,?)";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
@@ -39,9 +39,10 @@ public class AcessorioDal {
         } catch (Exception e) {
             throw e;
         }
+        return acessorio;
     }
-    
-    public void deleteAcessorio(int id) throws Exception{
+
+    public void deleteAcessorio(int id) throws Exception {
         String sql = "DELETE FROM acessorio WHERE ace_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
@@ -51,8 +52,8 @@ public class AcessorioDal {
             throw e;
         }
     }
-    
-    public void updateAcessorio(Acessorio acessorio) throws Exception{
+
+    public void updateAcessorio(Acessorio acessorio) throws Exception {
         String sql = "UPDATE acessorio SET ace_nome=?,"
                 + "ace_valor=?,"
                 + "ace_status=? WHERE ace_id=?";
@@ -67,14 +68,14 @@ public class AcessorioDal {
             throw e;
         }
     }
-    
-    public List<Acessorio> getAllAcessorios()throws Exception{
+
+    public List<Acessorio> getAllAcessorios() throws Exception {
         List<Acessorio> listaAcessorios = new ArrayList<>();
         String sql = "SELECT * FROM acessorio";
         try {
             Statement statement = conexao.createStatement();
             ResultSet rs = statement.executeQuery(sql);
-            while (rs.next()){
+            while (rs.next()) {
                 Acessorio ace = new Acessorio();
                 ace.setId(rs.getInt("ace_id"));
                 ace.setDescricao(rs.getString("ace_nome"));
@@ -87,15 +88,15 @@ public class AcessorioDal {
         }
         return listaAcessorios;
     }
-    
-    public Acessorio getAcessorioById(int id)throws Exception{
+
+    public Acessorio getAcessorioById(int id) throws Exception {
         Acessorio ace = new Acessorio();
         String sql = "SELECT * FROM acessorio WHERE ace_id=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 ace.setId(rs.getInt("ace_id"));
                 ace.setDescricao(rs.getString("ace_nome"));
                 ace.setValor(rs.getBigDecimal("ace_valor"));
@@ -106,15 +107,15 @@ public class AcessorioDal {
         }
         return ace;
     }
-    
-    public Acessorio getAcessorioByName(String nome) throws Exception{
+
+    public Acessorio getAcessorioByName(String nome) throws Exception {
         Acessorio ace = new Acessorio();
         String sql = "SELECT * FROM acessorio WHERE UPPER(ace_nome)=?";
         try {
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setString(1, nome);
             ResultSet rs = preparedStatement.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 ace.setId(rs.getInt("ace_id"));
                 ace.setDescricao(rs.getString("ace_nome"));
                 ace.setValor(rs.getBigDecimal("ace_valor"));
@@ -125,30 +126,28 @@ public class AcessorioDal {
         }
         return ace;
     }
-    
-    
-    public ArrayList sourceAcessorio(String dados)throws Exception{
+
+    public ArrayList sourceAcessorio(String dados) throws Exception {
         String textoDigitado = dados.trim().toLowerCase();
         ArrayList<Acessorio> resultado = new ArrayList<>();
         boolean existe = false;
         for (Acessorio ace : getAllAcessorios()) {
-            if(ace.getDescricao().toLowerCase().trim().contains(textoDigitado)){
+            if (ace.getDescricao().toLowerCase().trim().contains(textoDigitado)) {
                 resultado.add(ace);
                 existe = true;
             }
         }
-        if(!existe){
+        if (!existe) {
             throw new Exception("Registro não encontrado!\n");
         }
         return resultado;
     }
-    
-    
-    public ResultSet sourceInteligente(String nome){
+
+    public ResultSet sourceInteligente(String nome) {
         ResultSet rs = null;
         String sql = "SELECT * FROM acessorio WHERE ace_nome like ?";
         PreparedStatement pst;
-        
+
         try {
             pst = conexao.prepareStatement(sql);
             pst.setString(1, nome + "%");
@@ -157,23 +156,5 @@ public class AcessorioDal {
         }
         return rs;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }

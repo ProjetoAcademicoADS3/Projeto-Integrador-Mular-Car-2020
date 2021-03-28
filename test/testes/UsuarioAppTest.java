@@ -7,6 +7,7 @@ import br.com.mulacar.model.Usuario;
 import java.util.Date;
 import java.util.List;
 import org.junit.Assert;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 
 /**
@@ -28,7 +29,7 @@ public class UsuarioAppTest {
         //Criando a instância da dal para manipular o banco
         UsuarioDal dal = new UsuarioDal();
         //Inserindo um usuário no banco 
-        dal.addUsuario(usu);
+//        dal.addUsuario(usu);
 
         //Criando a estrutura de lista para receber o get do banco
         List<Usuario> listUser;
@@ -39,6 +40,10 @@ public class UsuarioAppTest {
         Integer cpfRetorno = listUser.get(1).getCpf().length();
         //Criado uma varíavel expressando qual a expectativa do retorno
         Integer cpfValido = 11;
+        
+        if (cpfRetorno != cpfValido) {
+            fail("O número de caracteres do CPF de retorno é diferente do CPF válido");
+        }
 
         //Utilizando o método assert (afirmar) para fazer a comparação
         //da expectativa com o valor vindo do banco

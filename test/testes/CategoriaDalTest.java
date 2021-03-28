@@ -26,7 +26,7 @@ public class CategoriaDalTest {
     public void testInserirEgetAll() throws Exception {
 
         //Criando o objeto cat da classe Categoria
-        Categoria cat = new Categoria("automovel", EnumStatus.ATIVO, new BigDecimal(1.00));
+        Categoria cat = new Categoria("motocicleta", EnumStatus.ATIVO, new BigDecimal(1.00));
         //Criando a instância da CategoriaDal para manipular o banco de dados
         CategoriaDal dao = new CategoriaDal();
         //Inserindo o objeto cat no banco de dados
